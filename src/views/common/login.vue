@@ -10,7 +10,7 @@
         -->
         <div class="login-main">
 
-			<div class="login-title" style="font-size:30px;padding:10px 0 40px 0;">压缩空气能耗分析系统</div>
+			<div class="login-title" style="font-size:30px;padding:10px 0 40px 0;">中电神头发电有限公司空压机站节能技术改进与应用</div>
 
           <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon style="width:30%;margin: auto;position: absolute;left: 0;right: 0;">
             <el-form-item prop="userName">
@@ -172,8 +172,9 @@
         // background-color: rgba(255,255,255,0.2);
       background-color: rgba(113, 74, 74, 0.2);
         border-radius: 20px;
-        padding: 80px 300px 100px 300px;
-        width: 1000px;
+       // padding: 80px 300px 100px 300px;
+      padding: 10px 0px 300px 0px;
+      width: 1000px;
         height: 580px;
         margin: auto;
         position: absolute;
