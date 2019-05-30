@@ -22,6 +22,7 @@
             :props="menuListTreeProps"
             node-key="menuId"
             ref="menuListTree"
+            style="maxHeight: 800px;"
             @current-change="menuListTreeCurrentChangeHandle"
             :default-expand-all="true"
             :highlight-current="true"

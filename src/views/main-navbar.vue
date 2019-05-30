@@ -14,7 +14,6 @@
           <icon-svg name="zhedie"></icon-svg>
         </el-menu-item>
       </el-menu>
-
       <el-menu
         class="site-navbar__menu site-navbar__menu--right"
         mode="horizontal">
@@ -32,6 +31,7 @@
           <icon-svg name="tuichu"></icon-svg>
         </el-menu-item>
       </el-menu>
+      <p style="float: right;padding-right:20px;font-size: 16px;color: #ffffff;">中电神头发电有限公司空压机站节能技术改进与应用</p>
     </div>
     <!-- 弹窗, 修改密码 -->
     <update-password v-if="updatePassowrdVisible" ref="updatePassowrd"></update-password>
