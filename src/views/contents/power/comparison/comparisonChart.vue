@@ -23,14 +23,22 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="form.type" placeholder="请选择" style="width: 250px">
-            <el-option
-              v-for="item in types"
-              :key="item.value.value"
-              :label="item.label"
-              :value="item.value.value">
-            </el-option>
-          </el-select>
+          <!--<el-select v-model="form.type" placeholder="请选择" style="width: 250px">-->
+          <!--<el-option-->
+          <!--v-for="item in types"-->
+          <!--:key="item.value.value"-->
+          <!--:label="item.label"-->
+          <!--:value="item.value.value">-->
+          <!--</el-option>-->
+          <!--</el-select>-->
+          <el-form-item label="选择时间">
+            <el-row>
+              <el-button @click="changeDateType(3)" :type="form.type ==3?'success':'primary'">当天</el-button>
+              <el-button @click="changeDateType(0)" :type="form.type ==0?'success':'primary'">本周</el-button>
+              <el-button @click="changeDateType(1)" :type="form.type ==1?'success':'primary'">本月</el-button>
+              <el-button @click="changeDateType(2)" :type="form.type ==2?'success':'primary'">本年</el-button>
+            </el-row>
+          </el-form-item>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="drawChart">生成</el-button>
@@ -112,6 +120,9 @@
       this.changeTypes()
     },
     methods: {
+      changeDateType(index) {
+        this.form.type = index
+      },
       changeTypes() {
         this.form.value = []
         var _deviceName = this.deviceTypes[this.form.deviceType].label
@@ -160,6 +171,9 @@
             break
           case 2:
             date = this.showWeekDays()
+            break
+          case 3:
+            date = ["01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00"]
             break
         }
         this.chart = echarts.init(this.$refs['chart'], 'default')
