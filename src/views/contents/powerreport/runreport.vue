@@ -3,10 +3,10 @@
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item label="选择时间">
         <el-row>
-          <el-button type="primary">当天</el-button>
-          <el-button type="primary">本周</el-button>
-          <el-button type="primary">本月</el-button>
-          <el-button type="primary">本年</el-button>
+          <el-button :type="dateType ==1?'success':'primary'" @click="changeDateType(1)">当天</el-button>
+          <el-button :type="dateType ==2?'success':'primary'" @click="changeDateType(2)">本周</el-button>
+          <el-button :type="dateType ==3?'success':'primary'" @click="changeDateType(3)">本月</el-button>
+          <el-button :type="dateType ==4?'success':'primary'" @click="changeDateType(4)">本年</el-button>
         </el-row>
       </el-form-item>
 
@@ -20,9 +20,9 @@
         </el-date-picker>
       </el-form-item>
 
-       <el-form-item>
+      <el-form-item>
         <el-button @click="getDataList()" type="warning">查询</el-button>
-         <el-button @click="getDataList()" type="warning">导出报表</el-button>
+        <el-button @click="getDataList()" type="warning">导出报表</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -71,12 +71,12 @@
         align="center"
         label="4#螺杆机(kW·h)">
       </el-table-column>
-        <el-table-column
-          prop="luogan_5"
-          header-align="center"
-          align="center"
-          label="5#螺杆机(kW·h)">
-        </el-table-column>
+      <el-table-column
+        prop="luogan_5"
+        header-align="center"
+        align="center"
+        label="5#螺杆机(kW·h)">
+      </el-table-column>
       <el-table-column
         prop="kongya_2"
         header-align="center"
@@ -84,23 +84,23 @@
         label="2#仪表气空压机(kW·h)">
       </el-table-column>
       <el-table-column
-            prop="kongya_3"
-            header-align="center"
-            align="center"
-            label="3#仪表气空压机(kW·h)">
-          </el-table-column>
+        prop="kongya_3"
+        header-align="center"
+        align="center"
+        label="3#仪表气空压机(kW·h)">
+      </el-table-column>
       <el-table-column
-            prop="kongya_4"
-            header-align="center"
-            align="center"
-            label="4#仪表气空压机(kW·h)">
-          </el-table-column>
-          <el-table-column
-            prop="recordTime"
-            header-align="center"
-            align="center"
-            label="记录时间">
-          </el-table-column>
+        prop="kongya_4"
+        header-align="center"
+        align="center"
+        label="4#仪表气空压机(kW·h)">
+      </el-table-column>
+      <el-table-column
+        prop="recordTime"
+        header-align="center"
+        align="center"
+        label="记录时间">
+      </el-table-column>
 
     </el-table>
 
@@ -110,35 +110,44 @@
 <style>
   .el-row {
     margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+
   }
   .el-col {
     border-radius: 4px;
   }
+
   .bg-purple-dark {
-   /** background: #99a9bf; */
+    /** background: #99a9bf; */
   }
+
   .bg-purple {
     /** background: #d3dce6; */
   }
+
   .bg-purple-light {
     background: #e5e9f2;
   }
+
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
   }
+
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
   }
-  .chart-container{
+
+  .chart-container {
     position: relative;
-    padding:20px;
+    padding: 20px;
     width: 100%;
-    height:300px;
+    height: 300px;
   }
 </style>
 
@@ -147,19 +156,20 @@
   import { getFinaceAmount } from '@/utils'
   import daypowerChart from '@/components/Charts/daypower'
   import monthlyairChart from '@/components/Charts/monthlyairtout'
+
   export default {
-    data () {
+    data() {
       return {
 
         value2: new Date(2016, 9, 10, 18, 40),
         value3: new Date(2016, 9, 10, 18, 40),
         value1: '',
         input1: ' 累计 300kwh',
-        startTime:'',
+        startTime: '',
         endTime: '',
         activeName: 'first',
         value4: [new Date(2018, 11, 1, 0, 0), new Date(2018, 11, 31, 23, 59)],
-
+        dateType: 3,
         dataForm: {
           equipName: '',
           donatorName: '',
@@ -167,27 +177,27 @@
           projectType: '',
           startDate: '',
           endDate: '',
-          value5:'',
-          equipTime:'',
-          airName:'',
-          lxj:'',
-          luogan_1:'',
-          luogan_2:'',
-          luogan_3:'',
-          luogan_4:'',
-          luogan_5:'',
-          kongya_2:'',
-          kongya_3:'',
-          kongya_4:'',
-          recordTime:''
+          value5: '',
+          equipTime: '',
+          airName: '',
+          lxj: '',
+          luogan_1: '',
+          luogan_2: '',
+          luogan_3: '',
+          luogan_4: '',
+          luogan_5: '',
+          kongya_2: '',
+          kongya_3: '',
+          kongya_4: '',
+          recordTime: ''
         },
         projectTypes: [],
         dataList: [],
         pageIndex: 1,
         pageSize: 20,
         totalPage: 0,
-        firstVisible:true,
-        secondVisible:false,
+        firstVisible: true,
+        secondVisible: false,
         dataListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false,
@@ -200,19 +210,49 @@
       // daypowerChart
       monthlyairChart
     },
-    activated () {
+    activated() {
       this.getDataList()
     },
     methods: {
+      getCountDays() {
+        var curDate = new Date()
+        /* 获取当前月份 */
+        var curMonth = curDate.getMonth()
+        curDate.setMonth(curMonth + 1)
+        /* 将日期设置为0, 这里为什么要这样设置, 我不知道原因, 这是从网上学来的 */
+        curDate.setDate(0)
+        /* 返回当月的天数 */
+        return curDate.getDate()
+      },
+      changeDateType(index) {
+        this.dateType = index
+        let date = new Date()
+        switch (this.dateType) {
+          case 1:
+            this.value4 = [new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0), new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)]
+            break
+          case 2:
+            this.value4 = [new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7, 23, 59, 59)]
+            break
+          case 3:
+            this.value4 = [new Date(date.getFullYear(), date.getMonth(), 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), this.getCountDays(), 23, 59, 59)]
+            break
+          case 4:
+            this.value4 = [new Date(date.getFullYear(), 0, 1, 0, 0), new Date(date.getFullYear(), 11, 31, 23, 59, 59)]
+            break
+        }
+
+        this.initTypeSelect()
+      },
       handleClick(tab, event) {
         console.log(tab, event);
         if (tab.name === 'first') {
-         // firstVisible = true;
+          // firstVisible = true;
           //secondVisible = false;
           activeName: 'first'
         } else {
           //secondVisible = true;
-         // firstVisible = false;
+          // firstVisible = false;
           activeName: 'second'
         }
       },
@@ -227,38 +267,38 @@
           }
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
-            let countValue = 0 ;
+            let countValue = 0;
             sums[index] = values.reduce((prev, curr) => {
               let value = Number(curr);
-              countValue = countValue +1;
+              countValue = countValue + 1;
               if (!isNaN(value)) {
                 return prev + curr;
               } else {
                 return prev;
               }
             }, 0);
-            sums[index] = sums[index]/countValue ;
+            sums[index] = sums[index] / countValue;
           } else {
             sums[index] = '';
           }
-          if (index === 5 ) {
-            sums[5] =  sums[2] /  sums[3] *  sums[4]   ;
+          if (index === 5) {
+            sums[5] = sums[2] / sums[3] * sums[4];
           }
         });
         return sums;
       },
 
-      initTypeSelect () {
-          this.$http({
-            url: this.$http.adornUrl('/project/base/typeSelect'),
-            method: 'get',
-            params: this.$http.adornParams()
-        }).then(({data}) => {
+      initTypeSelect() {
+        this.$http({
+          url: this.$http.adornUrl('/project/base/typeSelect'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
           this.projectTypes = data && data.code === 0 ? data.list : []
         })
       },
       // 获取数据列表
-      getDataList () {
+      getDataList() {
         this.dataListLoading = true
 
         this.$http({
@@ -276,7 +316,7 @@
             'sidx': 'projectNo',
             'order': 'DESC'
           })
-        }).then(({data}) => {
+        }).then(({ data }) => {
 
 
           // if (data && data.code === 0) {
@@ -288,56 +328,56 @@
           // }
 
           this.dataList = [{
-            id:1,
-            lxj:'21',
-            luogan_1:'20',
-            luogan_2:'10',
-            luogan_3:'15',
-            luogan_4:'13.5',
-            luogan_5:'12',
-            kongya_2:'11',
-            kongya_3:'9',
-            kongya_4:'10',
-            recordTime:'2019-3-1 08:12:20'
+            id: 1,
+            lxj: '21',
+            luogan_1: '20',
+            luogan_2: '10',
+            luogan_3: '15',
+            luogan_4: '13.5',
+            luogan_5: '12',
+            kongya_2: '11',
+            kongya_3: '9',
+            kongya_4: '10',
+            recordTime: '2019-3-1 08:12:20'
           },
             {
-              id:1,
-              lxj:'22',
-              luogan_1:'25',
-              luogan_2:'12',
-              luogan_3:'16',
-              luogan_4:'15',
-              luogan_5:'13',
-              kongya_2:'13',
-              kongya_3:'12',
-              kongya_4:'11',
-              recordTime:'2019-3-1 08:12:50'
+              id: 1,
+              lxj: '22',
+              luogan_1: '25',
+              luogan_2: '12',
+              luogan_3: '16',
+              luogan_4: '15',
+              luogan_5: '13',
+              kongya_2: '13',
+              kongya_3: '12',
+              kongya_4: '11',
+              recordTime: '2019-3-1 08:12:50'
             },
             {
-              id:1,
-              lxj:'23',
-              luogan_1:'27',
-              luogan_2:'14',
-              luogan_3:'17',
-              luogan_4:'17',
-              luogan_5:'15',
-              kongya_2:'15',
-              kongya_3:'15',
-              kongya_4:'13',
-              recordTime:'2019-3-1 08:13:20'
+              id: 1,
+              lxj: '23',
+              luogan_1: '27',
+              luogan_2: '14',
+              luogan_3: '17',
+              luogan_4: '17',
+              luogan_5: '15',
+              kongya_2: '15',
+              kongya_3: '15',
+              kongya_4: '13',
+              recordTime: '2019-3-1 08:13:20'
             },
             {
-              id:1,
-              lxj:'25',
-              luogan_1:'30',
-              luogan_2:'16',
-              luogan_3:'19',
-              luogan_4:'19',
-              luogan_5:'17',
-              kongya_2:'17',
-              kongya_3:'17',
-              kongya_4:'15',
-              recordTime:'2019-3-1 08:13:50'
+              id: 1,
+              lxj: '25',
+              luogan_1: '30',
+              luogan_2: '16',
+              luogan_3: '19',
+              luogan_4: '19',
+              luogan_5: '17',
+              kongya_2: '17',
+              kongya_3: '17',
+              kongya_4: '15',
+              recordTime: '2019-3-1 08:13:50'
 
             }];
           this.totalPage = 4;
@@ -346,22 +386,22 @@
         })
       },
       // 每页数
-      sizeChangeHandle (val) {
+      sizeChangeHandle(val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle (val) {
+      currentChangeHandle(val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle (val) {
+      selectionChangeHandle(val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle(id) {
         this.addOrUpdateVisible = true
         //加载typeSelect
         this.$nextTick(() => {
@@ -369,7 +409,7 @@
         })
       },
       // 删除
-      deleteHandle (id) {
+      deleteHandle(id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.id
         })
@@ -382,7 +422,7 @@
             url: this.$http.adornUrl('/project/base/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
+          }).then(({ data }) => {
             if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',
@@ -400,9 +440,9 @@
       },
 
       getValue() {
-         return this.dataForm.type
+        return this.dataForm.type
       },// 上传文件
-      importHandle () {
+      importHandle() {
         this.uploadVisible = true;
         this.$nextTick(() => {
           this.$refs.upload.init()
@@ -414,25 +454,27 @@
         window.open(url);
       },
       finaceAmountFormat(row, column, cellValue, index) {
-          return getFinaceAmount(cellValue);
-        },
+        return getFinaceAmount(cellValue);
+      },
 
       showReceivers(receiveId) {
-          this.receiverVisible = true
-          this.$nextTick(() => {
-            this.visible = true
-            this.$refs.receiverDetailModal.init(receiveId)
-          })
-        },
-       showDonator (donatorId) {
-          this.donatorVisible = true
-          this.$nextTick(() => {
-            this.visible = true
-            this.$refs.donatorDetailModal.init(donatorId)
-          })
-         }
+        this.receiverVisible = true
+        this.$nextTick(() => {
+          this.visible = true
+          this.$refs.receiverDetailModal.init(receiveId)
+        })
+      },
+      showDonator(donatorId) {
+        this.donatorVisible = true
+        this.$nextTick(() => {
+          this.visible = true
+          this.$refs.donatorDetailModal.init(donatorId)
+        })
+      }
     },
-    mounted(){
+    mounted() {
+      let date = new Date()
+      this.value4 = [new Date(date.getFullYear(), date.getMonth(), 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), this.getCountDays(), 23, 59, 59)]
       this.initTypeSelect()
     }
   }

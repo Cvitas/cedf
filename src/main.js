@@ -11,13 +11,16 @@ import '@/assets/scss/index.scss'
 import httpRequest from '@/utils/httpRequest' // api: https://github.com/axios/axios
 
 // import mockdata from './mock';
-import echarts from 'echarts';
+import echarts from 'echarts'
 import echartTheme from '@/utils/echart_theme'
 import { isAuth } from '@/utils'
+import htmlToPdf from '@/utils/htmlToPdf'
 
 echarts.registerTheme('default', echartTheme)
 
 Vue.use(VueCookie)
+
+Vue.use(htmlToPdf)
 // Vue.use(VueResource)
 Vue.config.productionTip = false
 

@@ -12,8 +12,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="选择对比项">
+        <el-form-item label="选择对比项" v-if="form.deviceType=== 0">
           <el-select v-model="form.value" :multiple-limit="limit" multiple placeholder="请选择" style="width: 250px">
+            <el-option
+              v-for="item in options"
+              :key="item.value.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="选择对比项" v-if="form.deviceType=== 1">
+          <el-select v-model="form.value1" :multiple-limit="limit" multiple placeholder="请选择" style="width: 250px">
             <el-option
               v-for="item in options"
               :key="item.value.value"
@@ -34,9 +44,9 @@
           <el-form-item label="选择时间">
             <el-row>
               <el-button @click="changeDateType(3)" :type="form.type ==3?'success':'primary'">当天</el-button>
-              <el-button @click="changeDateType(0)" :type="form.type ==0?'success':'primary'">本周</el-button>
+              <el-button @click="changeDateType(2)" :type="form.type ==2?'success':'primary'">本周</el-button>
               <el-button @click="changeDateType(1)" :type="form.type ==1?'success':'primary'">本月</el-button>
-              <el-button @click="changeDateType(2)" :type="form.type ==2?'success':'primary'">本年</el-button>
+              <el-button @click="changeDateType(0)" :type="form.type ==0?'success':'primary'">本年</el-button>
             </el-row>
           </el-form-item>
         </el-form-item>
@@ -76,6 +86,7 @@
         limit: 2,
         form: {
           value: [],
+          value1: [],
           type: 0,
           deviceType: 0
         },
@@ -86,16 +97,16 @@
           value: { name: '压力', value: 1 },
           label: '压力'
         }],
-        types: [{
-          value: { name: '当年', value: 0 },
-          label: '当年'
-        }, {
-          value: { name: '当月', value: 1 },
-          label: '当月'
-        }, {
-          value: { name: '本周', value: 2 },
-          label: '本周'
-        }],
+        // types: [{
+        //   value: { name: '当年', value: 0 },
+        //   label: '当年'
+        // }, {
+        //   value: { name: '当月', value: 1 },
+        //   label: '当月'
+        // }, {
+        //   value: { name: '本周', value: 2 },
+        //   label: '本周'
+        // }],
         // options:
         //   [{
         //     value: { name: '产气能耗', value: 1 },
@@ -124,7 +135,7 @@
         this.form.type = index
       },
       changeTypes() {
-        this.form.value = []
+        // this.form.value = []
         var _deviceName = this.deviceTypes[this.form.deviceType].label
         var options = []
         for (var i = 1; i <= 3; i++) {
@@ -152,11 +163,25 @@
         }
         return date
       },
+      RandomData(length, n) {
+        let data = []
+        for (var i = 0; i < length; i++) {
+          data.push(Math.random() * 20 + n)
+        }
+        return data
+      },
       initChart() {
-        if (this.form.value.length != 2) {
+        let label = []
+        let dataXY = []
+        if (this.form.deviceType === 0 && this.form.value.length !== 2) {
           this.$message("请先选择对比项")
           return false
         }
+        if (this.form.deviceType === 1 && this.form.value1.length !== 2) {
+          this.$message("请先选择对比项")
+          return false
+        }
+
         let date = ["2019-1", "2019-2", "2019-3", "2019-4", "2019-5", "2019-6", "2019-7", "2019-8", "2019-9", "2019-10", "2019-11", "2019-12"];
         switch (this.form.type) {
           case 0:
@@ -176,6 +201,38 @@
             date = ["01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00"]
             break
         }
+        if (this.form.value.length) {
+          label = [...label, this.form.value[0].name, this.form.value[1].name]
+          dataXY = [...dataXY, {
+            name: this.form.value[0].name,
+            type: 'line',
+            smooth: true,
+            data: this.RandomData(date.length, 20)
+          },
+            {
+              name: this.form.value[1].name,
+              type: 'line',
+              smooth: true,
+              yAxisIndex: 1,
+              data: this.RandomData(date.length, 30)
+            }]
+        }
+        if (this.form.value1.length) {
+          label = [...label, this.form.value1[0].name, this.form.value1[1].name]
+          dataXY = [...dataXY, {
+            name: this.form.value1[0].name,
+            type: 'line',
+            smooth: true,
+            data: this.RandomData(date.length, 15)
+          },
+            {
+              name: this.form.value1[1].name,
+              type: 'line',
+              smooth: true,
+              yAxisIndex: 1,
+              data: this.RandomData(date.length, 10)
+            }]
+        }
         this.chart = echarts.init(this.$refs['chart'], 'default')
         this.chart.setOption({
           tooltip: {
@@ -185,7 +242,7 @@
             }
           },
           legend: {
-            data: [this.form.value[0].name, this.form.value[1].name]
+            data: label
           },
           grid: {
             top: 70,
@@ -221,21 +278,7 @@
               type: 'value',
             }
           ],
-          series: [
-            {
-              name: this.form.value[0].name,
-              type: 'line',
-              smooth: true,
-              data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
-            },
-            {
-              name: this.form.value[1].name,
-              type: 'line',
-              smooth: true,
-              yAxisIndex: 1,
-              data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
-            }
-          ]
+          series: dataXY
         })
       },
       drawChart() {

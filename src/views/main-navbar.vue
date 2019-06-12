@@ -17,13 +17,13 @@
       <el-menu
         class="site-navbar__menu site-navbar__menu--right"
         mode="horizontal">
-        <el-menu-item index="1" @click="$router.push({ name: 'theme' })">
-          <template slot="title">
-            <el-badge value="设置">
-              <icon-svg name="shezhi" class="el-icon-setting"></icon-svg>
-            </el-badge>
-          </template>
-        </el-menu-item>
+        <!--<el-menu-item index="1" @click="$router.push({ name: 'theme' })">-->
+          <!--<template slot="title">-->
+            <!--<el-badge value="设置">-->
+              <!--<icon-svg name="shezhi" class="el-icon-setting"></icon-svg>-->
+            <!--</el-badge>-->
+          <!--</template>-->
+        <!--</el-menu-item>-->
         <el-menu-item class="site-navbar__switch" index="3" style="background-color: #4490C1;">
           值班员: {{ userName }}
         </el-menu-item>
@@ -31,7 +31,7 @@
           <icon-svg name="tuichu"></icon-svg>
         </el-menu-item>
       </el-menu>
-      <p style="float: right;padding-right:20px;font-size: 16px;color: #ffffff;">中电神头发电有限公司空压机站节能技术改进与应用</p>
+      <p style="font-size: 16px;color: #ffffff;text-align: center;">中电神头发电有限公司空压机站节能技术改进与应用</p>
     </div>
     <!-- 弹窗, 修改密码 -->
     <update-password v-if="updatePassowrdVisible" ref="updatePassowrd"></update-password>

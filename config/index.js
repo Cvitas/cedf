@@ -24,9 +24,9 @@ module.exports = {
     //   }
     // },
     proxyTable:{
-      '/sys/':'http://47.107.131.70:8080/cedf/',
-      '/project/':'http://47.107.131.70:8080/cedf/',
-      '/collect/':'http://47.107.131.70:8080/cedf/',
+      '/sys/':'http://106.15.233.181:8080/cedf/',
+      '/project/':'http://106.15.233.181:8080/cedf/',
+      '/collect/':'http://106.15.233.181:8080/cedf/',
     },
 
     // Various Dev Server settings
