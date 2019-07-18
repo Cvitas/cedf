@@ -1,16 +1,16 @@
 <template>
-  <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType" style="background-color: #26382c;">
-    <div class="site-navbar__header" style="background-color: #4B90BF">
+  <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType">
+    <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
           <a class="site-navbar__brand-lg" href="javascript:;"><img src="~@/assets/img/logo-title.png" /></a>
          <a class="site-navbar__brand-mini" href="javascript:;"> <img src="~@/assets/img/logo.png" /></a>
       </h1>
     </div>
-    <div class="site-navbar__body clearfix" style="background-color: #4490C1;">
+    <div class="site-navbar__body clearfix">
       <el-menu
         class="site-navbar__menu"
         mode="horizontal">
-        <el-menu-item class="site-navbar__switch" index="0" @click="sidebarFold = !sidebarFold" style="background-color: #4490C1;">
+        <el-menu-item class="site-navbar__switch" index="0" @click="sidebarFold = !sidebarFold" >
           <icon-svg name="zhedie"></icon-svg>
         </el-menu-item>
       </el-menu>
@@ -24,10 +24,10 @@
             <!--</el-badge>-->
           <!--</template>-->
         <!--</el-menu-item>-->
-        <el-menu-item class="site-navbar__switch" index="3" style="background-color: #4490C1;">
+        <el-menu-item class="site-navbar__switch" index="3">
           值班员: {{ userName }}
         </el-menu-item>
-        <el-menu-item class="site-navbar__switch" index="4" @click.native="logoutHandle()" style="background-color: #4490C1;">
+        <el-menu-item class="site-navbar__switch" index="4" @click.native="logoutHandle()">
           <icon-svg name="tuichu"></icon-svg>
         </el-menu-item>
       </el-menu>
@@ -38,10 +38,17 @@
   </nav>
 </template>
 
-<style>
+<style lang="scss" scoped>
   .icon-svg {
     width: 1em;
     height: 1em;
+  }
+  .site-navbar{
+    background:#4B90BF;
+    background: linear-gradient(to top, #4B90BF 0%, #1e6abf 60%, #1e6abf 50%, #4B90BF 100%);
+  }
+  .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
+    background:#4B90BF;
   }
 </style>
 

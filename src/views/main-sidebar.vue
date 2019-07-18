@@ -1,6 +1,6 @@
 <template>
 
-  <aside class="site-sidebar" :class="'site-sidebar--' + sidebarLayoutSkin">
+  <aside class="site-sidebar theme-sidebar">
 
     <div class="site-sidebar__inner">
       <el-menu
@@ -19,6 +19,17 @@
       </div>
   </aside>
 </template>
+
+<style lang="scss" scoped>
+  .theme-sidebar{
+    /deep/.el-submenu__title:hover{
+      background: linear-gradient(to top, #DEDEDE 0%, #d1d1d1 60%, #cdcdcd 50%, #DEDEDE 100%);
+    }
+    .site-sidebar__inner{
+      overflow-y:auto;
+    }
+  }
+</style>
 
 <script>
   import SubMenu from './main-sidebar-sub-menu'

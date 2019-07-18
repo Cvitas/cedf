@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="gaugeContainer" style="width:400px; height:300px"></div>
+    <div id="gaugeContainer" style="width:100%; height:300px"></div>
   </div>
 </template>
 
@@ -42,6 +42,39 @@
               type: "gauge",
               detail: {
                 formatter: "{value}℃"
+              },
+              axisLine: { // 坐标轴线
+                lineStyle: { // 属性lineStyle控制线条样式
+                  color: [
+                    [0.2, new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#91c7ae' },
+                        { offset: 0.5, color: '#80b09a' },
+                        { offset: 0.8, color: '#91c7ae' },
+                        { offset: 1, color: '#5c7e6e' }
+                      ]
+                    )],
+                    [0.8, new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#63869e' },
+                        { offset: 0.5, color: '#232f38' },
+                        { offset: 0.8, color: '#3f5563' },
+                        { offset: 1, color: '#63869e' }
+                      ]
+                    )],
+                    [1, new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#c23531' },
+                        { offset: 0.5, color: '#d93b37' },
+                        { offset: 0.8, color: '#a52d2a' },
+                        { offset: 1, color: '#c23531' }
+                      ]
+                    )]
+                  ]
+                }
               },
               data: [
                 {

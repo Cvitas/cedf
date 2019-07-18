@@ -4,6 +4,7 @@
 
 <script>
   import echarts from 'echarts'
+
   require('echarts/theme/macarons') // echarts theme
   import { debounce } from '@/utils'
 
@@ -67,11 +68,63 @@
               radius: [15, 95],
               center: ['50%', '38%'],
               data: [
-                { value: 320, name: '排气口1' },
-                { value: 240, name: '排气口2' },
-                { value: 149, name: '排气口3' },
-                { value: 100, name: '排气口4' },
-                { value: 59, name: '排气口5' }
+                {
+                  value: 320, name: '排气口1', itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#2898f3' },
+                        { offset: 0.5, color: '#2489db' },
+                        { offset: 0.8, color: '#1f77be' },
+                        { offset: 1, color: '#2898f3' }
+                      ]
+                    )
+                  }
+                },
+                { value: 240, name: '排气口2', itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#2de2b8' },
+                        { offset: 0.5, color: '#28caa4' },
+                        { offset: 0.8, color: '#2de2b8' },
+                        { offset: 1, color: '#21a888' }
+                      ]
+                    )
+                  } },
+                { value: 149, name: '排气口3', itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#9cbe6a' },
+                        { offset: 0.5, color: '#b9e17d' },
+                        { offset: 0.8, color: '#a1c46d' },
+                        { offset: 1, color: '#b9e17d' }
+                      ]
+                    )
+                  } },
+                { value: 100, name: '排气口4', itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#f3ce2f' },
+                        { offset: 0.5, color: '#a58c20' },
+                        { offset: 0.8, color: '#f3ce2f' },
+                        { offset: 1, color: '#cbac27' }
+                      ]
+                    )
+                  } },
+                { value: 59, name: '排气口5', itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                      1, 0, 0, 1,
+                      [
+                        { offset: 0, color: '#F38A7C' },
+                        { offset: 0.5, color: '#b9695f' },
+                        { offset: 0.8, color: '#f88d7f' },
+                        { offset: 1, color: '#ea8577' }
+                      ]
+                    )
+                  } }
               ],
               animationEasing: 'cubicInOut',
               animationDuration: 2600
