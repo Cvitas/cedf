@@ -6,14 +6,14 @@
       <div class="addForm_gray_bg">
         <el-col :span="10">
           <el-form-item label="单位压缩空气能耗" prop="airrate">
-            <el-input v-model="dataForm.airrate" placeholder="单位压缩空气能耗" style="width:30%">
+            <el-input v-model="dataForm.airrate" placeholder="单位压缩空气能耗" style="width:150px">
               <template slot="append">Kwh/m<sup>3</sup></template>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="10">
           <el-form-item label="含尘量" prop="airdust">
-            <el-input v-model="dataForm.airdust" placeholder="含尘量" style="width:30%">
+            <el-input v-model="dataForm.airdust" placeholder="含尘量" style="width:150px">
               <template slot="append">g/m<sup>3</sup></template>
             </el-input>
           </el-form-item>
@@ -21,14 +21,14 @@
 
         <el-col :span="10">
           <el-form-item label="实际流量" prop="actstream">
-            <el-input v-model="dataForm.actstream" placeholder="实际流量" style="width:30%">
+            <el-input v-model="dataForm.actstream" placeholder="实际流量" style="width:150px">
               <template slot="append">M<sup>3</sup>/min</template>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="10">
           <el-form-item label="含油量" prop="airoil">
-            <el-input v-model="dataForm.airoil" placeholder="含油量" style="width:30%">
+            <el-input v-model="dataForm.airoil" placeholder="含油量" style="width:150px">
               <template slot="append">Ppm</template>
             </el-input>
           </el-form-item>
@@ -36,7 +36,7 @@
 
         <el-col :span="10">
           <el-form-item label="排气温度" prop="airouttemp">
-            <el-input type="number" v-model="dataForm.airouttemp" placeholder="排气温度" style="width:30%">
+            <el-input type="number" v-model="dataForm.airouttemp" placeholder="排气温度" style="width:150px">
               <template slot="append">&#8451;</template>
             </el-input>
           </el-form-item>
@@ -44,7 +44,7 @@
 
         <el-col :span="10">
           <el-form-item label="压力露点">
-            <el-input v-model="dataForm.airpress" placeholder="压力露点" style="width:30%">
+            <el-input v-model="dataForm.airpress" placeholder="压力露点" style="width:150px">
               <template slot="append">&#8451;</template>
             </el-input>
           </el-form-item>
@@ -52,7 +52,7 @@
 
         <el-col :span="10">
           <el-form-item label="进气温度">
-            <el-input v-model="dataForm.airintemp" placeholder="进气温度" style="width:30%">
+            <el-input v-model="dataForm.airintemp" placeholder="进气温度" style="width:150px">
               <template slot="append">&#8451;</template>
             </el-input>
           </el-form-item>
