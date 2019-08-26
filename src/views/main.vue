@@ -44,10 +44,15 @@
       userName: {
         get () { return this.$store.state.user.name },
         set (val) { this.$store.commit('user/updateName', val) }
+      },
+      devices: {
+        get () { return this.$store.state.device.collectTypes },
+        set (val) { this.$store.commit('device/setCollectType', val) }
       }
     },
     created () {
       this.getUserInfo()
+      this.initEqupType()
     },
     mounted () {
       this.resetDocumentClientHeight()
@@ -74,7 +79,19 @@
             this.userName = data.user.username
           }
         })
-      }
+      },
+      // 初始化设备
+      initEqupType() {
+        this.$http({
+          url: this.$http.adornUrl(`/collect/equipment/typelist`),
+          method: 'get',
+          params: { collectType: 1 }
+        }).then((data) => {
+          if (data != null && data.data.code === 0) {
+            this.devices = data.data.data
+          }
+        })
+      },
     }
   }
 </script>

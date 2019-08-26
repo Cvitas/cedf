@@ -15,10 +15,10 @@
         <el-form-item label="类型">
           <el-select v-model="form.type" placeholder="请选择" style="width: 250px">
             <el-option
-              v-for="item in types"
-              :key="item.value.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in devices"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -59,48 +59,50 @@
           value: null,
           type: null
         },
-        options: [ {
+        options: [{
           value: { name: '比较去年', value: 1 },
           label: '比较去年'
         }, {
-          value: { name: [ '上个月', '当月' ], value: 2 },
+          value: { name: ['上个月', '当月'], value: 2 },
           label: '比较上个月'
         }, {
-          value: { name: [ '上个季度', '本季度' ], value: 3 },
+          value: { name: ['上个季度', '本季度'], value: 3 },
           label: '比较上个季度'
-        } ],
-        types: [ {
-          value: { name: '产气量能耗', value: 0 },
-          label: '产气量能耗'
-        }, {
-          value: { name: '瞬时流量', value: 1 },
-          label: '瞬时流量'
-        }, {
-          value: { name: '累计流量', value: 2 },
-          label: '累计流量'
-        }, {
-          value: { name: '能耗', value: 3 },
-          label: '能耗'
-        } ],
-        typesItems: [ { legend: [ "总能耗", "离心机" ] },
-          { legend: [ "总瞬时流量", "7台设备" ] },
-          { legend: [ "总流量", "7台设备总流量" ] },
-          { legend: [ "总耗电量", "9台其他设备" ] } ]
+        }],
+        typesItems: [{ legend: ["总能耗", "离心机"] },
+          { legend: ["总瞬时流量", "7台设备"] },
+          { legend: ["总流量", "7台设备总流量"] },
+          { legend: ["总耗电量", "9台其他设备"] }]
+      }
+    },
+    computed: {
+      devices: {
+        get() {
+          return this.$store.state.device.collectTypes
+        }
       }
     },
     methods: {
       clernChart() {
-        if ( this.chart ) {
-          this.chart.clear();
+        if (this.chart) {
+          this.chart.clear()
         }
       },
       initChart() {
-        if ( !this.form.value || !this.form.type ) {
+        if (!this.form.value || !this.form.type) {
           this.$message("请先选择比较方式类型")
           return false
         }
         this.clernChart()
-        this.chart = echarts.init(this.$refs[ 'chart' ], 'default')
+        this.$http({
+          url: this.$http.adornUrl(`/collect/collecstatis//comparisonmutichart/xthb/${this.form.value.value}/${this.form.type}`),
+          method: 'get',
+        }).then((data) => {
+          if (data != null && data.data.code === 0) {
+            const res = data.data.data
+          }
+        })
+        this.chart = echarts.init(this.$refs['chart'], 'default')
         let pie = {
           tooltip: {
             trigger: 'item',
@@ -116,10 +118,10 @@
             {
               name: '分布图',
               type: 'pie',
-              center: [ '50%', '45%' ],
+              center: ['50%', '45%'],
               data: [
-                { value: 300 + Math.random() * 320, name: this.form.value.name[ 0 ] },
-                { value: Math.random() * 240, name: this.form.value.name[ 1 ] },
+                { value: 300 + Math.random() * 320, name: this.form.value.name[0] },
+                { value: Math.random() * 240, name: this.form.value.name[1] },
               ],
               animationEasing: 'cubicInOut',
               animationDuration: 1000
@@ -143,38 +145,38 @@
           legend: {
             left: 'center',
             bottom: '10',
-            data: [ this.form.type.name, ...this.typesItems[ this.form.type.value ].legend ]
+            data: [this.form.type, ...this.typesItems[this.form.type].legend]
           },
-          xAxis: [ {
+          xAxis: [{
             type: 'category',
-            data: [ "2018", "2019" ],
+            data: ["2018", "2019"],
             axisTick: {
               alignWithLabel: true
             }
-          } ],
-          yAxis: [ {
+          }],
+          yAxis: [{
             type: 'value',
             name: '气量/m2',
             axisTick: {
               show: false
             }
-          } ],
+          }],
           series: [
             {
-              name: this.form.type.name,
+              name: this.form.type,
               type: 'bar',
               barGap: 0,
-              data: [ Math.random() * 53280, Math.random() * 42180 ],
+              data: [Math.random() * 53280, Math.random() * 42180],
             },
             {
-              name: this.typesItems[ this.form.type.value ].legend[ 0 ],
+              name: this.typesItems[this.form.type].legend[0],
               type: 'bar',
-              data: [ Math.random() * 53280, Math.random() * 42180 ],
+              data: [Math.random() * 53280, Math.random() * 42180],
             },
             {
-              name: this.typesItems[ this.form.type.value ].legend[ 1 ],
+              name: this.typesItems[this.form.type].legend[1],
               type: 'bar',
-              data: [ Math.random() * 53280, Math.random() * 42180 ],
+              data: [Math.random() * 53280, Math.random() * 42180],
             },
           ]
         }

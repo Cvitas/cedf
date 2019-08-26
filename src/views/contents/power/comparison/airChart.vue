@@ -6,6 +6,7 @@
           <el-date-picker
             v-model="form.value"
             type="daterange"
+            value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期">
@@ -58,30 +59,38 @@
           value: null,
           type: null
         },
-        types: [ {
-          value: { name: '总用气量', value: 0 },
-          label: '总用气量'
+        types: [{
+          value: { name: '其他设备', value: 1 },
+          label: '其他设备'
         }, {
-          value: { name: '离心机用气量', value: 1 },
-          label: '离心机用气量'
-        } ],
-        typesItems: [ { legend: [ "系统总（6个设备）用气量", "总用气量饼图" ] },
-          { legend: [ "离心机用气量", "总用气量" ] } ]
+          value: { name: '离心机', value: 2 },
+          label: '离心机'
+        }],
+        typesItems: [{ legend: ["系统总（6个设备）用气量", "总用气量饼图"] },
+          { legend: ["离心机用气量", "总用气量"] }]
       }
     },
     methods: {
       clernChart() {
-        if ( this.chart ) {
+        if (this.chart) {
           this.chart.clear();
         }
       },
       initChart() {
-        if ( !this.form.value || !this.form.type ) {
+        if (!this.form.value || !this.form.type) {
           this.$message("请先选择时间范围类型")
           return false
         }
         this.clernChart()
-        this.chart = echarts.init(this.$refs[ 'chart' ], 'default')
+        this.$http({
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/${this.form.type.value}/${this.form.value[0]}/${this.form.value[1]}`),
+          method: 'get'
+        }).then((data) => {
+          if (data != null && data.data.code === 0) {
+            const res = data.data.data
+          }
+        })
+        this.chart = echarts.init(this.$refs['chart'], 'default')
         let pie = {
           tooltip: {
             trigger: 'item',
@@ -90,17 +99,17 @@
           legend: {
             left: 'center',
             bottom: '10',
-            data: this.typesItems[ this.form.type.value ].legend
+            data: this.typesItems[this.form.type.value].legend
           },
           calculable: true,
           series: [
             {
               name: '分布图',
               type: 'pie',
-              center: [ '50%', '45%' ],
+              center: ['50%', '45%'],
               data: [
-                { value: 300 + Math.random() * 320, name: this.typesItems[ this.form.type.value ].legend[ 0 ] },
-                { value: Math.random() * 240, name: this.typesItems[ this.form.type.value ].legend[ 1 ] },
+                { value: 300 + Math.random() * 320, name: this.typesItems[this.form.type.value].legend[0] },
+                { value: Math.random() * 240, name: this.typesItems[this.form.type.value].legend[1] },
               ],
               animationEasing: 'cubicInOut',
               animationDuration: 1000

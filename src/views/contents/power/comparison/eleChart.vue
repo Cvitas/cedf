@@ -6,6 +6,7 @@
           <el-date-picker
             v-model="form.value"
             type="daterange"
+            value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期">
@@ -51,17 +52,22 @@
     },
     methods: {
       clernChart() {
-        if ( this.chart ) {
+        if (this.chart) {
           this.chart.clear();
         }
       },
       initChart() {
-        if ( !this.form.value) {
+        if (!this.form.value) {
           this.$message("请先选择时间范围")
           return false
         }
+        this.$http({
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/power/${this.form.value[0]}/${this.form.value[1]}`),
+          method: 'get'
+        }).then((data) => {
+        })
         this.clernChart()
-        this.chart = echarts.init(this.$refs[ 'chart' ], 'default')
+        this.chart = echarts.init(this.$refs['chart'], 'default')
         let pie = {
           tooltip: {
             trigger: 'item',
@@ -70,14 +76,14 @@
           legend: {
             left: 'center',
             bottom: '10',
-            data: [ '系统用电', '离心机用电' ]
+            data: ['系统用电', '离心机用电']
           },
           calculable: true,
           series: [
             {
               name: '分布图',
               type: 'pie',
-              center: [ '50%', '45%' ],
+              center: ['50%', '45%'],
               data: [
                 { value: 300 + Math.random() * 320, name: '系统用电' },
                 { value: Math.random() * 240, name: '离心机用电' },

@@ -3252,7 +3252,7 @@
 }
 
 .el-date-editor .el-range-separator {
-  padding: 0 5px;
+  padding: 0 0;
   line-height: 32px;
   width: 5%;
   color: #303133

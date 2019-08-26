@@ -81,7 +81,8 @@
                     )
                   }
                 },
-                { value: 240, name: '排气口2', itemStyle: {
+                {
+                  value: 240, name: '排气口2', itemStyle: {
                     color: new echarts.graphic.LinearGradient(
                       1, 0, 0, 1,
                       [
@@ -91,8 +92,10 @@
                         { offset: 1, color: '#21a888' }
                       ]
                     )
-                  } },
-                { value: 149, name: '排气口3', itemStyle: {
+                  }
+                },
+                {
+                  value: 149, name: '排气口3', itemStyle: {
                     color: new echarts.graphic.LinearGradient(
                       1, 0, 0, 1,
                       [
@@ -102,8 +105,10 @@
                         { offset: 1, color: '#b9e17d' }
                       ]
                     )
-                  } },
-                { value: 100, name: '排气口4', itemStyle: {
+                  }
+                },
+                {
+                  value: 100, name: '排气口4', itemStyle: {
                     color: new echarts.graphic.LinearGradient(
                       1, 0, 0, 1,
                       [
@@ -113,8 +118,10 @@
                         { offset: 1, color: '#cbac27' }
                       ]
                     )
-                  } },
-                { value: 59, name: '排气口5', itemStyle: {
+                  }
+                },
+                {
+                  value: 59, name: '排气口5', itemStyle: {
                     color: new echarts.graphic.LinearGradient(
                       1, 0, 0, 1,
                       [
@@ -124,7 +131,8 @@
                         { offset: 1, color: '#ea8577' }
                       ]
                     )
-                  } }
+                  }
+                }
               ],
               animationEasing: 'cubicInOut',
               animationDuration: 2600
