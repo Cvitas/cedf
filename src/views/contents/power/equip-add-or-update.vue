@@ -29,7 +29,11 @@
         </el-col>
         <el-col :span="14">
           <el-form-item label="出厂日期：" prop="productDate">
-            <el-input type="text" v-model.number="dataForm.productDate" placeholder="出厂日期"></el-input>
+            <el-date-picker
+              placeholder="选择日期"
+              type="date"
+              v-model="dataForm.productDate"  value-format="yyyy-MM-dd" format="yyyy-MM-dd">
+            </el-date-picker>
           </el-form-item>
         </el-col>
 
@@ -197,35 +201,6 @@
           })
         })
       },
-      /**
-       * 协议号发生变化   汇款单位变化
-       */
-      changeProject(id) {
-        this.$http({
-          url: this.$http.adornUrl(`/project/donateamount/companyName/` + id),
-          method: 'get'
-        }).then((data) => {
-          console.log(data)
-          if (data.data && data.data.code == 0) {
-            this.dataForm.donator = data.data.donator.companyName;
-          }
-        });
-      },
-
-      //协议号发生变化   汇款单位变化
-      getDonateor(id) {
-        this.$http({
-          url: this.$http.adornUrl(`/project/donateamount/donateName/` + id),
-          method: 'get'
-        }).then((data) => {
-          console.log(data)
-          if (data.data && data.data.code == 0) {
-            this.dataForm.donator = data.data.donator.companyName;
-          }
-        });
-      },
-
-
       // 表单提交
       dataFormSubmit() {
         this.$refs['dataForm'].validate((valid) => {
@@ -240,7 +215,7 @@
                 name: this.dataForm.name,
                 vendor: this.dataForm.vendor,
                 no: this.dataForm.no,
-                productDate: this.dataForm.id,
+                productDate: this.dataForm.productDate,
                 detail: [{
                   color: this.dataForm.color,
                   collectType: this.dataForm.collecType,
@@ -263,8 +238,6 @@
                 this.$message.error(data.msg)
               }
             })
-
-
           }
         })
       },

@@ -250,7 +250,7 @@
       // 新增 / 修改
       addOrUpdateHandle(id) {
         this.addOrUpdateVisible = true
-        //加载typeSelect
+        // 加载typeSelect
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
         })
@@ -266,7 +266,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/project/base/delete'),
+            url: this.$http.adornUrl('/collect/equipment/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({ data }) => {

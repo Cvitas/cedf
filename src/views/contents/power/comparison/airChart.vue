@@ -83,44 +83,47 @@
         }
         this.clernChart()
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/${this.form.type.value}/${this.form.value[0]}/${this.form.value[1]}`),
-          method: 'get'
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/yql/${this.form.value[0]}/${this.form.value[1]}`),
+          method: 'get',
+          params: { collectType: this.form.type.value }
         }).then((data) => {
           if (data != null && data.data.code === 0) {
-            const res = data.data.data
+            const res = data.data
+            let legend = []
+            const chartData = res.data.map(item => {
+              legend.push(item.name)
+              return { value: item.data, name: item.name }
+            })
+            this.chart = echarts.init(this.$refs['chart'], 'default')
+            let pie = {
+              tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c}' + res.unitName + ' ({d}%)'
+              },
+              legend: {
+                left: 'center',
+                bottom: '10',
+                data: legend
+              },
+              calculable: true,
+              series: [
+                {
+                  name: '分布图',
+                  type: 'pie',
+                  center: ['50%', '45%'],
+                  data: chartData,
+                  animationEasing: 'cubicInOut',
+                  animationDuration: 1000
+                }
+              ]
+            }
+            this.chart.setOption(pie)
           }
         })
-        this.chart = echarts.init(this.$refs['chart'], 'default')
-        let pie = {
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            left: 'center',
-            bottom: '10',
-            data: this.typesItems[this.form.type.value].legend
-          },
-          calculable: true,
-          series: [
-            {
-              name: '分布图',
-              type: 'pie',
-              center: ['50%', '45%'],
-              data: [
-                { value: 300 + Math.random() * 320, name: this.typesItems[this.form.type.value].legend[0] },
-                { value: Math.random() * 240, name: this.typesItems[this.form.type.value].legend[1] },
-              ],
-              animationEasing: 'cubicInOut',
-              animationDuration: 1000
-            }
-          ]
-        }
-        this.chart.setOption(pie)
       },
       drawChart() {
         this.initChart()
-      },
+      }
     }
   }
 </script>

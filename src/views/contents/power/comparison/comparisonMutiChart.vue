@@ -96,22 +96,42 @@
         this.clernChart()
         this.$http({
           url: this.$http.adornUrl(`/collect/collecstatis//comparisonmutichart/xthb/${this.form.value.value}/${this.form.type}`),
-          method: 'get',
+          method: 'get'
         }).then((data) => {
           if (data != null && data.data.code === 0) {
-            const res = data.data.data
+            const res = data.data
+            const currentData = res.currentData || {}
+            const lastData = res.lastData || {}
+            if (this.form.value.value === 2) {
+              const chartData = [{ value: currentData.data, name: currentData.name },
+                { value: lastData.data, name: lastData.name }]
+              this.drawPie({ data: chartData, unitName: res.unitName })
+            } else {
+              const chartData = [{
+                data: [currentData.data, lastData.data],
+                type: 'bar',
+                name: '数据',
+                barWidth: '60%'
+              }]
+              this.drawBar({
+                data: chartData,
+                unitName: res.unitName,
+                xAxis: [currentData.name, lastData.name]
+              })
+            }
           }
         })
-        this.chart = echarts.init(this.$refs['chart'], 'default')
+      },
+      drawPie(chartData) {
         let pie = {
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
+            formatter: '{a} <br/>{b}: {c}' + chartData.unitName + ' ({d}%)'
           },
           legend: {
             left: 'center',
             bottom: '10',
-            data: this.form.value.name
+            data: 'dsadsa'
           },
           calculable: true,
           series: [
@@ -119,16 +139,18 @@
               name: '分布图',
               type: 'pie',
               center: ['50%', '45%'],
-              data: [
-                { value: 300 + Math.random() * 320, name: this.form.value.name[0] },
-                { value: Math.random() * 240, name: this.form.value.name[1] },
-              ],
+              data: chartData.data,
               animationEasing: 'cubicInOut',
               animationDuration: 1000
             }
           ]
         }
+        this.chart = echarts.init(this.$refs['chart'], 'default')
+        this.chart.setOption(pie)
+      },
+      drawBar(chartData) {
         let bar = {
+          color: ['#3398DB'],
           tooltip: {
             trigger: 'axis',
             axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -142,45 +164,24 @@
             bottom: '3%',
             containLabel: true
           },
-          legend: {
-            left: 'center',
-            bottom: '10',
-            data: [this.form.type, ...this.typesItems[this.form.type].legend]
-          },
           xAxis: [{
             type: 'category',
-            data: ["2018", "2019"],
+            data: chartData.xAxis,
             axisTick: {
               alignWithLabel: true
             }
           }],
           yAxis: [{
             type: 'value',
-            name: '气量/m2',
+            name: chartData.unitName,
             axisTick: {
               show: false
             }
           }],
-          series: [
-            {
-              name: this.form.type,
-              type: 'bar',
-              barGap: 0,
-              data: [Math.random() * 53280, Math.random() * 42180],
-            },
-            {
-              name: this.typesItems[this.form.type].legend[0],
-              type: 'bar',
-              data: [Math.random() * 53280, Math.random() * 42180],
-            },
-            {
-              name: this.typesItems[this.form.type].legend[1],
-              type: 'bar',
-              data: [Math.random() * 53280, Math.random() * 42180],
-            },
-          ]
+          series: chartData.data
         }
-        this.chart.setOption(this.form.value.value !== 1 ? pie : bar)
+        this.chart = echarts.init(this.$refs['chart'], 'default')
+        this.chart.setOption(bar)
       },
       drawChart() {
         this.initChart()
