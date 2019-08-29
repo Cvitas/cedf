@@ -28,6 +28,7 @@
     "html2canvas": "^1.0.0-rc.3",
     "jspdf": "^1.5.3",
     "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "sass-loader": "6.0.6",
     "svg-sprite-loader": "3.7.3",
     "vcolorpicker": "^0.1.8",

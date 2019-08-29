@@ -1,18 +1,18 @@
 <template>
   <div class="mod-role">
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+    <el-form :inline="true" @keyup.enter.native="getDataList()">
       <el-form-item label="选择时间">
         <el-row>
-          <el-button type="primary">当天</el-button>
-          <el-button type="primary">本周</el-button>
-          <el-button type="primary">本月</el-button>
-          <el-button type="primary">本年</el-button>
+          <el-button :type="dateType ==1?'success':'primary'" @click="changeDateType(1)">当天</el-button>
+          <el-button :type="dateType ==2?'success':'primary'" @click="changeDateType(2)">本周</el-button>
+          <el-button :type="dateType ==3?'success':'primary'" @click="changeDateType(3)">本月</el-button>
+          <el-button :type="dateType ==4?'success':'primary'" @click="changeDateType(4)">本年</el-button>
         </el-row>
       </el-form-item>
 
       <el-form-item label="">
         <el-date-picker
-          v-model="value4"
+          v-model="value"
           type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
@@ -29,81 +29,21 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
       style="width: 100%;">
-
-
-        <el-table-column
-          prop="id"
-          header-align="center"
-          align="center"
-          width="80"
-          visible="false"
-          v-if="false"
-          label="ID">
-        </el-table-column>
-        <el-table-column
-          prop="dbsj"
-          header-align="center"
-          align="center"
-          label="">
-        </el-table-column>
-        <el-table-column
-          prop="lxj"
-          header-align="center"
-          align="center"
-          label="离心机">
-        </el-table-column>
-        <el-table-column
-          prop="luogan_1"
-          header-align="center"
-          align="center"
-          label="1#螺杆机">
-        </el-table-column>
-        <el-table-column
-          prop="luogan_2"
-          header-align="center"
-          align="center"
-          label="2#螺杆机">
-        </el-table-column>
-        <el-table-column
-          prop="luogan_3"
-          header-align="center"
-          align="center"
-          label="3#螺杆机">
-        </el-table-column>
-        <el-table-column
-          prop="luogan_4"
-          header-align="center"
-          align="center"
-          label="4#螺杆机">
-        </el-table-column>
-        <el-table-column
-          prop="luogan_5"
-          header-align="center"
-          align="center"
-          label="5#螺杆机">
-        </el-table-column>
-        <el-table-column
-          prop="kongya_2"
-          header-align="center"
-          align="center"
-          label="2#仪表气空压机">
-        </el-table-column>
-        <el-table-column
-          prop="kongya_3"
-          header-align="center"
-          align="center"
-          label="3#仪表气空压机">
-        </el-table-column>
-        <el-table-column
-          prop="kongya_4"
-          header-align="center"
-          align="center"
-          label="4#仪表气空压机">
-        </el-table-column>
-
-
+      <el-table-column
+        header-align="center"
+        align="center"
+        width="150"
+        label="记录时间">
+        <template slot-scope="scope">{{spans[scope.$index]}}</template>
+      </el-table-column>
+      <el-table-column
+        v-for="(item,index) in dataList"
+        header-align="center"
+        align="center"
+        :label="item.name">
+        <template slot-scope="scope">{{dataList[index][spansProtype[scope.$index]]}}</template>
+      </el-table-column>
     </el-table>
 
   </div>
@@ -112,318 +52,166 @@
 <style>
   .el-row {
     margin-bottom: 20px;
-  &:last-child {
-     margin-bottom: 0;
-   }
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+
   }
   .el-col {
     border-radius: 4px;
   }
+
   .bg-purple-dark {
     /** background: #99a9bf; */
   }
+
   .bg-purple {
     /** background: #d3dce6; */
   }
+
   .bg-purple-light {
     background: #e5e9f2;
   }
+
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
   }
+
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
   }
-  .chart-container{
+
+  .chart-container {
     position: relative;
-    padding:20px;
+    padding: 20px;
     width: 100%;
-    height:300px;
+    height: 300px;
   }
 </style>
 
 <script>
+  import moment from 'moment'
   import { validateDate } from '@/utils/validate'
   import { getFinaceAmount } from '@/utils'
-  import daypowerChart from '@/components/Charts/daypower'
-  import monthlyairChart from '@/components/Charts/monthlyairtout'
+
   export default {
-    data () {
+    name: 'daypowerChart1',
+    data() {
       return {
-
-        value2: new Date(2016, 9, 10, 18, 40),
-        value3: new Date(2016, 9, 10, 18, 40),
-        value1: '',
-        input1: ' 累计 300kwh',
-        startTime:'',
-        endTime: '',
-        activeName: 'first',
-        value4: [new Date(2018, 11, 1, 0, 0), new Date(2018, 11, 31, 23, 59)],
-
-        dataForm: {
-          equipName: '',
-          donatorName: '',
-          receiverName: '',
-          projectType: '',
-          startDate: '',
-          endDate: '',
-          value5:'',
-          equipTime:'',
-          airName:'',
-          lxj:'',
-          luogan_1:'',
-          luogan_2:'',
-          luogan_3:'',
-          luogan_4:'',
-          luogan_5:'',
-          kongya_2:'',
-          kongya_3:'',
-          kongya_4:'',
-          recordTime:''
-        },
-        projectTypes: [],
+        value: [],
+        dateType: 3,
         dataList: [],
-        pageIndex: 1,
-        pageSize: 20,
-        totalPage: 0,
-        firstVisible:true,
-        secondVisible:false,
+        secondVisible: false,
         dataListLoading: false,
-        dataListSelections: [],
-        addOrUpdateVisible: false,
-        uploadVisible: false
+        spans: ['用气', '用电', '比例'],
+        spansProtype: ['data', 'powerData', 'rate'],
       }
-
-      name: 'daypowerChart1'
     },
-    components: {
-      // daypowerChart
-      monthlyairChart
-    },
-    activated () {
+    components: {},
+    activated() {
       this.getDataList()
     },
     methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
-        if (tab.name === 'first') {
-          // firstVisible = true;
-          //secondVisible = false;
-          activeName: 'first'
-        } else {
-          //secondVisible = true;
-          // firstVisible = false;
-          activeName: 'second'
+      getCountDays() {
+        var curDate = new Date()
+        /* 获取当前月份 */
+        var curMonth = curDate.getMonth()
+        curDate.setMonth(curMonth + 1)
+        /* 将日期设置为0, 这里为什么要这样设置, 我不知道原因, 这是从网上学来的 */
+        curDate.setDate(0)
+        /* 返回当月的天数 */
+        return curDate.getDate()
+      },
+      changeDateType(index) {
+        this.dateType = index
+        let date = new Date()
+        switch (this.dateType) {
+          case 1:
+            this.value = [new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0), new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)]
+            break
+          case 2:
+            this.value = [new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7, 23, 59, 59)]
+            break
+          case 3:
+            this.value = [new Date(date.getFullYear(), date.getMonth(), 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), this.getCountDays(), 23, 59, 59)]
+            break
+          case 4:
+            this.value = [new Date(date.getFullYear(), 0, 1, 0, 0), new Date(date.getFullYear(), 11, 31, 23, 59, 59)]
+            break
         }
-      },
 
-      getSummaries(param) {
-        const { columns, data } = param;
-        const sums = [];
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = '平均值 (kwh/m³)';
-            return;
-          }
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            let countValue = 0 ;
-            sums[index] = values.reduce((prev, curr) => {
-              let value = Number(curr);
-              countValue = countValue +1;
-              if (!isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev;
-              }
-            }, 0);
-            sums[index] = sums[index]/countValue ;
-          } else {
-            sums[index] = '';
-          }
-          if (index === 5 ) {
-            sums[5] =  sums[2] /  sums[3] *  sums[4]   ;
-          }
-        });
-        return sums;
+        this.initTypeSelect()
       },
-
-      initTypeSelect () {
+      initTypeSelect() {
         this.$http({
           url: this.$http.adornUrl('/project/base/typeSelect'),
           method: 'get',
           params: this.$http.adornParams()
-        }).then(({data}) => {
+        }).then(({ data }) => {
           this.projectTypes = data && data.code === 0 ? data.list : []
         })
       },
       // 获取数据列表
-      getDataList () {
+      getDataList() {
         this.dataListLoading = true
-
+        const startDate = moment(this.value[0]).format('YYYY-MM-DD')
+        const endDate = moment(this.value[1]).format('YYYY-MM-DD')
         this.$http({
-          url: this.$http.adornUrl('/project/base/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'projectNo': this.dataForm.projectNo,
-            'donatorName': this.dataForm.donatorName,
-            'receiverName': this.dataForm.receiverName,
-            'projectType': this.dataForm.projectType,
-            'startDate': this.dataForm.startDate,
-            'endDate': this.dataForm.endDate,
-            'sidx': 'projectNo',
-            'order': 'DESC'
-          })
-        }).then(({data}) => {
-
-
-          // if (data && data.code === 0) {
-          //   this.dataList = data.page.list
-          //   this.totalPage = data.page.totalCount
-          // } else {
-          //   this.dataList = []
-          //   this.totalPage = 0
-          // }
-
-          this.dataList = [{
-            id:1,
-            lxj:'2019.1.6 18:00',
-            dbsj:'',
-            luogan_1:'2019.1.6 18:00',
-            luogan_2:'2019.1.6 18:00',
-            luogan_3:'2019.1.6 18:00',
-            luogan_4:'2019.1.6 18:00',
-            luogan_5:'2019.1.6 18:00',
-            kongya_2:'2019.1.6 18:00',
-            kongya_3:'2019.1.6 18:00',
-            kongya_4:'2019.1.6 18:00',
-            recordTime:'2019-3-1 08:12:20'
-          },
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/airPowerRate/${startDate}/${endDate}`),
+          method: 'get'
+        }).then(({ data }) => {
+          this.dataListLoading = false
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+          } else {
+          }
+        }).catch(() => {
+          this.dataListLoading = false
+        })
+        const data = {
+          "msg": "success",
+          "code": 0,
+          "data": [
             {
-              id:1,
-              dbsj:'',
-              lxj:'2019.2.3 18:00',
-              luogan_1:'2019.2.3 18:00',
-              luogan_2:'2019.2.3 18:00',
-              luogan_3:'2019.2.3 18:00',
-              luogan_4:'2019.2.3 18:00',
-              luogan_5:'2019.2.3 18:00',
-              kongya_2:'2019.2.3 18:00',
-              kongya_3:'2019.2.3 18:00',
-              kongya_4:'2019.2.3 18:00',
-              recordTime:'2019-3-1 08:12:50'
+              "name": "设备1",
+              "data": "1001",
+              "powerData": "2200",
+              "rate": "0.54"
             },
             {
-              id:1,
-              dbsj:'气电比%',
-              lxj:'0.5',
-              luogan_1:'0.23',
-              luogan_2:'0.52',
-              luogan_3:'0.41',
-              luogan_4:'0.32',
-              luogan_5:'0.21',
-              kongya_2:'0.15',
-              kongya_3:'0.31',
-              kongya_4:'0.14',
-              recordTime:'2019-3-1 08:13:20'
-            }];
-          this.totalPage = 4;
-          this.dataListLoading = false
-          this.dataListLoading = false
-        })
-      },
-      // 每页数
-      sizeChangeHandle (val) {
-        this.pageSize = val
-        this.pageIndex = 1
-        this.getDataList()
-      },
-      // 当前页
-      currentChangeHandle (val) {
-        this.pageIndex = val
-        this.getDataList()
-      },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
-      },
-      // 新增 / 修改
-      addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        //加载typeSelect
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
-        })
-      },
-      // 删除
-      deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.id
-        })
-        this.$confirm(`确定要删除此条数据吗？删除后将把相关数据一并删除`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/project/base/delete'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
+              "name": "设备2",
+              "data": "2001",
+              "powerData": "2030",
+              "rate": "0.58"
+            },
+            {
+              "name": "设备3",
+              "data": "1003",
+              "powerData": "2400",
+              "rate": "0.51"
             }
-          })
-        })
-      },
 
-      getValue() {
-        return this.dataForm.type
-      },// 上传文件
-      importHandle () {
-        this.uploadVisible = true;
-        this.$nextTick(() => {
-          this.$refs.upload.init()
-        })
+          ]
+        }
+        if (data && data.code === 0) {
+          this.dataList = data.data
+        } else {
+          this.dataList = []
+        }
+        this.dataListLoading = false
       },
-
       downloadTemplateHandle() {
         var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
-        window.open(url);
-      },
-      finaceAmountFormat(row, column, cellValue, index) {
-        return getFinaceAmount(cellValue);
-      },
-
-      showReceivers(receiveId) {
-        this.receiverVisible = true
-        this.$nextTick(() => {
-          this.visible = true
-          this.$refs.receiverDetailModal.init(receiveId)
-        })
-      },
-      showDonator (donatorId) {
-        this.donatorVisible = true
-        this.$nextTick(() => {
-          this.visible = true
-          this.$refs.donatorDetailModal.init(donatorId)
-        })
+        window.open(url)
       }
     },
-    mounted(){
+    mounted() {
+      let date = new Date()
+      this.value = [new Date(date.getFullYear(), date.getMonth(), 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), this.getCountDays(), 23, 59, 59)]
       this.initTypeSelect()
     }
   }

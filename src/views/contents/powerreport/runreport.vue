@@ -13,7 +13,6 @@
       <el-form-item label="">
         <el-date-picker
           v-model="value"
-          value-format="yyyy-MM-dd"
           type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
@@ -30,79 +29,21 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
       style="width: 100%;">
-
       <el-table-column
-        prop="id"
+        v-for="(item,index) in dataList[0].data"
         header-align="center"
         align="center"
-        width="80"
-        visible="false"
-        v-if="false"
-        label="ID">
+        :label="item.name+'('+unitName+')'">
+        <template slot-scope="scope">{{scope.row.data[index].data}}</template>
       </el-table-column>
       <el-table-column
-        prop="lxj"
+        prop="date"
         header-align="center"
         align="center"
-        label="离心机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="luogan_1"
-        header-align="center"
-        align="center"
-        label="1#螺杆机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="luogan_2"
-        header-align="center"
-        align="center"
-        label="2#螺杆机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="luogan_3"
-        header-align="center"
-        align="center"
-        label="3#螺杆机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="luogan_4"
-        header-align="center"
-        align="center"
-        label="4#螺杆机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="luogan_5"
-        header-align="center"
-        align="center"
-        label="5#螺杆机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="kongya_2"
-        header-align="center"
-        align="center"
-        label="2#仪表气空压机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="kongya_3"
-        header-align="center"
-        align="center"
-        label="3#仪表气空压机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="kongya_4"
-        header-align="center"
-        align="center"
-        label="4#仪表气空压机(kW·h)">
-      </el-table-column>
-      <el-table-column
-        prop="recordTime"
-        header-align="center"
-        align="center"
+        width="150"
         label="记录时间">
       </el-table-column>
-
     </el-table>
 
   </div>
@@ -153,6 +94,7 @@
 </style>
 
 <script>
+  import moment from 'moment'
   import { validateDate } from '@/utils/validate'
   import { getFinaceAmount } from '@/utils'
 
@@ -160,18 +102,12 @@
     name: 'daypowerChart1',
     data() {
       return {
-        value: [new Date(2018, 11, 1, 0, 0), new Date(2018, 11, 31, 23, 59)],
+        value: [],
+        unitName: '',
         dateType: 3,
         dataList: [],
-        pageIndex: 1,
-        pageSize: 20,
-        totalPage: 0,
-        firstVisible: true,
         secondVisible: false,
         dataListLoading: false,
-        dataListSelections: [],
-        addOrUpdateVisible: false,
-        uploadVisible: false
       }
     },
     components: {},
@@ -221,75 +157,77 @@
       // 获取数据列表
       getDataList() {
         this.dataListLoading = true
+        const startDate = moment(this.value[0]).format('YYYY-MM-DD')
+        const endDate = moment(this.value[1]).format('YYYY-MM-DD')
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/airData/${this.value[0]}/${this.value[1]}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/airData/${startDate}/${endDate}`),
           method: 'get'
         }).then(({ data }) => {
           this.dataListLoading = false
           if (data && data.code === 0) {
             this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
           } else {
             this.dataList = []
-            this.totalPage = 0
           }
-          //
-          // this.dataList = [{
-          //   id: 1,
-          //   lxj: '21',
-          //   luogan_1: '20',
-          //   luogan_2: '10',
-          //   luogan_3: '15',
-          //   luogan_4: '13.5',
-          //   luogan_5: '12',
-          //   kongya_2: '11',
-          //   kongya_3: '9',
-          //   kongya_4: '10',
-          //   recordTime: '2019-3-1 08:12:20'
-          // },
-          //   {
-          //     id: 1,
-          //     lxj: '22',
-          //     luogan_1: '25',
-          //     luogan_2: '12',
-          //     luogan_3: '16',
-          //     luogan_4: '15',
-          //     luogan_5: '13',
-          //     kongya_2: '13',
-          //     kongya_3: '12',
-          //     kongya_4: '11',
-          //     recordTime: '2019-3-1 08:12:50'
-          //   },
-          //   {
-          //     id: 1,
-          //     lxj: '23',
-          //     luogan_1: '27',
-          //     luogan_2: '14',
-          //     luogan_3: '17',
-          //     luogan_4: '17',
-          //     luogan_5: '15',
-          //     kongya_2: '15',
-          //     kongya_3: '15',
-          //     kongya_4: '13',
-          //     recordTime: '2019-3-1 08:13:20'
-          //   },
-          //   {
-          //     id: 1,
-          //     lxj: '25',
-          //     luogan_1: '30',
-          //     luogan_2: '16',
-          //     luogan_3: '19',
-          //     luogan_4: '19',
-          //     luogan_5: '17',
-          //     kongya_2: '17',
-          //     kongya_3: '17',
-          //     kongya_4: '15',
-          //     recordTime: '2019-3-1 08:13:50'
-          //
-          //   }];
         }).catch(() => {
           this.dataListLoading = false
         })
+        const data = {
+          "msg": "success",
+          "code": 0,
+          "unitName": "平方米/m3",
+          "data": [
+            {
+              "date": "2019-05-02",
+              "data": [
+                {
+                  "name": "设备1",
+                  "data": "400.25"
+                },
+                {
+                  "name": "设备2",
+                  "data": "400.25"
+                },
+                {
+                  "name": "设备3",
+                  "data": "400.25"
+                },
+                {
+                  "name": "设备4",
+                  "data": "400.25"
+                }
+              ]
+            },
+            {
+              "date": "2019-05-01",
+              "data": [
+                {
+                  "name": "设备1",
+                  "data": "4020.25"
+                },
+                {
+                  "name": "设备2",
+                  "data": "400.25"
+                },
+                {
+                  "name": "设备3",
+                  "data": "400.25"
+                },
+                {
+                  "name": "设备4",
+                  "data": "400.25"
+                }
+              ]
+            }
+
+          ]
+        }
+        if (data && data.code === 0) {
+          this.dataList = data.data
+          this.unitName = data.unitName
+        } else {
+          this.dataList = []
+        }
       },
       downloadTemplateHandle() {
         var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
