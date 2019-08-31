@@ -54,7 +54,6 @@
 <script>
   import echarts from 'echarts'
 
-  const animationDuration = 6000
   export default {
     name: "comparisonChart",
     props: {

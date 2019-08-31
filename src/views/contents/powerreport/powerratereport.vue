@@ -31,6 +31,7 @@
       v-loading="dataListLoading"
       style="width: 100%;">
       <el-table-column
+        v-if="dataList.length"
         header-align="center"
         align="center"
         width="150"
@@ -39,6 +40,7 @@
       </el-table-column>
       <el-table-column
         v-for="(item,index) in dataList"
+        :key="index"
         header-align="center"
         align="center"
         :label="item.name">
@@ -95,12 +97,10 @@
 
 <script>
   import moment from 'moment'
-  import { validateDate } from '@/utils/validate'
-  import { getFinaceAmount } from '@/utils'
 
   export default {
     name: 'daypowerChart1',
-    data() {
+    data () {
       return {
         value: [],
         dateType: 3,
@@ -112,11 +112,11 @@
       }
     },
     components: {},
-    activated() {
+    activated () {
       this.getDataList()
     },
     methods: {
-      getCountDays() {
+      getCountDays () {
         var curDate = new Date()
         /* 获取当前月份 */
         var curMonth = curDate.getMonth()
@@ -126,7 +126,7 @@
         /* 返回当月的天数 */
         return curDate.getDate()
       },
-      changeDateType(index) {
+      changeDateType (index) {
         this.dateType = index
         let date = new Date()
         switch (this.dateType) {
@@ -143,76 +143,35 @@
             this.value = [new Date(date.getFullYear(), 0, 1, 0, 0), new Date(date.getFullYear(), 11, 31, 23, 59, 59)]
             break
         }
-
-        this.initTypeSelect()
-      },
-      initTypeSelect() {
-        this.$http({
-          url: this.$http.adornUrl('/project/base/typeSelect'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({ data }) => {
-          this.projectTypes = data && data.code === 0 ? data.list : []
-        })
       },
       // 获取数据列表
-      getDataList() {
+      getDataList () {
         this.dataListLoading = true
         const startDate = moment(this.value[0]).format('YYYY-MM-DD')
         const endDate = moment(this.value[1]).format('YYYY-MM-DD')
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/airPowerRate/${startDate}/${endDate}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/airPowerRate/4/${startDate}/${endDate}`),
           method: 'get'
-        }).then(({ data }) => {
+        }).then(({data}) => {
           this.dataListLoading = false
           if (data && data.code === 0) {
-            this.dataList = data.page.list
+            this.dataList = data.data
           } else {
+            this.dataList = []
           }
         }).catch(() => {
           this.dataListLoading = false
         })
-        const data = {
-          "msg": "success",
-          "code": 0,
-          "data": [
-            {
-              "name": "设备1",
-              "data": "1001",
-              "powerData": "2200",
-              "rate": "0.54"
-            },
-            {
-              "name": "设备2",
-              "data": "2001",
-              "powerData": "2030",
-              "rate": "0.58"
-            },
-            {
-              "name": "设备3",
-              "data": "1003",
-              "powerData": "2400",
-              "rate": "0.51"
-            }
-
-          ]
-        }
-        if (data && data.code === 0) {
-          this.dataList = data.data
-        } else {
-          this.dataList = []
-        }
         this.dataListLoading = false
       },
-      downloadTemplateHandle() {
-        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
+      downloadTemplateHandle () {
+        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`)
         window.open(url)
       }
     },
-    mounted() {
+    mounted () {
       let date = new Date()
       this.value = [new Date(date.getFullYear(), date.getMonth(), 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), this.getCountDays(), 23, 59, 59)]
-      this.initTypeSelect()
     }
   }
 </script>

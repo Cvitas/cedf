@@ -143,46 +143,49 @@
           this.pageSize = 10
           this.pageIndex = 1
         }
-        this.dataListLoading = true
-        this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pressData/${this.dataForm.startDate}/${this.dataForm.endDate}`),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'projectName': this.dataForm.projectName,
-            'startDate': this.dataForm.startDate,
-            'endDate': this.dataForm.endDate
+        if (this.dataForm.startDate && this.dataForm.endDate) {
+          this.dataListLoading = true
+          this.$http({
+            url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pressData/${this.dataForm.startDate}/${this.dataForm.endDate}`),
+            method: 'get',
+            params: this.$http.adornParams({
+              'page': this.pageIndex,
+              'limit': this.pageSize,
+              'projectName': this.dataForm.projectName,
+              'startDate': this.dataForm.startDate,
+              'endDate': this.dataForm.endDate
+            })
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.firstSearch = false
+              var arrayObject = data.page.listData
+              this.dataForm.totalDonateAmount = '0'
+              this.dataForm.totalDonateCashAmount = '0'
+              this.dataForm.totalDonateMaterialAmount = '0'
+              this.dataForm.totalBalanceAmount = '0'
+              this.dataList = []
+              this.totalPage = 0
+
+              if (arrayObject != null) {
+                this.dataForm.totalDonateAmount = (arrayObject.totalDonateAmount == null ? 0 : arrayObject.totalDonateAmount)
+                this.dataForm.totalDonateCashAmount = (arrayObject.totalDonateCashAmount == null ? 0 : arrayObject.totalDonateCashAmount)
+                this.dataForm.totalDonateMaterialAmount = (arrayObject.totalDonateMaterialAmount == null ? 0 : arrayObject.totalDonateMaterialAmount)
+                this.dataForm.totalBalanceAmount = (arrayObject.totalBalanceAmount == null ? 0 : arrayObject.totalBalanceAmount)
+              }
+
+              if (data.page != null && data.page.page != null) {
+                this.dataList = data.page.page.list
+                this.totalPage = data.page.page.totalCount
+              }
+            } else {
+              this.dataList = []
+              this.totalPage = 0
+            }
+            this.dataListLoading = false
           })
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            this.firstSearch = false
-            var arrayObject = data.page.listData
-            this.dataForm.totalDonateAmount = '0'
-            this.dataForm.totalDonateCashAmount = '0'
-            this.dataForm.totalDonateMaterialAmount = '0'
-            this.dataForm.totalBalanceAmount = '0'
-            this.dataList = []
-            this.totalPage = 0
-
-            if (arrayObject != null) {
-              this.dataForm.totalDonateAmount = (arrayObject.totalDonateAmount == null ? 0 : arrayObject.totalDonateAmount)
-              this.dataForm.totalDonateCashAmount = (arrayObject.totalDonateCashAmount == null ? 0 : arrayObject.totalDonateCashAmount)
-              this.dataForm.totalDonateMaterialAmount = (arrayObject.totalDonateMaterialAmount == null ? 0 : arrayObject.totalDonateMaterialAmount)
-              this.dataForm.totalBalanceAmount = (arrayObject.totalBalanceAmount == null ? 0 : arrayObject.totalBalanceAmount)
-            }
-
-            if (data.page != null && data.page.page != null) {
-              this.dataList = data.page.page.list
-              this.totalPage = data.page.page.totalCount
-            }
-
-          } else {
-            this.dataList = []
-            this.totalPage = 0
-          }
-          this.dataListLoading = false
-        })
+        } else {
+          this.$message('请选择要查询的日期')
+        }
       },
 
       // 获取数据列表
@@ -205,7 +208,7 @@
             'startDate': this.dataForm.startDate,
             'endDate': this.dataForm.endDate
           })
-        }).then(({ data }) => {
+        }).then(({data}) => {
           if (data && data.code === 0) {
             this.firstSearch = false
             var arrayObject = data.page.listData

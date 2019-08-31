@@ -31,13 +31,15 @@
       v-loading="dataListLoading"
       style="width: 100%;">
       <el-table-column
-        v-for="(item,index) in dataList[0].data"
+        v-for="(item,index) in dataList.length?dataList[0].data:[]"
+        :key="index"
         header-align="center"
         align="center"
         :label="item.name+'('+unitName+')'">
         <template slot-scope="scope">{{scope.row.data[index].data}}</template>
       </el-table-column>
       <el-table-column
+        v-if="dataList.length"
         prop="date"
         header-align="center"
         align="center"
@@ -95,12 +97,10 @@
 
 <script>
   import moment from 'moment'
-  import { validateDate } from '@/utils/validate'
-  import { getFinaceAmount } from '@/utils'
 
   export default {
     name: 'daypowerChart1',
-    data() {
+    data () {
       return {
         value: [],
         unitName: '',
@@ -111,11 +111,11 @@
       }
     },
     components: {},
-    activated() {
+    activated () {
       this.getDataList()
     },
     methods: {
-      getCountDays() {
+      getCountDays () {
         var curDate = new Date()
         /* 获取当前月份 */
         var curMonth = curDate.getMonth()
@@ -125,7 +125,7 @@
         /* 返回当月的天数 */
         return curDate.getDate()
       },
-      changeDateType(index) {
+      changeDateType (index) {
         this.dateType = index
         let date = new Date()
         switch (this.dateType) {
@@ -142,102 +142,35 @@
             this.value = [new Date(date.getFullYear(), 0, 1, 0, 0), new Date(date.getFullYear(), 11, 31, 23, 59, 59)]
             break
         }
-
-        this.initTypeSelect()
-      },
-      initTypeSelect() {
-        this.$http({
-          url: this.$http.adornUrl('/project/base/typeSelect'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({ data }) => {
-          this.projectTypes = data && data.code === 0 ? data.list : []
-        })
       },
       // 获取数据列表
-      getDataList() {
+      getDataList () {
         this.dataListLoading = true
         const startDate = moment(this.value[0]).format('YYYY-MM-DD')
         const endDate = moment(this.value[1]).format('YYYY-MM-DD')
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/powerData/${startDate}/${endDate}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/powerData/4/${startDate}/${endDate}`),
           method: 'get'
-        }).then(({ data }) => {
+        }).then(({data}) => {
           this.dataListLoading = false
           if (data && data.code === 0) {
-            this.dataList = data.page.list
+            this.dataList = data.data
+            this.unitName = data.unitName
           } else {
             this.dataList = []
           }
         }).catch(() => {
           this.dataListLoading = false
         })
-        const data = {
-          "msg": "success",
-          "code": 0,
-          "unitName": "平方米/m3",
-          "data": [
-            {
-              "date": "2019-05-02",
-              "data": [
-                {
-                  "name": "设备1",
-                  "data": "400.25"
-                },
-                {
-                  "name": "设备2",
-                  "data": "400.25"
-                },
-                {
-                  "name": "设备3",
-                  "data": "400.25"
-                },
-                {
-                  "name": "设备4",
-                  "data": "400.25"
-                }
-              ]
-            },
-            {
-              "date": "2019-05-01",
-              "data": [
-                {
-                  "name": "设备1",
-                  "data": "4020.25"
-                },
-                {
-                  "name": "设备2",
-                  "data": "400.25"
-                },
-                {
-                  "name": "设备3",
-                  "data": "400.25"
-                },
-                {
-                  "name": "设备4",
-                  "data": "400.25"
-                }
-              ]
-            }
-
-          ]
-        }
-        if (data && data.code === 0) {
-          this.dataList = data.data
-          this.unitName = data.unitName
-        } else {
-          this.dataList = []
-        }
       },
-      downloadTemplateHandle() {
-        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
+      downloadTemplateHandle () {
+        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`)
         window.open(url)
       }
     },
-    mounted() {
+    mounted () {
       let date = new Date()
       this.value = [new Date(date.getFullYear(), date.getMonth(), 1, 0, 0), new Date(date.getFullYear(), date.getMonth(), this.getCountDays(), 23, 59, 59)]
-      this.initTypeSelect()
     }
   }
 </script>
