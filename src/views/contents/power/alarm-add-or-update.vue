@@ -9,34 +9,52 @@
       <el-row>
         <el-col :span="14">
           <el-col :span="14">
-            <el-form-item label="提醒项：" prop="name">
-              <el-select v-model="dataForm.value" placeholder="请选择提醒项">
+            <el-form-item label="提醒项：" prop="tipsMsg">
+              <el-select v-model="dataForm.tipsMsg" placeholder="请选择提醒项">
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in collectTypes"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-col>
         <el-col :span="14">
-          <el-form-item label="最小值：" prop="minValue">
-            <el-input-number type="text" v-model.number="dataForm.minValue" placeholder="最小值"></el-input-number>
+          <el-form-item label="最小值：" prop="miniValue">
+            <el-input-number :min=0 type="text" v-model.number="dataForm.miniValue"
+                             placeholder="最小值"></el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="14">
           <el-form-item label="最大值：" prop="maxValue">
-            <el-input-number type="text" v-model.number="dataForm.maxValue" placeholder="最大值"></el-input-number>
+            <el-input-number :min="dataForm.miniValue" type="text" v-model.number="dataForm.maxValue"
+                             placeholder="最大值"></el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="14">
-          <el-form-item label="提醒频率：" prop="rate">
+          <el-form-item label="开始时间：" prop="startTime">
+            <el-date-picker
+              type="date" placeholder="开始日期"
+              v-model="dataForm.startTime"
+            ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="14">
+          <el-form-item label="结束时间：" prop="endTime">
+            <el-date-picker
+              type="date" placeholder="开始日期"
+              v-model="dataForm.endTime"
+            ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="14">
+          <el-form-item label="提醒频率：" prop="period">
             <label>每</label>
-            <el-input type="number" v-model.number="dataForm.rate" placeholder="提醒频率" style="width:250px">
+            <el-input type="number" min="0" v-model.number="dataForm.period" placeholder="提醒频率" style="width:250px">
               <template slot="append">
-                <el-select v-model="dataForm.unit" placeholder="时间单位" style="width: 70px">
+                <el-select v-model="dataForm.periodType" placeholder="时间单位" style="width: 70px">
                   <el-option
                     v-for="item in units"
                     :key="item.value"
@@ -46,7 +64,12 @@
                 </el-select>
               </template>
             </el-input>
-
+          </el-form-item>
+        </el-col>
+        <el-col :span="14">
+          <el-form-item label="状态：" prop="status">
+            <el-radio v-model="dataForm.status" label="1">启用</el-radio>
+            <el-radio v-model="dataForm.status" label="0">停用</el-radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -74,13 +97,15 @@
 </style>
 
 <script>
+  import moment from 'moment'
+
   export default {
-    data() {
+    data () {
       const validateDeliveryNo = function (rule, value, callback) {
-        if (!value > 0) {
+        if (value <= 0) {
           callback(new Error('提醒频率必须大于0'))
         } else {
-          callback();
+          callback()
         }
       }
       return {
@@ -88,25 +113,6 @@
         projects: [],
         color1: 'rgba(19, 206, 102, 0.8)',
         color: '#FF0000',
-        options: [{
-          value: '1',
-          label: '流量'
-        }, {
-          value: '2',
-          label: '湿度'
-        }, {
-          value: '3',
-          label: '压力'
-        }, {
-          value: '4',
-          label: '能耗'
-        }, {
-          value: '5',
-          label: '离心机故障'
-        }, {
-          value: '6',
-          label: '离心机比功率'
-        }],
         units: [{
           value: 0,
           label: '秒'
@@ -119,48 +125,92 @@
         }],
         dataForm: {
           id: 0,
-          name: '',
-          value: '1',
-          minValue: '',
-          maxValue: '',
-          rate: '',
-          unit: 0
+          tipsMsg: 1,
+          miniValue: 0,
+          maxValue: 0,
+          period: '',
+          startTime: '',
+          endTime: '',
+          periodType: 0,
+          status: '1',
         },
         dataRule: {
-          rate: [
-            { validator: validateDeliveryNo, trigger: 'blur' }
+          period: [
+            {validator: validateDeliveryNo, trigger: 'blur'}
+          ],
+          miniValue: [
+            {type: 'date', required: true, message: '请选择最小值', trigger: 'change'}
+          ],
+          maxValue: [
+            {type: 'date', required: true, message: '请选择最大值', trigger: 'change'}
+          ],
+          startTime: [
+            {type: 'date', required: true, message: '请选择开始日期', trigger: 'change'}
+          ],
+          endTime: [
+            {type: 'date', required: true, message: '请选择结束日期', trigger: 'change'}
           ],
         }
       }
     },
+    computed: {
+      collectTypes: {
+        get () {
+          return this.$store.state.device.collectTypes
+        }
+      }
+    },
     methods: {
-      toggle() {
+      toggle () {
         this.visible = !this.visible
       },
-      init(item) {
-        this.dataForm = { ...this.dataForm, ...item }
+      init (item) {
+        this.dataForm = {...this.dataForm, ...item}
       },
       // 表单提交
-      dataFormSubmit() {
+      dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            this.visible = false
-            this.$message('保存成功')
+            this.$http({
+              url: this.$http.adornUrl(`/collect/tips/${this.dataForm.id ? 'update' : 'save'}`),
+              method: 'post',
+              data: this.$http.adornParams({
+                tipsMsg: this.dataForm.tipsMsg,
+                value: this.dataForm.value,
+                miniValue: this.dataForm.miniValue,
+                maxValue: this.dataForm.id,
+                period: this.dataForm.period,
+                startTime: moment(this.dataForm.startTime).format('YYYY-MM-DD'),
+                endTime: moment(this.dataForm.endTime).format('YYYY-MM-DD'),
+                periodType: this.dataForm.periodType,
+                status: this.dataForm.status,
+              })
+            }).then(({data}) => {
+              this.visible = false
+              if (data && data.code === 0) {
+                this.$message('保存成功')
+              } else {
+                this.$message('保存失敗')
+              }
+            }).catch(() => {
+              this.visible = false
+            })
           } else {
 
           }
         })
       },
-      clearDataForm() {
+      clearDataForm () {
         this.dataForm = {
           id: 0,
-          name: '',
-          value: '1',
-          minValue: '',
-          maxValue: '',
-          rate: '',
-          unit: 0
-
+          tipsMsg: 1,
+          miniValue: 0,
+          maxValue: 0,
+          period: '',
+          startTime: '',
+          endTime: '',
+          periodType: 0,
+          status: '1',
         }
       }
     }

@@ -27,13 +27,13 @@
         label="ID">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="tipsMsg"
         header-align="center"
         align="center"
         label="提醒项">
       </el-table-column>
       <el-table-column
-        prop="minValue"
+        prop="miniValue"
         header-align="center"
         align="center"
         label="最小值">
@@ -49,7 +49,7 @@
         align="center"
         label="提醒频率">
         <template slot-scope="scope">
-          每{{scope.row.rate}}{{units[scope.row.unit]}}
+          每{{scope.row.period}}{{units[scope.row.period]}}
         </template>
       </el-table-column>
       <el-table-column
@@ -122,11 +122,9 @@
 
 <script>
   import AddOrUpdate from './alarm-add-or-update'
-  import { validateDate } from '@/utils/validate'
-  import { getFinaceAmount } from '@/utils'
 
   export default {
-    data() {
+    data () {
       return {
         dataForm: {
           name: '',
@@ -134,7 +132,6 @@
           maxValue: '',
           rate: '',
         },
-        projectTypes: [],
         dataList: [],
         pageIndex: 1,
         pageSize: 20,
@@ -143,156 +140,63 @@
         dataListSelections: [],
         addOrUpdateVisible: false,
         uploadVisible: false,
-        //弹框显示变量
-        donatorVisible: false,
-        receiverVisible: false,
-        pickerValidateStart: this.beginDate(),
-        pickerValidateEnd: this.processDate(),
-        units: { "0": '秒', "1": '分', "2": '时' }
+        units: {'0': '秒', '1': '分', '2': '时'}
       }
     },
     components: {
       AddOrUpdate
     },
-    activated() {
+    activated () {
       this.getDataList()
     },
     methods: {
-
-      beginDate() {
-        let self = this;
-        return {
-          disabledDate(time) {
-            if (time != null && time != '' && self.dataForm.endDate != null && self.dataForm.endDate != '') {
-              if (validateDate(time, new Date(self.dataForm.endDate))) {
-                return true;
-              }
-            }
-          }
-        }
-      },
-
-      processDate() {
-        let self = this;
-        return {
-
-          disabledDate(time) {
-            if (time != null && time != '' && self.dataForm.startDate != null && self.dataForm.startDate != '') {
-              if ((validateDate(new Date(self.dataForm.startDate), time))) {
-                return true;
-              }
-
-            }
-          }
-        }
-      },
-
-      initTypeSelect() {
-        this.$http({
-          url: this.$http.adornUrl('/project/base/typeSelect'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({ data }) => {
-          this.projectTypes = data && data.code === 0 ? data.list : []
-        })
-      },
       // 获取数据列表
-      getDataList() {
+      getDataList () {
         this.dataListLoading = true
 
         this.$http({
-          url: this.$http.adornUrl('/project/base/list'),
+          url: this.$http.adornUrl(`/collect/tips/list`),
           method: 'get',
           params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'projectNo': this.dataForm.projectNo,
-            'donatorName': this.dataForm.donatorName,
-            'receiverName': this.dataForm.receiverName,
-            'projectType': this.dataForm.projectType,
-            'startDate': this.dataForm.startDate,
-            'endDate': this.dataForm.endDate,
-            'sidx': 'projectNo',
-            'order': 'DESC'
+            page: this.pageIndex,
+            limit: this.pageSize,
+            collect_type: 1
           })
-        }).then(({ data }) => {
-
-
-          // if (data && data.code === 0) {
-          //   this.dataList = data.page.list
-          //   this.totalPage = data.page.totalCount
-          // } else {
-          //   this.dataList = []
-          //   this.totalPage = 0
-          // }
-
-          this.dataList = [{
-            id: 1,
-            name: '流量',
-            value: '1',
-            minValue: '100m³',
-            maxValue: '800m³',
-            rate: 60,
-            unit: 0,
-            status: 1,
-          }, {
-            id: 1,
-            name: '流量',
-            value: '1',
-            minValue: '100m³',
-            maxValue: '800m³',
-            rate: 60,
-            unit: 1,
-            status: 0,
-          }, {
-            id: 1,
-            name: '湿度',
-            value: '2',
-            minValue: '100m³',
-            maxValue: '800m³',
-            rate: 50,
-            unit: 0,
-            status: 2,
-          }, {
-            id: 1,
-            name: '流量',
-            value: '1',
-            minValue: '100m³',
-            maxValue: '800m³',
-            rate: 30,
-            unit: 1,
-            status: 1,
-          }];
-          this.totalPage = 4;
-          this.dataListLoading = false
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.data
+            this.totalPage = this.dataList.length
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
           this.dataListLoading = false
         })
       },
       // 每页数
-      sizeChangeHandle(val) {
+      sizeChangeHandle (val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle(val) {
+      currentChangeHandle (val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle(val) {
+      selectionChangeHandle (val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle(item) {
+      addOrUpdateHandle (item) {
         this.$refs.addOrUpdate.toggle()
-        //加载typeSelect
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(item)
         })
       },
       // 删除
-      deleteHandle(id) {
+      deleteHandle (id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.id
         })
@@ -305,7 +209,7 @@
             url: this.$http.adornUrl('/project/base/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
-          }).then(({ data }) => {
+          }).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',
@@ -321,44 +225,24 @@
           })
         })
       },
-      statusHandle(item) {
+      statusHandle (item) {
         item.status = !item.status
       },
-      getValue() {
+      getValue () {
         return this.dataForm.type
-      },// 上传文件
-      importHandle() {
-        this.uploadVisible = true;
+      }, // 上传文件
+      importHandle () {
+        this.uploadVisible = true
         this.$nextTick(() => {
           this.$refs.upload.init()
         })
       },
-
-      downloadTemplateHandle() {
-        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
-        window.open(url);
+      downloadTemplateHandle () {
+        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`)
+        window.open(url)
       },
-      finaceAmountFormat(row, column, cellValue, index) {
-        return getFinaceAmount(cellValue);
-      },
-
-      showReceivers(receiveId) {
-        this.receiverVisible = true
-        this.$nextTick(() => {
-          this.visible = true
-          this.$refs.receiverDetailModal.init(receiveId)
-        })
-      },
-      showDonator(donatorId) {
-        this.donatorVisible = true
-        this.$nextTick(() => {
-          this.visible = true
-          this.$refs.donatorDetailModal.init(donatorId)
-        })
-      }
     },
-    mounted() {
-      this.initTypeSelect()
+    mounted () {
     }
   }
 </script>

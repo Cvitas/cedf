@@ -30,7 +30,7 @@
       style="width: 100%;">
 
       <el-table-column
-        prop="collectType"
+        prop="name"
         header-align="center"
         align="center"
         width="200"
@@ -38,25 +38,25 @@
         label="采集数据名称">
       </el-table-column>
       <el-table-column
-        prop="collectDate"
+        prop="date"
         header-align="center"
         align="center"
         label="采集日期">
       </el-table-column>
       <el-table-column
-        prop="collectData"
+        prop="data"
         header-align="center"
         align="center"
         label="采集结果">
       </el-table-column>
       <el-table-column
-        prop="collectUnit"
+        prop="unitName"
         header-align="center"
         align="center"
         label="采集单位">
       </el-table-column>
       <el-table-column
-        prop="collectHour"
+        prop="date"
         header-align="center"
         align="center"
         width="180"
@@ -117,8 +117,6 @@
 </style>
 
 <script>
-  import { getFinaceAmount } from '@/utils'
-
   export default {
     data () {
       return {
@@ -139,63 +137,16 @@
     },
     methods: {
       searchDataList () {
-        if (this.firstSearch) {
-          this.pageSize = 10
-          this.pageIndex = 1
+        if (!this.dataForm.startDate || !this.dataForm.endDate) {
+          this.$message('请选择需要查询的日期范围')
+          return false
         }
-        if (this.dataForm.startDate && this.dataForm.endDate) {
-          this.dataListLoading = true
-          this.$http({
-            url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pressData/${this.dataForm.startDate}/${this.dataForm.endDate}`),
-            method: 'get',
-            params: this.$http.adornParams({
-              'page': this.pageIndex,
-              'limit': this.pageSize,
-              'projectName': this.dataForm.projectName,
-              'startDate': this.dataForm.startDate,
-              'endDate': this.dataForm.endDate
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.firstSearch = false
-              var arrayObject = data.page.listData
-              this.dataForm.totalDonateAmount = '0'
-              this.dataForm.totalDonateCashAmount = '0'
-              this.dataForm.totalDonateMaterialAmount = '0'
-              this.dataForm.totalBalanceAmount = '0'
-              this.dataList = []
-              this.totalPage = 0
-
-              if (arrayObject != null) {
-                this.dataForm.totalDonateAmount = (arrayObject.totalDonateAmount == null ? 0 : arrayObject.totalDonateAmount)
-                this.dataForm.totalDonateCashAmount = (arrayObject.totalDonateCashAmount == null ? 0 : arrayObject.totalDonateCashAmount)
-                this.dataForm.totalDonateMaterialAmount = (arrayObject.totalDonateMaterialAmount == null ? 0 : arrayObject.totalDonateMaterialAmount)
-                this.dataForm.totalBalanceAmount = (arrayObject.totalBalanceAmount == null ? 0 : arrayObject.totalBalanceAmount)
-              }
-
-              if (data.page != null && data.page.page != null) {
-                this.dataList = data.page.page.list
-                this.totalPage = data.page.page.totalCount
-              }
-            } else {
-              this.dataList = []
-              this.totalPage = 0
-            }
-            this.dataListLoading = false
-          })
-        } else {
-          this.$message('请选择要查询的日期')
-        }
+        this.getDataList()
       },
-
       // 获取数据列表
       getDataList () {
         if (!this.dataForm.startDate || !this.dataForm.endDate) {
           return false
-        }
-        if (this.firstSearch) {
-          this.pageSize = 10
-          this.pageIndex = 1
         }
         this.dataListLoading = true
         this.$http({
@@ -204,33 +155,13 @@
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'projectName': this.dataForm.projectName,
             'startDate': this.dataForm.startDate,
             'endDate': this.dataForm.endDate
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.firstSearch = false
-            var arrayObject = data.page.listData
-            this.dataForm.totalDonateAmount = '0'
-            this.dataForm.totalDonateCashAmount = '0'
-            this.dataForm.totalDonateMaterialAmount = '0'
-            this.dataForm.totalBalanceAmount = '0'
-            this.dataList = []
+            this.dataList = data.data
             this.totalPage = 0
-
-            if (arrayObject != null) {
-              this.dataForm.totalDonateAmount = (arrayObject.totalDonateAmount == null ? 0 : arrayObject.totalDonateAmount)
-              this.dataForm.totalDonateCashAmount = (arrayObject.totalDonateCashAmount == null ? 0 : arrayObject.totalDonateCashAmount)
-              this.dataForm.totalDonateMaterialAmount = (arrayObject.totalDonateMaterialAmount == null ? 0 : arrayObject.totalDonateMaterialAmount)
-              this.dataForm.totalBalanceAmount = (arrayObject.totalBalanceAmount == null ? 0 : arrayObject.totalBalanceAmount)
-            }
-
-            if (data.page != null && data.page.page != null) {
-              this.dataList = data.page.page.list
-              this.totalPage = data.page.page.totalCount
-            }
-
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -249,9 +180,6 @@
         this.pageIndex = val
         this.getDataList()
       },
-      finaceAmountFormat (row, column, cellValue, index) {
-        return getFinaceAmount(cellValue)
-      }
     }
   }
 </script>
