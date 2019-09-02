@@ -49,7 +49,7 @@
         align="center"
         label="提醒频率">
         <template slot-scope="scope">
-          每{{scope.row.period}}{{units[scope.row.period]}}
+          每{{scope.row.period}}{{units[scope.row.period]}}{{scope.row.periodTypeName}}钟
         </template>
       </el-table-column>
       <el-table-column
@@ -153,7 +153,6 @@
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
-
         this.$http({
           url: this.$http.adornUrl(`/collect/tips/list`),
           method: 'get',
@@ -171,6 +170,8 @@
             this.dataList = []
             this.totalPage = 0
           }
+          this.dataListLoading = false
+        }).catch(() => {
           this.dataListLoading = false
         })
       },
@@ -227,7 +228,15 @@
         })
       },
       statusHandle (item) {
-        item.status = !item.status
+        this.$http({
+          url: this.$http.adornUrl(`/collect/tips/updateStatus`),
+          method: 'post',
+          data: this.$http.adornData({id: item.id})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.getDataList()
+          }
+        })
       },
       getValue () {
         return this.dataForm.type

@@ -160,6 +160,7 @@
       },
       init (item) {
         this.dataForm = {...this.dataForm, ...item}
+        this.dataForm.status = this.dataForm.status.toString()
       },
       // 表单提交
       dataFormSubmit () {
@@ -169,10 +170,11 @@
               url: this.$http.adornUrl(`/collect/tips/${this.dataForm.id ? 'update' : 'save'}`),
               method: 'post',
               data: this.$http.adornParams({
+                id: this.dataForm.id,
                 tipsMsg: this.dataForm.tipsMsg,
                 value: this.dataForm.value,
                 miniValue: this.dataForm.miniValue,
-                maxValue: this.dataForm.id,
+                maxValue: this.dataForm.maxValue,
                 period: this.dataForm.period,
                 startTime: moment(this.dataForm.startTime).format('YYYY-MM-DD'),
                 endTime: moment(this.dataForm.endTime).format('YYYY-MM-DD'),
@@ -183,6 +185,7 @@
               this.visible = false
               if (data && data.code === 0) {
                 this.$message('保存成功')
+                this.$emit('refreshDataList')
               } else {
                 this.$message('保存失敗')
               }

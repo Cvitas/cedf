@@ -1,13 +1,13 @@
 <template>
-  <el-form    :model="dataForm"  ref= "dataForm"   @keyup.enter.native="onSubmit()" label-width="80px">
-    <el-form-item label="采集数量" prop="collectNum" style="margin-right: 1200px" >
-      <el-input   type="text" v-model="dataForm.collectNum"  >
+  <el-form :model="dataForm" ref="dataForm" @keyup.enter.native="onSubmit()" label-width="80px">
+    <el-form-item label="采集数量" prop="collectNum" style="margin-right: 1200px">
+      <el-input type="text" v-model="dataForm.collectNum">
         <template slot="append">路</template>
       </el-input>
     </el-form-item>
-    <el-form-item label="采集步长" prop="collectStep" style="margin-right: 1200px;" >
+    <el-form-item label="采集步长" prop="collectStep" style="margin-right: 1200px;">
       <el-col :span="24">
-        <el-input type="text"  v-model="dataForm.collectStep" clearable style="width: 100%">
+        <el-input type="text" v-model="dataForm.collectStep" clearable style="width: 100%">
           <template slot="append">秒</template>
         </el-input>
       </el-col>
@@ -22,6 +22,7 @@
   .el-select .el-input {
     width: 130px;
   }
+
   .input-with-select .el-input-group__prepend {
     background-color: #fff;
   }
@@ -29,6 +30,7 @@
   .el-select .el-input {
     width: 130px;
   }
+
   .input-with-select .el-input-group__prepend {
     background-color: #fff;
   }
@@ -45,7 +47,7 @@
         roleList: [],
         show: false,
         dataForm: {
-          type: 'pipe',
+          id: 1,
           collectNum: '',
           collectStep: ''
         }
@@ -57,14 +59,12 @@
     methods: {
       init () {
         this.$http({
-          url: this.$http.adornUrl(`collect/paramcollect/info/press`),
+          url: this.$http.adornUrl(`collect/collecparam/update`),
           method: 'get',
-          params: this.$http.adornParams()
+          params: this.$http.adornParams({id:1})
         }).then(({data}) => {
-          this.$refs['dataForm'].resetFields();
+          this.$refs['dataForm'].resetFields()
           if (data && data.code === 0) {
-            this.dataForm.collectNum = data.paramCollect.collectNum;
-            this.dataForm.collectStep = data.paramCollect.collectStep;
           }
         })
       },
