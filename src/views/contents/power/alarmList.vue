@@ -164,8 +164,9 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.data
-            this.totalPage = this.dataList.length
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+            this.pageIndex = data.page.currPage
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -206,7 +207,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/project/base/delete'),
+            url: this.$http.adornUrl('/collect/tips/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
@@ -236,11 +237,7 @@
         this.$nextTick(() => {
           this.$refs.upload.init()
         })
-      },
-      downloadTemplateHandle () {
-        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`)
-        window.open(url)
-      },
+      }
     },
     mounted () {
     }

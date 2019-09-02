@@ -132,7 +132,7 @@
           startTime: '',
           endTime: '',
           periodType: 0,
-          status: '1',
+          status: '1'
         },
         dataRule: {
           period: [
@@ -143,13 +143,7 @@
           ],
           maxValue: [
             {type: 'date', required: true, message: '请选择最大值', trigger: 'change'}
-          ],
-          startTime: [
-            {type: 'date', required: true, message: '请选择开始日期', trigger: 'change'}
-          ],
-          endTime: [
-            {type: 'date', required: true, message: '请选择结束日期', trigger: 'change'}
-          ],
+          ]
         }
       }
     },
@@ -183,7 +177,7 @@
                 startTime: moment(this.dataForm.startTime).format('YYYY-MM-DD'),
                 endTime: moment(this.dataForm.endTime).format('YYYY-MM-DD'),
                 periodType: this.dataForm.periodType,
-                status: this.dataForm.status,
+                status: this.dataForm.status
               })
             }).then(({data}) => {
               this.visible = false
