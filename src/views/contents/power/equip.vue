@@ -64,7 +64,7 @@
         label="采集单位">
       </el-table-column>
       <el-table-column
-        prop="varname"
+        prop="collecTypeName"
         header-align="center"
         show-overflow-tooltip
         align="center"

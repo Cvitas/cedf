@@ -32,13 +32,12 @@
             <el-date-picker
               placeholder="选择日期"
               type="date"
-              v-model="dataForm.productDate"  value-format="yyyy-MM-dd" format="yyyy-MM-dd">
+              v-model="dataForm.productDate" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </el-col>
-
         <el-col :span="14">
-          <el-form-item label="采集参数：" prop="varname">
+          <el-form-item label="采集参数：" prop="collecType">
             <el-select v-model="dataForm.collecType" placeholder="请选择采集参数">
               <el-option
                 v-for="item in collectTypes"
@@ -49,17 +48,19 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="14">
-          <el-form-item label="采集单位：" prop="collecUnit">
-            <el-input type="text" v-model.number="dataForm.collecUnit" placeholder="采集单位"></el-input>
-          </el-form-item>
-        </el-col>
+        <div v-for="item in dataForm.detail" v-if="item.collectType == dataForm.collecType">
+          <el-col :span="14">
+            <el-form-item label="采集单位：" prop="unit">
+              <el-input type="text" v-model="item.unit" placeholder="采集单位"></el-input>
+            </el-form-item>
+          </el-col>
 
-        <el-col :span="14">
-          <el-form-item label="选择设备显示颜色：" prop="color">
-            <colorPicker v-model="dataForm.color" width="100px"/>
-          </el-form-item>
-        </el-col>
+          <el-col :span="14" prop="color">
+            <el-form-item label="选择设备显示颜色：">
+              <colorPicker v-model="item.color" width="100px"/>
+            </el-form-item>
+          </el-col>
+        </div>
       </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -88,42 +89,7 @@
   import { validateLength, isAmount } from '@/utils/validate'
 
   export default {
-    data() {
-      var validateCashAmount = (rule, value, callback) => {
-        if (!value) {
-          callback();
-          return;
-        }
-        if (!isAmount(value)) {
-          callback(new Error('到账金额最大长度为小数点前10+小数点后2位数字！'));
-        } else {
-          callback();
-        }
-      }
-
-      var validateDonator = (rule, value, callback) => {
-        if (!validateLength(value, 30)) {
-          callback(new Error('汇款单位名称最大长度为30个字'));
-        } else {
-          callback();
-        }
-      }
-
-      var validateDeliveryNo = (rule, value, callback) => {
-        if (!validateLength(value, 20)) {
-          callback(new Error('快递编号最大长度为20个字符'));
-        } else {
-          callback();
-        }
-      }
-
-      var validateRemark = (rule, value, callback) => {
-        if (!validateLength(value, 50)) {
-          callback(new Error('备注最大长度为50个字'));
-        } else {
-          callback();
-        }
-      }
+    data () {
       return {
         visible: false,
         projects: [],
@@ -137,50 +103,52 @@
           productDate: '',
           collecUnit: '',
           varname: '',
-          color: '#00FF00'
+          color: '#00FF00',
+          detail: []
         },
         dataRule: {
-          projectId: [
-            { required: true, message: '请选择协议号', trigger: 'blur' }
+          no: [
+            {required: true, message: '请输入编号', trigger: 'blur'},
+            {type: 'number', required: true, message: '请输入数字编号', trigger: 'blur'}
           ],
-          cashAmount: [
-            { required: true, message: '请输入到账金额', trigger: 'blur' },
-            { validator: validateCashAmount, trigger: 'blur' }
+          name: [
+            {required: true, message: '请输入设备名称', trigger: 'blur'}
           ],
-          donator: [
-            { required: true, message: '请输入汇款单位名称', trigger: 'blur' },
-            { validator: validateDonator, trigger: 'blur' }
+          model: [
+            {required: true, message: '请输入设备型号', trigger: 'blur'}
           ],
-          donateDate: [
-            { required: true, message: '请选择到账日期', trigger: 'blur' }
+          varname: [
+            {required: true, message: '请输入厂家名词', trigger: 'blur'}
           ],
-          deliveryDate: [
-            { required: true, message: '请选择收据邮寄日期', trigger: 'blur' }
-          ],
-          deliveryNo: [
-            { validator: validateDeliveryNo, trigger: 'blur' }
-          ],
-          remark: [
-            { validator: validateRemark, trigger: 'blur' }
+          productDate: [
+            {required: true, message: '请输入正确的出厂日期', trigger: 'change'}
           ]
         }
       }
     },
     computed: {
       collectTypes: {
-        get() {
+        get () {
           return this.$store.state.device.collectTypes
         }
       }
     },
     methods: {
-      init(id) {
+      init (id) {
+        this.collectTypes.forEach((collectType) => {
+          this.dataForm.detail.push({
+            color: '#00FF00',
+            collectType: collectType.id,
+            name: collectType.name,
+            unit: ''
+          })
+        })
         this.dataForm.id = id || null
         this.$http({
           url: this.$http.adornUrl('/sys/role/select'),
           method: 'get',
           params: this.$http.adornParams()
-        }).then(({ data }) => {
+        }).then(({data}) => {
           this.roleList = data && data.code === 0 ? data.list : []
         }).then(() => {
           this.visible = true
@@ -192,20 +160,26 @@
           this.$http({
             url: this.$http.adornUrl(`/collect/equipment/info/${id}`),
             method: 'get'
-          }).then(({ data }) => {
+          }).then(({data}) => {
             if (data && data.code === 0) {
-              const color = data.equipment.color ? data.equipment.color : '#00FF00'
               this.dataForm = data.equipment
-              this.dataForm.color = color
+              this.dataForm.detail = [...data.equipment.detail]
             }
+            this.dataForm.collecType = this.collectTypes[0].id
           })
         })
       },
+      changeCollectType () {
+
+      },
       // 表单提交
-      dataFormSubmit() {
+      dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             console.log(`!${this.dataForm.id ? 'save' : 'update'}`)
+            const detail = this.dataForm.detail.filter(de => {
+              return de.color && de.unit
+            })
             this.$http({
               url: this.$http.adornUrl(`/collect/equipment/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
@@ -216,14 +190,9 @@
                 vendor: this.dataForm.vendor,
                 no: this.dataForm.no,
                 productDate: this.dataForm.productDate,
-                detail: [{
-                  color: this.dataForm.color,
-                  collectType: this.dataForm.collecType,
-                  unit: this.dataForm.collecUnit
-                }]
+                detail: detail
               })
-            }).then(({ data }) => {
-              this.clearDataForm()
+            }).then(({data}) => {
               if (data && data.code === 0) {
                 this.$message({
                   message: '操作成功',
@@ -241,7 +210,7 @@
           }
         })
       },
-      clearDataForm() {
+      clearDataForm () {
         this.dataForm = {
           id: null,
           name: '',
@@ -252,7 +221,8 @@
           productDate: '',
           collecUnit: '',
           varname: '',
-          color: '#00FF00'
+          color: '#00FF00',
+          detail: []
         }
       }
     }
