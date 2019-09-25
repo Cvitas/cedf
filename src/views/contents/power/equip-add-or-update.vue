@@ -154,9 +154,9 @@
           this.visible = true
           this.$nextTick(() => {
             this.$refs['dataForm'].resetFields()
-          })
         }).then(() => {
           this.projects = []
+        })
           this.$http({
             url: this.$http.adornUrl(`/collect/equipment/info/${id}`),
             method: 'get'

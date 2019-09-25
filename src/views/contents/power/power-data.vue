@@ -149,7 +149,7 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/powerDetailData/${this.dataForm.startDate}/${this.dataForm.endDate}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/powerDetailData`),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,

@@ -198,13 +198,13 @@
       },
 
       initTypeSelect() {
-        this.$http({
-          url: this.$http.adornUrl('/project/base/typeSelect'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({ data }) => {
-          this.projectTypes = data && data.code === 0 ? data.list : []
-        })
+        // this.$http({
+        //   url: this.$http.adornUrl('/project/base/typeSelect'),
+        //   method: 'get',
+        //   params: this.$http.adornParams()
+        // }).then(({ data }) => {
+        //   this.projectTypes = data && data.code === 0 ? data.list : []
+        // })
       },
       // 获取数据列表
       getDataList() {
@@ -297,8 +297,8 @@
       },
 
       downloadTemplateHandle() {
-        var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
-        window.open(url);
+        // var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
+        // window.open(url);
       },
       finaceAmountFormat(row, column, cellValue, index) {
         return getFinaceAmount(cellValue);

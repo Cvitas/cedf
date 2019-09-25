@@ -38,7 +38,7 @@
         label="采集数据名称">
       </el-table-column>
       <el-table-column
-        prop="date"
+        prop="dateStr"
         header-align="center"
         align="center"
         label="采集日期">
@@ -150,7 +150,7 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pressData/${this.dataForm.startDate}/${this.dataForm.endDate}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pressData`),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -160,8 +160,11 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.data
-            this.totalPage = 0
+            // this.dataList = data.data
+            // this.totalPage = 0
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+            this.pageIndex = data.page.currPage
           } else {
             this.dataList = []
             this.totalPage = 0

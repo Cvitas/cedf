@@ -37,7 +37,7 @@
         label="采集数据名称">
       </el-table-column>
       <el-table-column
-        prop="date"
+        prop="dateStr"
         header-align="center"
         align="center"
         label="采集日期">
@@ -149,7 +149,7 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/tempDetailData/${this.dataForm.startDate}/${this.dataForm.endDate}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/tempDetailData/`),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,

@@ -32,21 +32,15 @@
         prop="name"
         header-align="center"
         align="center"
-        width="200"
+        width="400"
         visible="false"
         label="采集数据名称">
-      </el-table-column>
-      <el-table-column
-        prop="date"
-        header-align="center"
-        align="center"
-        label="采集日期">
       </el-table-column>
       <el-table-column
         prop="data"
         header-align="center"
         align="center"
-        label="采集结果">
+        label="数值">
       </el-table-column>
       <el-table-column
         prop="unitName"
@@ -55,10 +49,9 @@
         label="采集单位">
       </el-table-column>
       <el-table-column
-        prop="date"
+        prop="dateStr"
         header-align="center"
         align="center"
-        width="180"
         label="采集时间">
       </el-table-column>
     </el-table>
@@ -149,18 +142,20 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pipeData/${this.dataForm.startDate}/${this.dataForm.endDate}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pipeData/`),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
             'startDate': this.dataForm.startDate,
-            'endDate': this.dataForm.endDate
+            'endDate': this.dataForm.endDate,
+            'dateType': '3'
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.data
-            this.totalPage = 0
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+            this.pageIndex = data.page.currPage
           } else {
             this.dataList = []
             this.totalPage = 0
