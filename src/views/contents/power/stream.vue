@@ -45,9 +45,9 @@
         roleList: [],
         show: false,
         dataForm: {
-          type: 'pipe',
-          collectNum: '',
-          collectStep: ''
+          id: '3',
+          collectNum: 0,
+          collectStep: 0
         }
       }
     },
@@ -57,43 +57,36 @@
     methods: {
       init () {
         this.$http({
-          url: this.$http.adornUrl(`collect/paramcollect/info/stream`),
+          url: this.$http.adornUrl(`/collect/collecparam/list`),
           method: 'get',
           params: this.$http.adornParams()
         }).then(({data}) => {
-          this.$refs['dataForm'].resetFields();
+          this.$refs['dataForm'].resetFields()
           if (data && data.code === 0) {
-            this.dataForm.collectNum = data.paramCollect.collectNum;
-            this.dataForm.collectStep = data.paramCollect.collectStep;
+            if (data.page.list.length) {
+              this.dataForm = {...data.page.list[0]}
+            }
           }
         })
       },
-
       // 表单提交
       onSubmit () {
         this.$http({
-          url: this.$http.adornUrl(`/collect/paramcollect/save`),
+          url: this.$http.adornUrl(`/collect/collecparam/update`),
           method: 'post',
-          data: this.$http.adornData({
-            'collectNum': this.dataForm.collectNum,
-            'collectStep': this.dataForm.collectStep,
-            'collectTypeId': 'stream'
-          })
+          data: this.$http.adornData(this.dataForm)
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.$message({
               message: '操作成功',
               type: 'success',
-              duration: 1500,
-              onClose: () => {
-                this.visible = false
-              }
+              duration: 1500
             })
+            this.init()
           } else {
             this.$message.error(data.msg)
           }
         })
-
       }
     }
   }

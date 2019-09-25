@@ -47,9 +47,9 @@
         roleList: [],
         show: false,
         dataForm: {
-          id: 1,
-          collectNum: '',
-          collectStep: ''
+          id: '1',
+          collectNum: 0,
+          collectStep: 0
         }
       }
     },
@@ -59,41 +59,36 @@
     methods: {
       init () {
         this.$http({
-          url: this.$http.adornUrl(`collect/collecparam/update`),
+          url: this.$http.adornUrl(`/collect/collecparam/list`),
           method: 'get',
-          params: this.$http.adornParams({id:1})
+          params: this.$http.adornParams()
         }).then(({data}) => {
           this.$refs['dataForm'].resetFields()
           if (data && data.code === 0) {
+            if (data.page.list.length) {
+              this.dataForm = {...data.page.list[0]}
+            }
           }
         })
       },
-
       // 表单提交
       onSubmit () {
         this.$http({
-          url: this.$http.adornUrl(`/collect/paramcollect/save`),
+          url: this.$http.adornUrl(`/collect/collecparam/update`),
           method: 'post',
-          data: this.$http.adornData({
-            'collectNum': this.dataForm.collectNum,
-            'collectStep': this.dataForm.collectStep,
-            'collectTypeId': 'press'
-          })
+          data: this.$http.adornData(this.dataForm)
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.$message({
               message: '操作成功',
               type: 'success',
-              duration: 1500,
-              onClose: () => {
-                this.visible = false
-              }
+              duration: 1500
             })
+            this.init()
           } else {
             this.$message.error(data.msg)
           }
         })
-
       }
     }
   }
