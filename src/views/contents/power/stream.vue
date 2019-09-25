@@ -1,13 +1,13 @@
 <template>
   <el-form    :model="dataForm"  ref= "dataForm"   @keyup.enter.native="onSubmit()" label-width="80px">
     <el-form-item label="采集数量" prop="collectNum" style="margin-right: 1200px" >
-      <el-input   type="text" v-model="dataForm.collectNum"  >
+      <el-input   type="text" v-model="dataForm.collectNum"  style="width:150px">
         <template slot="append">路</template>
       </el-input>
     </el-form-item>
     <el-form-item label="采集步长" prop="collectStep" style="margin-right: 1200px;" >
       <el-col :span="24">
-        <el-input type="text"  v-model="dataForm.collectStep" clearable style="width: 100%">
+        <el-input type="text"  v-model="dataForm.collectStep" clearable style="width:150px">
           <template slot="append">秒</template>
         </el-input>
       </el-col>

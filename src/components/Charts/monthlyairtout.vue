@@ -24,17 +24,24 @@
       height: {
         type: String,
         default: '500px'
+      },
+      data: {
+        type: Object,
+        default: {
+          data: [],
+          xais: []
+        }
       }
     },
-    data() {
+    data () {
       return {
         chart: null
       }
     },
-    mounted() {
+    mounted () {
       this.initChart()
     },
-    beforeDestroy() {
+    beforeDestroy () {
       if (!this.chart) {
         return
       }
@@ -42,15 +49,54 @@
       this.chart = null
     },
     methods: {
-      initChart() {
-        this.chart = echarts.init(document.getElementById(this.monthlyair))
+      initChart () {
 
+        let series = []
+        const legends = this.data.data.map(item => {
+          series.push({
+            name: item.name,
+            type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+              normal: {
+                width: 1
+              }
+            },
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgba(0, 136, 212, 0.3)'
+                }, {
+                  offset: 0.8,
+                  color: 'rgba(0, 136, 212, 0)'
+                }], false),
+                shadowColor: 'rgba(0, 0, 0, 0.1)',
+                shadowBlur: 10
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: 'rgb(0,136,212)',
+                borderColor: 'rgba(0,136,212,0.2)',
+                borderWidth: 12
+
+              }
+            },
+            data: item.data ? item.data : []
+          })
+          return item.name
+        })
+        this.chart = echarts.init(document.getElementById(this.monthlyair))
         this.chart.setOption({
           backgroundColor: 'white',
           title: {
             top: 20,
             text: '月排气曲线',
-            subtext: '空压机1 总用电量32Kwh 总排气量：16000m³\n\r\n 空压机2 总用电量100Kwh 总排气量：26000m³',
+            // subtext: '空压机1 总用电量32Kwh 总排气量：16000m³\n\r\n 空压机2 总用电量100Kwh 总排气量：26000m³',
             align: 'right',
             x: 'center',
             textStyle: {
@@ -73,7 +119,7 @@
             itemWidth: 14,
             itemHeight: 5,
             itemGap: 13,
-            data: ['空压机1', '空压机2'],
+            data: legends,
             right: '4%',
             textStyle: {
               fontSize: 12,
@@ -96,12 +142,11 @@
                 color: '#57617B'
               }
             },
-            data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
-              '21', '22', '23', '24', '25', '26', '27', '28', '29', '30']
+            data: this.data.xais
           }],
           yAxis: [{
             type: 'value',
-            name: '千立方米km³',
+            name: this.data.unitName,
             axisTick: {
               show: false
             },
@@ -123,77 +168,7 @@
               }
             }
           }],
-          series: [
-            {
-              name: '空压机2',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 5,
-              showSymbol: false,
-              lineStyle: {
-                normal: {
-                  width: 1
-                }
-              },
-              areaStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(0, 136, 212, 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: 'rgba(0, 136, 212, 0)'
-                  }], false),
-                  shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: 'rgb(0,136,212)',
-                  borderColor: 'rgba(0,136,212,0.2)',
-                  borderWidth: 12
-
-                }
-              },
-              data: [0.82, 0.86, 0.85, 0.82, 0.80, 0.82, 0.85, 0.80, 0.86, 0.84, 0.82, 0.90, 0.91, 0.85, 0.88
-                , 0.80, 0.83, 0.84, 0.88, 0.80, 0.85, 0.88, 0.82, 0.80, 0.85, 0.88, 0.90, 0.80, 0.80, 0.80]
-            }, {
-              name: '空压机1',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 5,
-              showSymbol: false,
-              lineStyle: {
-                normal: {
-                  width: 1
-                }
-              },
-              areaStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(219, 50, 51, 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: 'rgba(219, 50, 51, 0)'
-                  }], false),
-                  shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: 'rgb(219,50,51)',
-                  borderColor: 'rgba(219,50,51,0.2)',
-                  borderWidth: 12
-                }
-              },
-              data: [0.75, 0.83, 0.85, 0.85, 0.82, 0.87, 0.83, 0.87, 0.85, 0.83, 0.88, 0.85, 0.87, 0.83, 0.85, 0.87, 0.85, 0.83, 0.85,
-                0.87, 0.88, 0.85, 0.87, 0.88, 0.85, 0.88, 0.90, 0.85, 0.83, 0.85]
-            }]
+          series: series
         })
       }
     }

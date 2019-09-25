@@ -99,16 +99,16 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
   .el-row {
     margin-bottom: 20px;
+    &
+    :last-child {
+      margin-bottom: 0;
+    }
 
-  &
-  :last-child {
-    margin-bottom: 0;
   }
 
-  }
   .el-col {
     border-radius: 4px;
   }
@@ -142,7 +142,7 @@
   import { getFinaceAmount } from '@/utils'
 
   export default {
-    data() {
+    data () {
       return {
         dataForm: {
           equipName: '',
@@ -156,7 +156,7 @@
         dataListSelections: [],
         addOrUpdateVisible: false,
         uploadVisible: false,
-        //弹框显示变量
+        // 弹框显示变量
         donatorVisible: false,
         receiverVisible: false,
         pickerValidateStart: this.beginDate(),
@@ -166,27 +166,27 @@
     components: {
       AddOrUpdate
     },
-    activated() {
+    activated () {
       this.getDataList()
     },
     methods: {
-      beginDate() {
-        let self = this;
+      beginDate () {
+        let self = this
         return {
-          disabledDate(time) {
+          disabledDate (time) {
             if (time != null && time != '' && self.dataForm.endDate != null && self.dataForm.endDate != '') {
               if (validateDate(time, new Date(self.dataForm.endDate))) {
-                return true;
+                return true
               }
             }
           }
         }
       },
 
-      processDate() {
+      processDate () {
         let self = this
         return {
-          disabledDate(time) {
+          disabledDate (time) {
             if (time != null && time != '' && self.dataForm.startDate != null && self.dataForm.startDate != '') {
               if ((validateDate(new Date(self.dataForm.startDate), time))) {
                 return true
@@ -197,7 +197,7 @@
         }
       },
 
-      initTypeSelect() {
+      initTypeSelect () {
         // this.$http({
         //   url: this.$http.adornUrl('/project/base/typeSelect'),
         //   method: 'get',
@@ -207,7 +207,7 @@
         // })
       },
       // 获取数据列表
-      getDataList() {
+      getDataList () {
         this.dataListLoading = true
 
         this.$http({
@@ -219,7 +219,7 @@
             'name': this.dataForm.equipName,
             'order': 'DESC'
           })
-        }).then(({ data }) => {
+        }).then(({data}) => {
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
@@ -233,22 +233,22 @@
         })
       },
       // 每页数
-      sizeChangeHandle(val) {
+      sizeChangeHandle (val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle(val) {
+      currentChangeHandle (val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle(val) {
+      selectionChangeHandle (val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle(id) {
+      addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true
         // 加载typeSelect
         this.$nextTick(() => {
@@ -256,7 +256,7 @@
         })
       },
       // 删除
-      deleteHandle(id) {
+      deleteHandle (id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.id
         })
@@ -269,7 +269,7 @@
             url: this.$http.adornUrl('/collect/equipment/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
-          }).then(({ data }) => {
+          }).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',
@@ -286,32 +286,32 @@
         })
       },
 
-      getValue() {
+      getValue () {
         return this.dataForm.type
       },// 上传文件
-      importHandle() {
-        this.uploadVisible = true;
+      importHandle () {
+        this.uploadVisible = true
         this.$nextTick(() => {
           this.$refs.upload.init()
         })
       },
 
-      downloadTemplateHandle() {
+      downloadTemplateHandle () {
         // var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`);
         // window.open(url);
       },
-      finaceAmountFormat(row, column, cellValue, index) {
-        return getFinaceAmount(cellValue);
+      finaceAmountFormat (row, column, cellValue, index) {
+        return getFinaceAmount(cellValue)
       },
 
-      showReceivers(receiveId) {
+      showReceivers (receiveId) {
         this.receiverVisible = true
         this.$nextTick(() => {
           this.visible = true
           this.$refs.receiverDetailModal.init(receiveId)
         })
       },
-      showDonator(donatorId) {
+      showDonator (donatorId) {
         this.donatorVisible = true
         this.$nextTick(() => {
           this.visible = true
@@ -319,7 +319,7 @@
         })
       }
     },
-    mounted() {
+    mounted () {
       this.initTypeSelect()
     }
   }

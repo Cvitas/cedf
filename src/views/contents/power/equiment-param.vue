@@ -8,20 +8,19 @@
         <el-input v-model="dataForm.paramName" placeholder="采集变量名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="数据采集项目">
-        <el-select v-model="dataForm.collectTypeId"  placeholder="请选择" clearable @change="getValue">
-          <el-option v-for="item in collectTypeIds" :key="item.id" :label="item.name" :value="item.id">  </el-option>
+        <el-select v-model="dataForm.collectTypeId" placeholder="请选择" clearable @change="getValue">
+          <el-option v-for="item in collectTypeIds" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()" type="primary">查询</el-button>
-        <el-button  type="primary" @click="addOrUpdateHandle()">添加设备参数</el-button>
+        <el-button type="primary" @click="addOrUpdateHandle()">添加设备参数</el-button>
       </el-form-item>
     </el-form>
     <el-table
       :data="dataList"
       border
       v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
       style="width: 100%;">
 
       <el-table-column
@@ -29,58 +28,48 @@
         header-align="center"
         align="center"
         width="80"
-        visible="false"
-        v-if="false"
-        label="ID">
+        visible="true"
+        label="序号">
       </el-table-column>
       <el-table-column
-        prop="paramName"
-        header-align="center"
-        align="center"
-        label="采集变量名称">
-      </el-table-column>
-      <el-table-column
-        prop="collectTypeId"
+        prop="pipe"
         header-align="center"
         align="center"
         show-overflow-tooltip
-        hight = "20px"
-        label="数据采集项目">
+        hight="20px"
+        label="流量">
       </el-table-column>
       <el-table-column
-        prop="collectNum"
+        prop="loss"
         header-align="center"
         align="center"
         show-overflow-tooltip
         width="180"
-        label="采集数量">
-      </el-table-column>
-        <el-table-column
-          prop="collectStep"
-          header-align="center"
-          align="center"
-          show-overflow-tooltip
-          width="180"
-          label="采集步长">
+        label="管损">
       </el-table-column>
       <el-table-column
-        prop="collectUnit"
+        prop="equip"
         header-align="center"
         align="center"
         show-overflow-tooltip
         width="180"
-        label="采集单位">
+        label="后处理设备">
       </el-table-column>
       <el-table-column
+        prop="pwNormal"
+        header-align="center"
+        align="center"
+        show-overflow-tooltip
+        width="180"
+        label="电费正常模式">
+      </el-table-column>
+      <el-table-column
+        prop="pwHigh"
         fixed="right"
         header-align="center"
         align="center"
         width="150"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="isAuth('project:base:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
-          <el-button v-if="isAuth('project:base:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)" class="el-button--text-gray">删除</el-button>
-        </template>
+        label="电费峰谷平">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -100,26 +89,34 @@
 <style>
   .el-row {
     margin-bottom: 20px;
-  &:last-child {
-     margin-bottom: 0;
-   }
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+
   }
   .el-col {
     border-radius: 4px;
   }
+
   .bg-purple-dark {
     /** background: #99a9bf; */
   }
+
   .bg-purple {
     /** background: #d3dce6; */
   }
+
   .bg-purple-light {
     background: #e5e9f2;
   }
+
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
   }
+
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
@@ -128,6 +125,7 @@
 
 <script>
   import AddOrUpdate from './equipment-param-update-delete'
+
   export default {
     data () {
       return {
@@ -138,7 +136,7 @@
           paramName: '',
           collectStep: '',
           collectNum: '',
-          collectUnit:''
+          collectUnit: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -156,30 +154,14 @@
       this.getDataList()
     },
     methods: {
-      initTypeSelect () {
-        this.$http({
-          url: this.$http.adornUrl('/collect/paramcollect/typeSelect'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({data}) => {
-          this.collectTypeIds = data && data.code === 0 ? data.list : []
-        })
-      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
 
         this.$http({
-          url: this.$http.adornUrl('/collect/paramcollect/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'equipmentName': this.dataForm.equipmentName,
-            'collectTypeId': this.dataForm.collectTypeId,
-            'paramName': this.dataForm.paramName,
-            'order': 'DESC'
-          })
+          url: this.$http.adornUrl('/collect/equipparam/list'),
+          method: 'post',
+          params: this.$http.adornParams({})
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.dataList = data.page.list
@@ -202,55 +184,9 @@
         this.pageIndex = val
         this.getDataList()
       },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
-      },
-      // 新增 / 修改
-      addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        //加载typeSelect
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
-        })
-      },
-      // 删除
-      deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.id
-        })
-        this.$confirm(`确定要删除此条数据吗？删除后将把相关数据一并删除`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/collect/paramcollect/delete'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        })
-      },
-
-      getValue() {
+      getValue () {
         return this.dataForm.type
       }
-    },
-    mounted(){
-      this.initTypeSelect()
     }
   }
 </script>
