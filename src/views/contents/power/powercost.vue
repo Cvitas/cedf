@@ -6,24 +6,27 @@
         <div class="addForm_gray_bg">
           <el-col :span="10">
             <el-form-item label="用电总量基数上调：" prop="airrate">
-              <el-input v-model="dataForm.airrate" placeholder="电量基数上调" style="width:120px">
+              <el-input v-model="dataForm.totalUpRate" placeholder="电量基数上调" style="width:120px">
                 <template slot="append">%</template>
               </el-input>
             </el-form-item>
 
             <el-form-item label="基本电价基数上调：" prop="powerPrice">
-              <el-input v-model="dataForm.powerPrice" placeholder="基本电价基数上调" style="width:120px">
+              <el-input v-model="dataForm.upRate" placeholder="基本电价基数上调" style="width:120px">
                 <template slot="append">%</template>
               </el-input>
             </el-form-item>
             <el-form-item label="基础电价：" prop="powerBasePrice">
-              <el-input v-model="dataForm.powerBasePrice" placeholder="基础电价" style="width:120px">
+              <el-input v-model="dataForm.basePrice" placeholder="基础电价" style="width:120px">
                 <template slot="append">元</template>
               </el-input>
             </el-form-item>
           </el-col>
         </div>
       </el-row>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">确认</el-button>
+      </el-form-item>
     </el-form>
   </el-card>
 </template>
@@ -43,9 +46,9 @@
       return {
         show: false,
         dataForm: {
-          airrate: '',
-          powerBasePrice: '',
-          powerPrice: ''
+          upRate: '',
+          basePrice: '',
+          totalUpRate: ''
         }
       }
     },
