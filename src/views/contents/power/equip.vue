@@ -209,7 +209,6 @@
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
-
         this.$http({
           url: this.$http.adornUrl('/collect/equipment/list'),
           method: 'get',
@@ -265,6 +264,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          this.dataListLoading = true
           this.$http({
             url: this.$http.adornUrl('/collect/equipment/delete'),
             method: 'post',
@@ -282,13 +282,15 @@
             } else {
               this.$message.error(data.msg)
             }
+          }).catch(() => {
+            this.dataListLoading = false
           })
         })
       },
 
       getValue () {
         return this.dataForm.type
-      },// 上传文件
+      }, // 上传文件
       importHandle () {
         this.uploadVisible = true
         this.$nextTick(() => {

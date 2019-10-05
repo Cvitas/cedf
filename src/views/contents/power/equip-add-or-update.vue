@@ -137,36 +137,60 @@
     },
     methods: {
       init (id) {
-        this.collectTypes.forEach((collectType) => {
-          this.dataForm.detail.push({
-            color: '#00FF00',
-            collectType: collectType.id,
-            name: collectType.name,
-            unit: ''
+        if (!id) {
+          this.collectTypes.forEach((collectType) => {
+            this.dataForm.detail.push({
+              color: '#00FF00',
+              collectType: collectType.id,
+              name: collectType.name,
+              unit: ''
+            })
           })
-        })
-        this.dataForm.id = id || null
-        this.$http({
-          url: this.$http.adornUrl('/sys/role/select'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({data}) => {
-          this.roleList = data && data.code === 0 ? data.list : []
-        }).then(() => {
           this.visible = true
           this.$nextTick(() => {
             this.$refs['dataForm'].resetFields()
-          })
-          this.$http({
-            url: this.$http.adornUrl(`/collect/equipment/info/${id}`),
-            method: 'get'
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.dataForm = data.equipment
-              this.dataForm.detail = [...data.equipment.detail]
-            }
             this.dataForm.collecType = this.collectTypes[0].id
           })
+          return false
+        }
+        this.dataForm.id = id || null
+        this.visible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].resetFields()
+        })
+        this.$http({
+          url: this.$http.adornUrl(`/collect/equipment/info/${id}`),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            const detail = data.equipment.detail
+            this.dataForm = data.equipment
+            this.dataForm.detail = []
+            this.collectTypes.forEach((collectType) => {
+              const __filter = detail.filter((de) => {
+                return de.collectType === collectType.id
+              })
+              if (__filter.length) {
+                this.dataForm.detail.push({
+                  color: __filter[0].color,
+                  collectType: collectType.id,
+                  name: collectType.name,
+                  unit: __filter[0].unit,
+                  varname: __filter[0].varname
+                })
+                if (!this.dataForm.collecType) this.dataForm.collecType = __filter[0].collectType
+              } else {
+                this.dataForm.detail.push({
+                  color: '#00FF00',
+                  collectType: collectType.id,
+                  name: collectType.name,
+                  unit: '',
+                  varname: ''
+                })
+                // if (!this.dataForm.collecType) this.dataForm.collecType = collectType.id
+              }
+            })
+          }
         })
       },
       changeCollectType () {
