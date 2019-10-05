@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="warning" @click="searchDataList()">查询</el-button>
-        <el-button type="warning" @click="searchDataList()">导出数据</el-button>
+        <el-button type="warning" @click="downloadDataHandle()">导出数据</el-button>
         <el-button type="warning" @click="searchDataList()">导入数据</el-button>
       </el-form-item>
     </el-form>
@@ -182,6 +182,19 @@
       currentChangeHandle (val) {
         this.pageIndex = val
         this.getDataList()
+      },
+      downloadDataHandle() {
+        var urlPrefix = "/collect/collecstatis/export?type=1";
+        var page = this.pageIndex;
+        var limit=this.pageSize;
+        var startDate=this.dataForm.startDate;
+        var endDate=this.dataForm.endDate;
+        var token = this.$cookie.get('token');
+        var joinStr = "&";
+        var urlStr = urlPrefix + joinStr + "page=" + page + joinStr + "limit=" + limit + joinStr + "startDate=" + startDate + joinStr + "endDate=" + endDate + joinStr + "token=" + token;
+
+        var url = this.$http.adornUrl(urlStr);
+        window.open(url);
       },
     }
   }

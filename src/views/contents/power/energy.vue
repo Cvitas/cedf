@@ -22,7 +22,7 @@
       style="width: 100%;">
 
       <el-table-column
-        prop="machineName"
+        prop="name"
         header-align="center"
         align="center"
         width="200"
@@ -30,13 +30,13 @@
         label="设备名称">
       </el-table-column>
       <el-table-column
-        prop="energy"
+        prop="data"
         header-align="center"
         align="center"
         label="总能量消耗" >
       </el-table-column>
       <el-table-column
-        prop="unit"
+        prop="unitName"
         header-align="center"
         align="center"
         label="单位" >
@@ -203,57 +203,32 @@
 
       // 获取数据列表
       getDataList () {
-        this.dataListLoading = true
-        this.dataList = [{
-          machineName: '螺杆机',
-          energy:'3000',
-          unit:'Kwh'
-        },{
-          machineName: '离心机',
-          energy:'1000',
-          unit:'kwh'
-        }];
-        this.totalPage = 2;
-        this.dataListLoading = false
 
-        // this.$http({
-        //   url: this.$http.adornUrl('/project/statistics/donateamount'),
-        //   method: 'get',
-        //   params: this.$http.adornParams({
-        //     'page': this.pageIndex,
-        //     'limit': this.pageSize,
-        //     'projectName': this.dataForm.projectName,
-        //     'startDate': this.dataForm.startDate,
-        //     'endDate': this.dataForm.endDate
-        //   })
-        // }).then(({data}) => {
-        //   if (data && data.code === 0) {
-        //     var arrayObject = data.page.listData ;
-        //     this.dataForm.totalDonateAmount = '0';
-        //     this.dataForm.totalDonateCashAmount = '0';
-        //     this.dataForm.totalDonateMaterialAmount = '0';
-        //     this.dataForm.totalBalanceAmount = '0';
-        //     this.dataList = [];
-        //     this.totalPage = 0;
-        //
-        //     if (arrayObject != null ) {
-        //       this.dataForm.totalDonateAmount = (arrayObject.totalDonateAmount == null ? 0 : arrayObject.totalDonateAmount);
-        //       this.dataForm.totalDonateCashAmount = (arrayObject.totalDonateCashAmount == null ? 0 : arrayObject.totalDonateCashAmount);
-        //       this.dataForm.totalDonateMaterialAmount = (arrayObject.totalDonateMaterialAmount == null ? 0 : arrayObject.totalDonateMaterialAmount);
-        //       this.dataForm.totalBalanceAmount = (arrayObject.totalBalanceAmount == null ? 0 : arrayObject.totalBalanceAmount);
-        //     }
-        //
-        //     if (data.page != null && data.page.page != null) {
-        //       this.dataList = data.page.page.list;
-        //       this.totalPage = data.page.page.totalCount;
-        //     }
-        //
-        //   } else {
-        //     this.dataList = []
-        //     this.totalPage = 0
-        //   }
-        //   this.dataListLoading = false
-        // })
+        this.totalPage = 0;
+        this.dataListLoading = true
+
+        this.$http({
+          url: this.$http.adornUrl('/collect/power/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'startDate': this.dataForm.startDate,
+            'endDate': this.dataForm.endDate
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            if (data.page != null && data.page.page != null) {
+              this.dataList = data.page.page.list;
+              this.totalPage = data.page.page.totalCount;
+            }
+
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
       },
       // 每页数
       sizeChangeHandle (val) {
@@ -266,9 +241,6 @@
         this.pageIndex = val
         this.getDataList()
       } ,
-      finaceAmountFormat(row, column, cellValue, index) {
-        return getFinaceAmount(cellValue);
-      }
     }
   }
 </script>
