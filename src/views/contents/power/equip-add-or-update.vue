@@ -54,7 +54,11 @@
               <el-input type="text" v-model="item.unit" placeholder="采集单位"></el-input>
             </el-form-item>
           </el-col>
-
+          <el-col :span="14">
+            <el-form-item label="采集变量：" prop="varname">
+              <el-input type="text" v-model="item.varname" placeholder="采集变量"></el-input>
+            </el-form-item>
+          </el-col>
           <el-col :span="14" prop="color">
             <el-form-item label="选择设备显示颜色：">
               <colorPicker v-model="item.color" width="100px"/>
@@ -92,7 +96,6 @@
     data () {
       return {
         visible: false,
-        projects: [],
         dataForm: {
           id: null,
           name: '',
@@ -102,7 +105,6 @@
           no: '',
           productDate: '',
           collecUnit: '',
-          varname: '',
           color: '#00FF00',
           detail: []
         },
@@ -117,9 +119,9 @@
           model: [
             {required: true, message: '请输入设备型号', trigger: 'blur'}
           ],
-          varname: [
-            {required: true, message: '请输入厂家名词', trigger: 'blur'}
-          ],
+          // varname: [
+          //   {required: true, message: '请输入厂家名词', trigger: 'blur'}
+          // ],
           productDate: [
             {required: true, message: '请输入正确的出厂日期', trigger: 'change'}
           ]
@@ -154,9 +156,7 @@
           this.visible = true
           this.$nextTick(() => {
             this.$refs['dataForm'].resetFields()
-        }).then(() => {
-          this.projects = []
-        })
+          })
           this.$http({
             url: this.$http.adornUrl(`/collect/equipment/info/${id}`),
             method: 'get'
@@ -220,7 +220,6 @@
           no: '',
           productDate: '',
           collecUnit: '',
-          varname: '',
           color: '#00FF00',
           detail: []
         }
