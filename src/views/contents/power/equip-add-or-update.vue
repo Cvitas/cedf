@@ -50,17 +50,17 @@
         </el-col>
         <div v-for="item in dataForm.detail" v-if="item.collectType == dataForm.collecType">
           <el-col :span="14">
-            <el-form-item label="采集单位：" prop="unit">
+            <el-form-item label="采集单位：" prop="unit" style="margin-left: 50px">
               <el-input type="text" v-model="item.unit" placeholder="采集单位"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="14">
-            <el-form-item label="采集变量：" prop="varname">
+            <el-form-item label="采集变量：" prop="varname" style="margin-left: 50px">
               <el-input type="text" v-model="item.varname" placeholder="采集变量"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="14" prop="color">
-            <el-form-item label="选择设备显示颜色：">
+            <el-form-item label="选择设备显示颜色：" style="margin-left: 50px">
               <colorPicker v-model="item.color" width="100px"/>
             </el-form-item>
           </el-col>
@@ -73,22 +73,6 @@
     </span>
   </el-dialog>
 </template>
-<style>
-  .el-row {
-    margin-bottom: 20px;
-
-  &
-  :last-child {
-    margin-bottom: 0;
-  }
-
-  }
-  .el-col {
-    border-radius: 4px;
-  }
-
-</style>
-
 <script>
   import { validateLength, isAmount } from '@/utils/validate'
 
@@ -110,20 +94,20 @@
         },
         dataRule: {
           no: [
-            {required: true, message: '请输入编号', trigger: 'blur'},
-            {type: 'number', required: true, message: '请输入数字编号', trigger: 'blur'}
+            { required: true, message: '请输入编号', trigger: 'blur' },
+            { type: 'number', required: true, message: '请输入数字编号', trigger: 'blur' }
           ],
           name: [
-            {required: true, message: '请输入设备名称', trigger: 'blur'}
+            { required: true, message: '请输入设备名称', trigger: 'blur' }
           ],
           model: [
-            {required: true, message: '请输入设备型号', trigger: 'blur'}
+            { required: true, message: '请输入设备型号', trigger: 'blur' }
           ],
           // varname: [
           //   {required: true, message: '请输入厂家名词', trigger: 'blur'}
           // ],
           productDate: [
-            {required: true, message: '请输入正确的出厂日期', trigger: 'change'}
+            { required: true, message: '请输入正确的出厂日期', trigger: 'change' }
           ]
         }
       }
@@ -161,7 +145,7 @@
         this.$http({
           url: this.$http.adornUrl(`/collect/equipment/info/${id}`),
           method: 'get'
-        }).then(({data}) => {
+        }).then(({ data }) => {
           if (data && data.code === 0) {
             const detail = data.equipment.detail
             this.dataForm = data.equipment
@@ -216,7 +200,7 @@
                 productDate: this.dataForm.productDate,
                 detail: detail
               })
-            }).then(({data}) => {
+            }).then(({ data }) => {
               if (data && data.code === 0) {
                 this.$message({
                   message: '操作成功',
@@ -251,3 +235,8 @@
     }
   }
 </script>
+<style lang="scss" scoped>
+  .el-form-item {
+    margin-bottom: 4px
+  }
+</style>
