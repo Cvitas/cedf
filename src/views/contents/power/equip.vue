@@ -196,16 +196,6 @@
           }
         }
       },
-
-      initTypeSelect () {
-        // this.$http({
-        //   url: this.$http.adornUrl('/project/base/typeSelect'),
-        //   method: 'get',
-        //   params: this.$http.adornParams()
-        // }).then(({ data }) => {
-        //   this.projectTypes = data && data.code === 0 ? data.list : []
-        // })
-      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
@@ -322,7 +312,7 @@
       }
     },
     mounted () {
-      this.initTypeSelect()
+      this.getDataList()
     }
   }
 </script>

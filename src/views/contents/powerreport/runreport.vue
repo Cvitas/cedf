@@ -46,7 +46,15 @@
                        label="记录时间">
       </el-table-column>
     </el-table>
-
+    <el-pagination
+      @size-change="sizeChangeHandle"
+      @current-change="currentChangeHandle"
+      :current-page="pageIndex"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="pageSize"
+      :total="totalPage"
+      layout="total, sizes, prev, pager, next, jumper">
+    </el-pagination>
   </div>
 </template>
 
@@ -107,6 +115,9 @@
         dataList: [],
         secondVisible: false,
         dataListLoading: false,
+        pageIndex: 1,
+        pageSize: 20,
+        totalPage: 0,
       }
     },
     components: {},
@@ -149,7 +160,12 @@
         const endDate = moment(this.value[1]).format('YYYY-MM-DD')
         this.$http({
           url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/airData/4/${startDate}/${endDate}`),
-          method: 'get'
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'order': 'DESC'
+          })
         }).then(({data}) => {
           this.dataListLoading = false
           if (data && data.code === 0) {
@@ -165,7 +181,18 @@
       downloadTemplateHandle () {
         var url = this.$http.adornUrl(`/project/base/downloadTemplate?token=${this.$cookie.get('token')}`)
         window.open(url)
-      }
+      },
+      // 每页数
+      sizeChangeHandle (val) {
+        this.pageSize = val
+        this.pageIndex = 1
+        this.getDataList()
+      },
+      // 当前页
+      currentChangeHandle (val) {
+        this.pageIndex = val
+        this.getDataList()
+      },
     },
     mounted () {
       let date = new Date()

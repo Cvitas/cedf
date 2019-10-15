@@ -27,9 +27,9 @@
             :src="item.iframeUrl"
             width="100%" height="100%" frameborder="0" scrolling="yes">
           </iframe>
-          <keep-alive v-else>
+<!--          <keep-alive v-else>-->
             <router-view v-if="item.name === mainTabsActiveName" />
-          </keep-alive>
+<!--          </keep-alive>-->
         </el-card>
       </el-tab-pane>
     </el-tabs>

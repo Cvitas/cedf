@@ -21,20 +21,18 @@
   import dayairChart from '@/components/Charts/dairlyairout'
 
   export default {
-    data() {
+    data () {
       return {
-        value2: new Date(2016, 9, 10, 18, 40),
-        value3: new Date(2016, 9, 10, 18, 40),
-        value1: '',
         input1: '当日平均排气压力0.75Mpa',
-        startTime: '',
+        startTime: new Date(),
         endTime: ''
       }
     },
     name: 'dayairChart1',
     components: { dayairChart },
+    
     methods: {
-      getChartPdf() {
+      getChartPdf () {
         this.getPdf(this.$refs['dayairChart'].$el, '日气压力曲线')
       }
     }

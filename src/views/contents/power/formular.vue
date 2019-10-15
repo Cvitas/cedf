@@ -1,13 +1,14 @@
 <template>
-  <el-form    :model="dataForm"  ref= "dataForm"   @keyup.enter.native="onSubmit()" label-width="80px">
-    <el-form-item label="单台设备功率公式" prop="collectNum" style="white-space : nowrap;margin-right: 10px" >
+  <el-form :model="dataForm" ref="dataForm" @keyup.enter.native="onSubmit()" label-width="180px">
+    <el-form-item label="单台设备功率公式:" prop="collectNum" style="white-space : nowrap;margin-right: 10px">
       <img src="~@/assets/img/single.png" style="margin-left: 100px"/>
     </el-form-item>
-    <el-form-item label="比功率公式" prop="collectNum" style="white-space : nowrap;margin-right: 10px" >
-        <img src="~@/assets/img/rate.png" style="margin-left: 100px"/>
+    <el-form-item label="比功率公式:" prop="collectNum" style="white-space : nowrap;margin-right: 10px">
+      <img src="~@/assets/img/rate.png" style="margin-left: 100px"/>
     </el-form-item>
-    <el-form-item label="压缩空气总气量计算公式" prop="collectNum" style="white-space : nowrap; margin-right: 10px" >
-        <label  style="margin-left: 100px"> Q总 = Q1 + Q2 + Q3 + QN</label>
+    <el-form-item label="压缩空气总气量计算公式:" prop="collectNum" style="white-space : nowrap; margin-right: 10px">
+      <!--        <label  style="margin-left: 100px"> Q总 = Q1 + Q2 + Q3 + QN</label>-->
+      <el-input v-model="dataForm.airMethod" style="width:250px"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">确认</el-button>
@@ -19,6 +20,7 @@
   .el-select .el-input {
     width: 130px;
   }
+
   .input-with-select .el-input-group__prepend {
     background-color: #fff;
   }
@@ -26,6 +28,7 @@
   .el-select .el-input {
     width: 130px;
   }
+
   .input-with-select .el-input-group__prepend {
     background-color: #fff;
   }
@@ -36,18 +39,18 @@
 </style>
 <script>
   export default {
-    name:'quill-editor',
+    name: 'quill-editor',
     data () {
       return {
         dataForm: {
           formulaValue: '',
-          donatorName: ''
+          donatorName: '',
+          powerMethod: '',
+          airMethod: 'Q总 = Q1 + Q2 + Q3 + QN'
         }
       }
     },
-    components: {
-
-    },
+    components: {},
     activated () {
       this.init()
     },
@@ -76,7 +79,7 @@
             'collectStep': this.dataForm.collectStep,
             'collectTypeId': 'stream'
           })
-        }).then(({data}) => {
+        }).then(({ data }) => {
           if (data && data.code === 0) {
             this.$message({
               message: '操作成功',

@@ -1,10 +1,10 @@
 <template>
-  <div :class="className" :id="monthlyair" :style="{height:height,width:width,minHeight:'500px'}"></div>
+  <div :class="className" :id="dayair" :style="{height:height,width:width}"></div>
 </template>
 
 <script>
   import echarts from 'echarts'
-  import resize from './mixins/airmonthly'
+  import resize from './mixins/dayair'
 
   export default {
     mixins: [resize],
@@ -13,7 +13,7 @@
         type: String,
         default: 'chart'
       },
-      monthlyair: {
+      dayair: {
         type: String,
         default: 'chart'
       },
@@ -23,14 +23,7 @@
       },
       height: {
         type: String,
-        default: '500px'
-      },
-      data: {
-        type: Object,
-        default: {
-          data: [],
-          xais: []
-        }
+        default: '200px'
       }
     },
     data () {
@@ -48,62 +41,25 @@
       this.chart.dispose()
       this.chart = null
     },
+
     methods: {
       initChart () {
-
-        let series = []
-        const legends = this.data.data.map(item => {
-          series.push({
-            name: item.name,
-            type: 'line',
-            smooth: true,
-            symbol: 'circle',
-            symbolSize: 5,
-            showSymbol: false,
-            lineStyle: {
-              normal: {
-                width: 1
-              }
-            },
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(0, 136, 212, 0.3)'
-                }, {
-                  offset: 0.8,
-                  color: 'rgba(0, 136, 212, 0)'
-                }], false),
-                shadowColor: 'rgba(0, 0, 0, 0.1)',
-                shadowBlur: 10
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: 'rgb(0,136,212)',
-                borderColor: 'rgba(0,136,212,0.2)',
-                borderWidth: 12
-
-              }
-            },
-            data: item.data ? item.data : []
-          })
-          return item.name
-        })
-        this.chart = echarts.init(document.getElementById(this.monthlyair))
+        this.chart = echarts.init(document.getElementById(this.dayair))
+        const days = []
+        for (let i = 1; i <= 30; i++) {
+          days.push(i+'日')
+        }
         this.chart.setOption({
           backgroundColor: 'white',
           title: {
             top: 20,
-            text: '月排气曲线',
-            // subtext: '空压机1 总用电量32Kwh 总排气量：16000m³\n\r\n 空压机2 总用电量100Kwh 总排气量：26000m³',
-            align: 'right',
-            x: 'center',
+            text: '日排气压力曲线',
             textStyle: {
               fontWeight: 'normal',
               fontSize: 16,
               color: 'black'
-            }
+            },
+            left: '1%'
           },
           tooltip: {
             trigger: 'axis',
@@ -119,7 +75,7 @@
             itemWidth: 14,
             itemHeight: 5,
             itemGap: 13,
-            data: legends,
+            data: ['排气压力值', '压力平均值'],
             right: '4%',
             textStyle: {
               fontSize: 12,
@@ -128,9 +84,9 @@
           },
           grid: {
             top: 100,
-            left: '5%',
-            right: '5%',
-            bottom: '5%',
+            left: '3%',
+            right: '4%',
+            bottom: '2%',
             containLabel: true
           },
           xAxis: [{
@@ -142,11 +98,11 @@
                 color: '#57617B'
               }
             },
-            data: this.data.xais
+            data: days
           }],
           yAxis: [{
             type: 'value',
-            name: this.data.unitName,
+            name: 'P/压力值Mpa',
             axisTick: {
               show: false
             },
@@ -157,7 +113,6 @@
             },
             axisLabel: {
               margin: 10,
-              name: '日',
               textStyle: {
                 fontSize: 14
               }
@@ -168,7 +123,75 @@
               }
             }
           }],
-          series: series
+          series: [
+            {
+              name: '排气压力值',
+              type: 'line',
+              smooth: true,
+              symbol: 'circle',
+              symbolSize: 5,
+              showSymbol: false,
+              lineStyle: {
+                normal: {
+                  width: 1
+                }
+              },
+              areaStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(0, 136, 212, 0.3)'
+                  }, {
+                    offset: 0.8,
+                    color: 'rgba(0, 136, 212, 0)'
+                  }], false),
+                  shadowColor: 'rgba(0, 0, 0, 0.1)',
+                  shadowBlur: 10
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: 'rgb(0,136,212)',
+                  borderColor: 'rgba(0,136,212,0.2)',
+                  borderWidth: 12
+
+                }
+              },
+              data: [0.82, 0.8, 0.9, 0.5, 0.74, 0.6, 0.4, 0.8, 0.9, 0.6, 0.4, 0.7,0.82, 0.8, 0.9, 0.5, 0.74, 0.6, 0.4, 0.8, 0.9, 0.6, 0.4, 0.76, 0.4, 0.8, 0.9, 0.6, 0.4, 0.7]
+            }, {
+              name: '压力平均值',
+              type: 'line',
+              smooth: true,
+              symbol: 'circle',
+              symbolSize: 5,
+              showSymbol: false,
+              lineStyle: {
+                normal: {
+                  width: 1
+                }
+              },
+              areaStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(219, 50, 51, 0.3)'
+                  }, {
+                    offset: 0.8,
+                    color: 'rgba(219, 50, 51, 0)'
+                  }], false),
+                  shadowColor: 'rgba(0, 0, 0, 0.1)',
+                  shadowBlur: 10
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: 'rgb(219,50,51)',
+                  borderColor: 'rgba(219,50,51,0.2)',
+                  borderWidth: 12
+                }
+              },
+              data: [0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74,0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74]
+            }]
         })
       }
     }

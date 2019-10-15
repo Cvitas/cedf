@@ -3,6 +3,7 @@
     <div style="padding-left: 200px">
       <el-date-picker
         placeholder="选择日期"
+        type="month"
         v-model="startTime" value-format="yyyy-MM" format="yyyy-MM">
       </el-date-picker>
       <el-button type="primary">查询</el-button>
@@ -23,11 +24,8 @@
   export default {
     data() {
       return {
-        value2: new Date(2016, 9, 10, 18, 40),
-        value3: new Date(2016, 9, 10, 18, 40),
-        value1: '',
         input1: '',
-        startTime: '',
+        startTime: new Date(),
       }
     },
     name: 'monthlyair1',

@@ -1,7 +1,7 @@
 <template>
   <div class='chart-container'>
     <div style="padding-left: 200px" >
-    <el-date-picker type="date" placeholder="年份" v-model="value1" style="width: 20%;" value-format="yyyy" format="yyyy"></el-date-picker>
+    <el-date-picker type="year" placeholder="年份" v-model="startTime" style="width: 20%;" value-format="yyyy" format="yyyy"></el-date-picker>
     <el-button  type="primary">查询</el-button>
     <el-input
       placeholder="请输入内容"
@@ -19,9 +19,7 @@
   export default {
     data() {
       return {
-        value2: new Date(2016, 9, 10, 18, 40),
-        value3: new Date(2016, 9, 10, 18, 40),
-        value1: '',
+        startTime: new Date(),
         input1:'当年累计 300万m'
       }
     },
