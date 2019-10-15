@@ -37,12 +37,6 @@
         label="采集数据名称">
       </el-table-column>
       <el-table-column
-        prop="date"
-        header-align="center"
-        align="center"
-        label="采集日期">
-      </el-table-column>
-      <el-table-column
         prop="data"
         header-align="center"
         align="center"
@@ -55,7 +49,7 @@
         label="采集单位">
       </el-table-column>
       <el-table-column
-        prop="date"
+        prop="dateStr"
         header-align="center"
         align="center"
         width="180"
@@ -159,8 +153,10 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.data
-            this.totalPage = 0
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+            this.pageSize = data.page.pageSize
+            this.pageIndex = data.page.currPage
           } else {
             this.dataList = []
             this.totalPage = 0

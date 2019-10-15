@@ -160,10 +160,9 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            // this.dataList = data.data
-            // this.totalPage = 0
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
+            this.pageSize = data.page.pageSize
             this.pageIndex = data.page.currPage
           } else {
             this.dataList = []
