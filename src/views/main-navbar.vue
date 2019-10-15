@@ -2,8 +2,12 @@
   <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType">
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
-          <a class="site-navbar__brand-lg" href="javascript:;"><img src="~@/assets/img/logo-title.png" /></a>
-         <a class="site-navbar__brand-mini" href="javascript:;"> <img src="~@/assets/img/logo.png" /></a>
+          <a class="site-navbar__brand-lg" href="javascript:;">
+            <img style="width: 45px;height: 45px;float: left;margin-left: 15px;" src="~@/assets/img/logo_bg.png" />
+            <span class="logo-en">BOYUENERGY</span>
+            <span class="logo-ch">上海博御节能环保</span>
+          </a>
+        <a class="site-navbar__brand-mini" href="javascript:;"> <img src="~@/assets/img/logo.png" /></a>
       </h1>
     </div>
     <div class="site-navbar__body clearfix">
@@ -111,3 +115,17 @@
     }
   }
 </script>
+<style lang="scss" scoped>
+  .logo-ch{
+    position: absolute;
+    font-size: 12px;
+    bottom: -12px;
+    left: 65px;
+    letter-spacing: 6px;
+  }
+  .logo-en{
+    position: absolute;
+    top: -8px;
+    left: 65px;
+  }
+</style>
