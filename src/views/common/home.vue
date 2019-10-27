@@ -1,31 +1,25 @@
 <template>
   <div class="dashboard-editor-container">
-    <!--
-        <github-corner style="position: absolute; top: 0px; border: 0; right: 0;"/>
-
-        <panel-group @handleSetLineChartData="handleSetLineChartData"/>
-    -->
-
-    <el-select v-model="dataForm.equipName" placeholder="请选择设备" style="padding:10px 0 16px" clearable>
-      <el-option label="空压机1" value="0"></el-option>
-      <el-option label="空压机2" value="1"></el-option>
-    </el-select>
-
+    <panel-group @handleSetLineChartData="handleSetLineChartData"/>
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <el-col :span="16">
-          <line-chart :chart-data="lineChartData"/>
-      </el-col>
-      <el-col :span="8">
-          <gauge-chart/>
+      <el-col :span="24">
+        <!--<gauge-chart/>-->
+        {{deviceName}}
+        <el-table
+          :data="tableData"
+          style="width:100%">
+          <el-table-column
+            v-for="item in devices"
+            prop="value"
+            :label="item.name">
+          </el-table-column>
+        </el-table>
       </el-col>
     </el-row>
-
+    <el-col :span="24">
+      <line-chart :deviceName="deviceName" :chart-data="lineChartData"/>
+    </el-col>
     <el-row :gutter="32">
-      <!--<el-col :xs="24" :sm="24" :lg="8">-->
-      <!--<div class="chart-wrapper">-->
-      <!--<gauge-chart/>-->
-      <!--</div>-->
-      <!--</el-col>-->
       <el-col :span="16">
         <div class="chart-wrapper">
           <bar-chart/>
@@ -37,33 +31,15 @@
         </div>
       </el-col>
     </el-row>
-    <!--
-        <el-row :gutter="8">
-          <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
-            <transaction-table/>
-          </el-col>
-          <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-          //  <todo-list/>
-          </el-col>
-          <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-            <box-card/>
-          </el-col>
-        </el-row>
-    -->
   </div>
 </template>
 
 <script>
-
   import PanelGroup from '@/components/home/PanelGroup'
   import LineChart from '@/components/home/LineChart'
-  // import RaddarChart from '@/components/home/RaddarChart'
   import PieChart from '@/components/home/PieChart'
   import BarChart from '@/components/home/BarChart'
   import GaugeChart from '@/components/home/GaugeChart'
-  // import TransactionTable from '@/components/home/TransactionTable'
-  // import TodoList from './components/home/TodoList'
-  // import BoxCard from './components/home/BoxCard'
 
   const lineChartData = {
     newVisitis: {
@@ -87,28 +63,67 @@
   export default {
     name: 'DashboardAdmin',
     components: {
-      // GithubCorner,
       PanelGroup,
       LineChart,
-      // RaddarChart,
       GaugeChart,
       PieChart,
       BarChart
-      //TransactionTable,
-      // TodoList,
-      //  BoxCard
     },
-    data() {
+    data () {
       return {
+        // tableData: [{name: '空压机1', value: 1}, {name: '空压机2', value: 2}, {name: '空压机3', value: 3}, {
+        //   name: '空压机4',
+        //   value: 4
+        // }, {name: '空压机5', value: 5}, {name: '空压机6', value: 6}, {name: '空压机7', value: 7}, {
+        //   name: '空压机8',
+        //   value: 8
+        // }, {name: '空压机9', value: 9}],
+        tableData: [{value: Math.floor(Math.random() * 1000)}],
+        devices: [{
+          name: '电机电流',
+          value: 1,
+          icon: 'qibeng'
+        }, {
+          name: '总管压力',
+          value: 2,
+          icon: 'qibeng'
+        }, {
+          name: '排气压力',
+          value: 3,
+          icon: 'qibeng'
+        }, {
+          name: '瞬间流量',
+          value: 4,
+          icon: 'qibeng'
+        }, {
+          name: '累计流量',
+          value: 5,
+          icon: 'qibeng'
+        }, {
+          name: '压力露点',
+          value: 6,
+          icon: 'qibeng'
+        }, {
+          name: '运行电量',
+          value: 7,
+          icon: 'qibeng'
+        }, {
+          name: '进气温度',
+          value: 8,
+          icon: 'qibeng'
+        }, {
+          name: '排气温度',
+          value: 9,
+          icon: 'qibeng'
+        }],
         lineChartData: lineChartData.newVisitis,
-        dataForm: {
-          equipName: ''
-        }
+        deviceName: ''
       }
     },
     methods: {
-      handleSetLineChartData(type) {
-        this.lineChartData = lineChartData[type]
+      handleSetLineChartData (index) {
+        this.tableData = [{value: Math.floor(Math.random() * 1000)}]
+        this.deviceName = '空压机' + index
       }
     }
   }
