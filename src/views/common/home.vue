@@ -6,31 +6,42 @@
         <!--<gauge-chart/>-->
         {{deviceName}}
         <el-table
+          center
           :data="tableData"
           style="width:100%">
           <el-table-column
-            v-for="item in devices"
-            prop="value"
+            type="index"
+            width="120">
+            <template slot-scope="scope">
+              {{scope.row.name}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-for="(item,index) in devices"
+            :prop="item.value"
             :label="item.name">
+            <template slot-scope="scope">
+              {{scope.row.data[index]}} {{scope.row.name==='瞬时流量'?'m³/min':'m³'}}
+            </template>
           </el-table-column>
         </el-table>
       </el-col>
     </el-row>
-    <el-col :span="24">
+    <el-col :span="24" style="margin-top: 30px">
       <line-chart :deviceName="deviceName" :chart-data="lineChartData"/>
     </el-col>
-    <el-row :gutter="32">
-      <el-col :span="16">
-        <div class="chart-wrapper">
-          <bar-chart/>
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="chart-wrapper">
-          <pie-chart/>
-        </div>
-      </el-col>
-    </el-row>
+    <!--<el-row :gutter="32">-->
+    <!--<el-col :span="16">-->
+    <!--<div class="chart-wrapper">-->
+    <!--<bar-chart/>-->
+    <!--</div>-->
+    <!--</el-col>-->
+    <!--<el-col :span="8">-->
+    <!--<div class="chart-wrapper">-->
+    <!--<pie-chart/>-->
+    <!--</div>-->
+    <!--</el-col>-->
+    <!--</el-row>-->
   </div>
 </template>
 
@@ -78,42 +89,52 @@
         //   name: '空压机8',
         //   value: 8
         // }, {name: '空压机9', value: 9}],
-        tableData: [{value: Math.floor(Math.random() * 1000)}],
+        tableData: [{
+          name: '瞬时流量',
+          data: [Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]
+        }, {
+          name: '累积流量',
+          data: [Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]
+        }],
         devices: [{
-          name: '电机电流',
-          value: 1,
+          name: '离心机',
           icon: 'qibeng'
         }, {
-          name: '总管压力',
-          value: 2,
+          name: '杂用储气罐',
           icon: 'qibeng'
         }, {
-          name: '排气压力',
-          value: 3,
+          name: '布袋喷吹储气罐',
           icon: 'qibeng'
         }, {
-          name: '瞬间流量',
-          value: 4,
+          name: '1#仪用',
           icon: 'qibeng'
         }, {
-          name: '累计流量',
-          value: 5,
+          name: '2#仪用',
           icon: 'qibeng'
         }, {
-          name: '压力露点',
-          value: 6,
+          name: '3#仪用',
           icon: 'qibeng'
         }, {
-          name: '运行电量',
-          value: 7,
+          name: '4#仪用',
           icon: 'qibeng'
         }, {
-          name: '进气温度',
-          value: 8,
+          name: '5#仪用',
           icon: 'qibeng'
         }, {
-          name: '排气温度',
-          value: 9,
+          name: '6#仪用',
+          icon: 'qibeng'
+        }, {
+          name: '7#仪用',
+          icon: 'qibeng'
+        }, {
+          name: '8#仪用',
+          icon: 'qibeng'
+        }, {
+          name: '9#仪用',
           icon: 'qibeng'
         }],
         lineChartData: lineChartData.newVisitis,
