@@ -71,13 +71,6 @@
     },
     data () {
       return {
-        // tableData: [{name: '空压机1', value: 1}, {name: '空压机2', value: 2}, {name: '空压机3', value: 3}, {
-        //   name: '空压机4',
-        //   value: 4
-        // }, {name: '空压机5', value: 5}, {name: '空压机6', value: 6}, {name: '空压机7', value: 7}, {
-        //   name: '空压机8',
-        //   value: 8
-        // }, {name: '空压机9', value: 9}],
         tableData: [{value: Math.floor(Math.random() * 1000)}],
         devices: [{
           name: '电机电流',
