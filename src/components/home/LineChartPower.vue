@@ -46,11 +46,11 @@
           title: { text: '' },
           tooltip: {
             trigger: 'item',
-            formatter: '温度 : <br/> {b}时: {c}℃ '
+            formatter: '压力 : <br/> {b}时: {c}MPa '
           },
           toolbox: {
             feature: {
-              dataView: {readOnly: false},
+              dataView: { readOnly: false },
               saveAsImage: {}
             }
           },
@@ -67,7 +67,7 @@
             data: [],
             type: 'line',
             smooth: true,
-            color: 'red'
+            color: 'green'
           }]
         }
       }
@@ -126,9 +126,9 @@
           xAxisData.push(i)
         }
         for (let i = 0; i <= curHour; i++) {
-          seriesData.push(Math.floor(Math.random() * 20) + 40)
+          seriesData.push(Math.floor(Math.random() * 50) + 100)
         }
-        this.option.title.text = this.deviceName + '总管温度（℃）' + moment(new Date()).format('YYYY-MM-DD')
+        this.option.title.text = this.deviceName + '总管压力（MPa）' + moment(new Date()).format('YYYY-MM-DD')
         this.option.xAxis.data = xAxisData
         this.option.series[0].data = seriesData
         this.chart.setOption(this.option)

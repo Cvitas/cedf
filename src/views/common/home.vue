@@ -27,8 +27,11 @@
         </el-table>
       </el-col>
     </el-row>
-    <el-col :span="24" style="margin-top: 30px">
+    <el-col :span="12" style="margin-top: 30px">
       <line-chart :deviceName="deviceName" :chart-data="lineChartData"/>
+    </el-col>
+    <el-col :span="12" style="margin-top: 30px">
+      <line-chart-power :deviceName="deviceName" :chart-data="lineChartData"/>
     </el-col>
     <!--<el-row :gutter="32">-->
     <!--<el-col :span="16">-->
@@ -48,6 +51,7 @@
 <script>
   import PanelGroup from '@/components/home/PanelGroup'
   import LineChart from '@/components/home/LineChart'
+  import LineChartPower from '@/components/home/LineChartPower'
   import PieChart from '@/components/home/PieChart'
   import BarChart from '@/components/home/BarChart'
   import GaugeChart from '@/components/home/GaugeChart'
@@ -74,6 +78,7 @@
   export default {
     name: 'DashboardAdmin',
     components: {
+      LineChartPower,
       PanelGroup,
       LineChart,
       GaugeChart,
