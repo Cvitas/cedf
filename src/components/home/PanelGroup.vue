@@ -6,10 +6,10 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">空压机1</p>
-        <p class="card-panel-temp">当前温度：<span>66℃</span></p>
+        <p class="card-panel-temp">电流：<span>10 A</span><br/>干燥剂露点：<span>50℃</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -20,10 +20,10 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">空压机2</p>
-        <p class="card-panel-temp">当前温度：<span style="color: gray">25℃</span></p>
+        <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -34,10 +34,10 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">空压机3</p>
-        <p class="card-panel-temp">当前温度：<span>66℃</span></p>
+        <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="77" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -48,10 +48,10 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">空压机4</p>
-        <p class="card-panel-temp">当前温度：<span style="color: red">78℃</span></p>
+        <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -62,10 +62,10 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">空压机5</p>
-        <p class="card-panel-temp">当前温度：<span>66℃</span></p>
+        <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -76,10 +76,10 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">空压机6</p>
-        <p class="card-panel-temp">当前温度：<span>66℃</span></p>
+        <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -90,10 +90,10 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">空压机7</p>
-        <p class="card-panel-temp">当前温度：<span style="color: red">88℃</span></p>
+        <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -103,11 +103,11 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机8</p>
-        <p class="card-panel-temp">当前温度：<span>66℃</span></p>
+        <p class="card-panel-title">空压机8 <span style="color: red">(异常)</span></p>
+        <p class="card-panel-temp">主机温度：<span style="color:red;">88℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>
         </div>
 
       </div>
@@ -117,11 +117,11 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机9</p>
-        <p class="card-panel-temp">当前温度：<span>66℃</span></p>
+        <p class="card-panel-title">空压机9 <span style="color: red">(异常)</span></p>
+        <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
-          <span>气电比：</span>
-          <count-to :start-val="0" :end-val="25" :suffix="'%'" :duration="2600" class="card-panel-num"/>
+          <span>出口压力：</span>
+          <count-to :start-val="0" :end-val="88" :suffix="' Bar'" :duration="2600" class="card-panel-num" style="color: red"/>
         </div>
 
       </div>
@@ -154,7 +154,7 @@
     margin-top: 18px;
 
     .card-panel-col {
-      margin-bottom: 32px;
+      margin-bottom: 8px;
     }
 
     .card-panel {
