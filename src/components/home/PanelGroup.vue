@@ -5,7 +5,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机1</p>
+        <p class="card-panel-title">1#仪用空压机</p>
         <p class="card-panel-temp">电流：<span>10 A</span><br/>干燥剂露点：<span>50℃</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -19,7 +19,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机2</p>
+        <p class="card-panel-title">2#仪用空压机</p>
         <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -33,7 +33,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机3</p>
+        <p class="card-panel-title">3#仪用空压机</p>
         <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -47,7 +47,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机4</p>
+        <p class="card-panel-title">4#仪用空压机</p>
         <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -61,7 +61,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机5</p>
+        <p class="card-panel-title">1#输灰空压机</p>
         <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -75,7 +75,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机6</p>
+        <p class="card-panel-title">2#输灰空压机</p>
         <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -89,7 +89,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机7</p>
+        <p class="card-panel-title">3#输灰空压机</p>
         <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -103,7 +103,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机8 <span style="color: red">(异常)</span></p>
+        <p class="card-panel-title">4#输灰空压机 <span style="color: red">(异常)</span></p>
         <p class="card-panel-temp">主机温度：<span style="color:red;">88℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
@@ -117,7 +117,7 @@
         <div class="card-panel-icon-wrapper icon-people">
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
-        <p class="card-panel-title">空压机9 <span style="color: red">(异常)</span></p>
+        <p class="card-panel-title">5#输灰空压机 <span style="color: red">(异常)</span></p>
         <p class="card-panel-temp">主机温度：<span>60℃</span><br/>电流：<span>10 A</span></p>
         <div class="card-panel-description">
           <span>出口压力：</span>
