@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard-editor-container">
-    <panel-group @handleSetLineChartData="handleSetLineChartData"/>
+    <panel-group />
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <el-col :span="24">
         <!--<gauge-chart/>-->
-        {{deviceName}}
+        <!--{{deviceName}}-->
         <el-table
           center
           :data="tableData"
@@ -87,54 +87,45 @@ export default {
   },
   data () {
     return {
-      // tableData: [{name: '空压机1', value: 1}, {name: '空压机2', value: 2}, {name: '空压机3', value: 3}, {
-      //   name: '空压机4',
-      //   value: 4
-      // }, {name: '空压机5', value: 5}, {name: '空压机6', value: 6}, {name: '空压机7', value: 7}, {
-      //   name: '空压机8',
-      //   value: 8
-      // }, {name: '空压机9', value: 9}],
-      tableData: [{
-        name: '瞬时流量',
-        data: [Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]
-      }, {
-        name: '累积流量',
-        data: [Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]
-      }],
-      devices: [{
-        name: '离心机',
-        icon: 'qibeng'
-      }, {
-        name: '杂用储气罐',
-        icon: 'qibeng'
-      }, {
-        name: '布袋喷吹储气罐',
-        icon: 'qibeng'
-      }, {
-        name: '1#仪用储气罐',
-        icon: 'qibeng'
-      }, {
-        name: '2#仪用储气罐',
-        icon: 'qibeng'
-      }, {
-        name: '2#炉输灰储气罐',
-        icon: 'qibeng'
-      }, {
-        name: '1#炉输灰储气罐',
-        icon: 'qibeng'
-      }],
+      tableData: [ ],
+      devices: [ ],
       lineChartData: lineChartData.newVisitis,
       deviceName: ''
     }
   },
+  mounted(){
+    this.handlePipeData(),
+      this.intervalRun()
+  },
   methods: {
-    handleSetLineChartData (index) {
-      this.tableData = [{ value: Math.floor(Math.random() * 1000) }]
-      this.deviceName = ''
+
+    intervalRun () {
+      window.setInterval(() => {
+        setTimeout(this.handlePipeData, 0)
+      }, 1000 )
+    },
+    handlePipeData ()  {
+      this.$http({
+        url: this.$http.adornUrl(`/collect/home/pipelist`),
+        method: 'get'
+      }).then(({data}) => {
+        if (data && data.code === 0) {
+
+          this.tableData = [];
+          this.tableData = [];
+
+          var mapss = {};
+          mapss['name'] = '瞬时流量';
+          mapss['data'] = data.data.ssll;
+
+          var maplj = {};
+          maplj['name'] = '累积流量';
+          maplj['data'] = data.data.ljll;
+          this.tableData.push(maplj);
+          this.tableData.push(mapss);
+          this.devices = data.data.devices;
+        }
+      })
     }
   }
 }

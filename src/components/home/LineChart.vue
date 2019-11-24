@@ -83,6 +83,7 @@ export default {
   },
   mounted () {
     this.initChart()
+    this.intervalRun()
     if (this.autoResize) {
       this.__resizeHandler = debounce(() => {
         if (this.chart) {
@@ -118,21 +119,38 @@ export default {
     setOptions ({ expectedData, actualData } = {}) {
       this.chart.setOption()
     },
+    intervalRun () {
+      window.setInterval(() => {
+        setTimeout(this.initChart, 0)
+      }, 1000 * 60 )
+    },
     initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
       const seriesData = []
       const xAxisData = []
-      const curHour = new Date().getHours()
-      for (let i = 0; i < 24; i++) {
-        xAxisData.push(i)
-      }
-      for (let i = 0; i <= curHour; i++) {
-        seriesData.push(Math.floor(Math.random() * 20) + 40)
-      }
-      this.option.title.text = this.deviceName + '总管温度（℃）' + moment(new Date()).format('YYYY-MM-DD')
-      this.option.xAxis.data = xAxisData
-      this.option.series[0].data = seriesData
-      this.chart.setOption(this.option)
+      const curHour = new Date().getHours();
+
+      // 获取温度数据
+      this.$http({
+        url: this.$http.adornUrl(`/collect/home/totaltemplist`),
+        method: 'get'
+      }).then(({data}) => {
+        if (data && data.code === 0) {
+          var map = data.data;
+          // for (let i = 0; i < 24; i++) {
+          //   xAxisData.push(i)
+          // }
+          // for (let i = 0; i <= curHour; i++) {
+          //   seriesData.push(Math.floor(Math.random() * 20) + 40)
+          // }
+          this.option.title.text = this.deviceName + '总管温度（℃）' + moment(new Date()).format('YYYY-MM-DD')
+          this.option.xAxis.data = map.hours
+          this.option.series[0].data = map.data
+          this.chart.setOption(this.option)
+        }
+      })
+
+
     }
   }
 }
