@@ -6,7 +6,7 @@
           <icon-svg :name="icon" class-name="card-panel-icon"/>
         </div>
         <p class="card-panel-title">{{devInfo.devName1}}</p>
-        <p class="card-panel-temp">电流：<span>{{devInfo.devPower1}} A</span><br/>干燥剂露点：<span>{{devInfo.devLd1}} ℃</span></p>
+        <p class="card-panel-temp">电流：<span>{{devInfo.devPower1}} A</span><br/>干燥机露点：<span>{{devInfo.devLd1}} ℃</span></p>
         <div class="card-panel-description">
           <span>出口压力：{{devInfo.devPress1}} Bar</span>
           <!--<count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>-->

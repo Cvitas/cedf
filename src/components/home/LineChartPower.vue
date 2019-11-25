@@ -47,7 +47,7 @@ export default {
         title: { text: '' },
         tooltip: {
           trigger: 'item',
-          formatter: '压力 : <br/> {b}时: {c}MPa '
+          formatter: '压力 : <br/> {b}时: {c}Bar '
         },
         toolbox: {
           feature: {
@@ -158,7 +158,7 @@ export default {
           // for (let i = 0; i <= curHour; i++) {
           //   seriesData.push(Math.floor(Math.random() * 50) + 100)
           // }
-          this.option.title.text = this.deviceName + '总管压力（MPa）' + moment(new Date()).format('YYYY-MM-DD')
+          this.option.title.text = this.deviceName + '总管压力（Bar）' + moment(new Date()).format('YYYY-MM-DD')
           this.option.xAxis.data = map.hours
           this.option.series[0].data = map.data
           this.chart.setOption(this.option)

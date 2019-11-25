@@ -56,24 +56,24 @@ import PieChart from '@/components/home/PieChart'
 import BarChart from '@/components/home/BarChart'
 import GaugeChart from '@/components/home/GaugeChart'
 
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+// const lineChartData = {
+//   newVisitis: {
+//     expectedData: [100, 120, 161, 134, 105, 160, 165],
+//     actualData: [120, 82, 91, 154, 162, 140, 145]
+//   },
+//   messages: {
+//     expectedData: [200, 192, 120, 144, 160, 130, 140],
+//     actualData: [180, 160, 151, 106, 145, 150, 130]
+//   },
+//   purchases: {
+//     expectedData: [80, 100, 121, 104, 105, 90, 100],
+//     actualData: [120, 90, 100, 138, 142, 130, 130]
+//   },
+//   shoppings: {
+//     expectedData: [130, 140, 141, 142, 145, 150, 160],
+//     actualData: [120, 82, 91, 154, 162, 140, 130]
+//   }
+// }
 
 export default {
   name: 'DashboardAdmin',
@@ -89,7 +89,7 @@ export default {
     return {
       tableData: [ ],
       devices: [ ],
-      lineChartData: lineChartData.newVisitis,
+      lineChartData: {},
       deviceName: ''
     }
   },
@@ -102,7 +102,7 @@ export default {
     intervalRun () {
       window.setInterval(() => {
         setTimeout(this.handlePipeData, 0)
-      }, 1000 )
+      }, 1000 * 60)
     },
     handlePipeData ()  {
       this.$http({
@@ -121,8 +121,9 @@ export default {
           var maplj = {};
           maplj['name'] = '累积流量';
           maplj['data'] = data.data.ljll;
-          this.tableData.push(maplj);
+
           this.tableData.push(mapss);
+          this.tableData.push(maplj);
           this.devices = data.data.devices;
         }
       })
