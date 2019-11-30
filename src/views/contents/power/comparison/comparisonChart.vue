@@ -3,15 +3,15 @@
     <div class="button-bar">
       <el-form ref="form" :model="form" label-width="120px" :inline="true">
         <el-form-item label="设备类型">
-          <el-select v-model="form.deviceType" placeholder="请选择" style="width: 250px" @change="changeTypes">
-            <el-option
-              v-for="item in devices"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <el-select v-model="form.deviceType" placeholder="请选择" style="width: 250px" @change="changeTypes">
+          <el-option
+            v-for="item in devices"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
         <el-form-item label="选择对比项">
           <el-select v-model="form.value" :multiple-limit="limit" multiple placeholder="请选择" style="width: 250px">
             <el-option

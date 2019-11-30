@@ -1,6 +1,16 @@
 <template>
   <div class="mod-role">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+      <el-form-item label="设备类型">
+        <el-select v-model="dataForm.deviceId" placeholder="请选择" style="width: 250px">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-col class="line" :span="3">选择日期</el-col>
         <el-col :span="8">
@@ -115,8 +125,10 @@
         dataForm: {
           projecName: '',
           startDate: '',
-          endDate: ''
+          endDate: '',
+          deviceId: ''
         },
+        options:[],
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -125,9 +137,22 @@
       }
     },
     activated () {
-      this.getDataList()
+      this.getDataList(),
+        this.changeTypes()
     },
     methods: {
+      changeTypes() {
+        this.options = []
+        this.$http({
+          url: this.$http.adornUrl(`/collect/equipment/equipnamelist`),
+          method: 'get'
+        }).then((data) => {
+          if (data != null && data.data.code === 0) {
+            this.options = data.data.data
+          }
+        })
+      },
+
       searchDataList () {
         if (!this.dataForm.startDate || !this.dataForm.endDate) {
           this.$message('请选择需要查询的日期范围')

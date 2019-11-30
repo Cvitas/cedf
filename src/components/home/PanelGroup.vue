@@ -78,7 +78,7 @@
         <p class="card-panel-title">{{devInfo.devName6}}</p>
         <p class="card-panel-temp">主机温度：<span>{{devInfo.devLd6}}  ℃</span><br/>电流：<span>{{devInfo.devPower6}} A</span></p>
         <div class="card-panel-description">
-          <span>出口压力：{{devInfo.devPress6}} ℃</span>
+          <span>出口压力：{{devInfo.devPress6}} Bar</span>
           <!--<count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>-->
         </div>
 

@@ -28,8 +28,8 @@
       </el-form-item>
       <el-form-item>
         <el-button type="warning" @click="searchDataList()">查询</el-button>
-        <el-button type="warning" @click="downloadDataHandle()">导出数据</el-button>
-        <el-button type="warning" @click="searchDataList()">导入数据</el-button>
+        <!--<el-button type="warning" @click="downloadDataHandle()">导出数据</el-button>-->
+        <!--<el-button type="warning" @click="searchDataList()">导入数据</el-button>-->
       </el-form-item>
     </el-form>
     <el-table
@@ -42,21 +42,15 @@
         prop="name"
         header-align="center"
         align="center"
-        width="200"
+
         visible="false"
-        label="采集数据名称">
+        label="设备名称">
       </el-table-column>
       <el-table-column
-        prop="data"
+        prop="powerRate"
         header-align="center"
         align="center"
-        label="采集结果">
-      </el-table-column>
-      <el-table-column
-        prop="unitName"
-        header-align="center"
-        align="center"
-        label="采集单位">
+        label="电量(kWh)">
       </el-table-column>
       <el-table-column
         prop="dateStr"
@@ -138,21 +132,28 @@
       }
     },
     activated () {
+
       this.getDataList(),
-        this.changeTypes()
+     this.changeTypes()
+    },
+    created() {
+      this.changeTypes()
     },
     methods: {
+//  this.form.type = index
       changeTypes() {
         this.options = []
         this.$http({
           url: this.$http.adornUrl(`/collect/equipment/equipnamelist`),
-          method: 'get'
+          method: 'get',
+          params: { 'type': 'power'}
         }).then((data) => {
           if (data != null && data.data.code === 0) {
             this.options = data.data.data
           }
         })
       },
+
       searchDataList () {
         if (!this.dataForm.startDate || !this.dataForm.endDate) {
           this.$message('请选择需要查询的日期范围')
@@ -165,15 +166,17 @@
         if (!this.dataForm.startDate || !this.dataForm.endDate) {
           return false
         }
+
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/powerDetailData`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/powerRateData`),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
             'startDate': this.dataForm.startDate,
-            'endDate': this.dataForm.endDate
+            'endDate': this.dataForm.endDate,
+            'deviceId': this.dataForm.deviceId
           })
         }).then(({data}) => {
           if (data && data.code === 0) {

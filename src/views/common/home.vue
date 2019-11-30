@@ -27,11 +27,12 @@
         </el-table>
       </el-col>
     </el-row>
-    <el-col :span="12" style="margin-top: 30px">
-      <line-chart :deviceName="deviceName" :chart-data="lineChartData"/>
-    </el-col>
+
     <el-col :span="12" style="margin-top: 30px">
       <line-chart-power :deviceName="deviceName" :chart-data="lineChartData"/>
+    </el-col>
+    <el-col :span="12" style="margin-top: 30px">
+      <line-chart :deviceName="deviceName" :chart-data="lineChartData"/>
     </el-col>
     <!--<el-row :gutter="32">-->
     <!--<el-col :span="16">-->

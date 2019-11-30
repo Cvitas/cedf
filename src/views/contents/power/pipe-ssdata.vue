@@ -42,7 +42,7 @@
         prop="name"
         header-align="center"
         align="center"
-        width="200"
+        width="400"
         visible="false"
         label="采集数据名称">
       </el-table-column>
@@ -50,7 +50,7 @@
         prop="data"
         header-align="center"
         align="center"
-        label="采集结果">
+        label="数值">
       </el-table-column>
       <el-table-column
         prop="unitName"
@@ -62,7 +62,6 @@
         prop="dateStr"
         header-align="center"
         align="center"
-        width="180"
         label="采集时间">
       </el-table-column>
     </el-table>
@@ -142,6 +141,7 @@
         this.changeTypes()
     },
     methods: {
+
       changeTypes() {
         this.options = []
         this.$http({
@@ -153,6 +153,7 @@
           }
         })
       },
+
       searchDataList () {
         if (!this.dataForm.startDate || !this.dataForm.endDate) {
           this.$message('请选择需要查询的日期范围')
@@ -167,13 +168,14 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/powerDetailData`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/pipeData/`),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
             'startDate': this.dataForm.startDate,
-            'endDate': this.dataForm.endDate
+            'endDate': this.dataForm.endDate,
+            'dateType': '0'
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -200,7 +202,7 @@
         this.getDataList()
       },
       downloadDataHandle() {
-        var urlPrefix = "/collect/collecstatis/export?type=3";
+        var urlPrefix = "/collect/collecstatis/export?type=2";
         var page = this.pageIndex;
         var limit=this.pageSize;
         var startDate=this.dataForm.startDate;
@@ -211,7 +213,7 @@
 
         var url = this.$http.adornUrl(urlStr);
         window.open(url);
-      } ,
+      },
     }
   }
 </script>
