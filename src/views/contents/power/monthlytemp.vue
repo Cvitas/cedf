@@ -38,6 +38,6 @@
     position: relative;
     padding: 20px;
     width: 100%;
-    height: 85vh;
+    height: 80vh;
   }
 </style>
