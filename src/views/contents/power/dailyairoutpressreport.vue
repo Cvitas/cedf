@@ -14,7 +14,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <dayairChart ref="dayairChart" height='100%' width='100%' @transferAgvData="getAvgData"></dayairChart>
+    <dayairChart ref="dayairChart" height='100% - 100px)' width='100%' @transferAgvData="getAvgData"></dayairChart>
   </div>
 </template>
 
@@ -30,35 +30,35 @@
       }
     },
     name: 'dayairChart1',
-    components: { dayairChart },
+    components: {dayairChart},
 
     methods: {
-      getAvgData(agvData) {
-          var avgstr = '平均排气压力 '+ agvData + ' Mpa';
-         this.avgData = avgstr;
+      getAvgData (agvData) {
+        var avgstr = '平均排气压力 ' + agvData + ' Mpa'
+        this.avgData = avgstr
       },
-      getData() {
+      getData () {
         if (!this.startTime) {
           this.$message('请选择需要查询的日期')
           return false
         }
-        var dateStr ;
-        if ('string' == typeof this.startTime) {
-           dateStr = this.startTime;
+        var dateStr
+        if (typeof this.startTime === 'string') {
+          dateStr = this.startTime
         } else {
-          var month = this.prefixZero(this.startTime.getMonth(),2);
-          var day =  this.prefixZero(this.startTime.getDate(),2);
-          dateStr = this.startTime.getFullYear() + "-" + month  +"-" + day ;
+          var month = this.prefixZero(this.startTime.getMonth(), 2)
+          var day = this.prefixZero(this.startTime.getDate(), 2)
+          dateStr = this.startTime.getFullYear() + '-' + month + '-' + day
         }
-        this.$refs.dayairChart.initChart(dateStr);
+        this.$refs.dayairChart.initChart(dateStr)
       },
       getChartPdf () {
         this.getPdf(this.$refs['dayairChart'].$el, '日气压力曲线')
       },
-      prefixZero(num, n) {
-          return (Array(n).join(0) + num).slice(-n);
-        }
+      prefixZero (num, n) {
+        return (Array(n).join(0) + num).slice(-n)
       }
+    }
   }
 </script>
 
@@ -67,6 +67,6 @@
     position: relative;
     padding: 20px;
     width: 100%;
-    height: 85vh;
+    height: 80vh;
   }
 </style>

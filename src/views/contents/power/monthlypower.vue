@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <monthlypower height='100%' width='100%'></monthlypower>
+    <monthlypower height='calc(100% - 100px)' width='100%'></monthlypower>
   </div>
 </template>
 

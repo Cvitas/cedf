@@ -12,7 +12,7 @@
         v-model="input1"
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>  </div>
-    <daypipeChart height='100%' width='100%'></daypipeChart>
+    <daypipeChart height='calc(100% - 100px)' width='100%'></daypipeChart>
   </div>
 </template>
 

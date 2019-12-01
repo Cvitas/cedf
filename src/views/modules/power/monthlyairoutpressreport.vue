@@ -12,7 +12,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>
     </div>
-    <monthlyairChart height='100%' width='100%'></monthlyairChart>
+    <monthlyairChart height='calc(100% - 100px)' width='100%'></monthlyairChart>
   </div>
 </template>
 

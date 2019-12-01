@@ -9,7 +9,7 @@
       :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
     </el-input>
     </div>
-    <yearpipe height='100%' width='100%'></yearpipe>
+    <yearpipe height='calc(100% - 100px)' width='100%'></yearpipe>
   </div>
 </template>
 
@@ -35,6 +35,6 @@
     position: relative;
     padding:20px;
     width: 100%;
-    height:85vh;
+    height:80vh;
   }
 </style>

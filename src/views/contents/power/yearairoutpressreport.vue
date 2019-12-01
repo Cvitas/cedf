@@ -11,7 +11,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <yearairChart ref="yearairChart" height='100%' width='100%'></yearairChart>
+    <yearairChart ref="yearairChart" height='calc(100% - 100px)' width='100%'></yearairChart>
   </div>
 </template>
 

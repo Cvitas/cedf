@@ -12,7 +12,7 @@
         v-model="input1"
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>  </div>
-    <daytemp height='100%' width='100%'></daytemp>
+    <daytemp height='calc(100% - 100px)' width='100%'></daytemp>
   </div>
 </template>
 

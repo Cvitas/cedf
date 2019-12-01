@@ -1,6 +1,6 @@
 <template>
   <div class='chart-container'>
-    <daypipeChart height='100%' width='100%'></daypipeChart>
+    <daypipeChart height='calc(100% - 100px)' width='100%'></daypipeChart>
   </div>
 </template>
 

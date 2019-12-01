@@ -10,7 +10,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>
     </div>
-    <yearpower height='100%' width='100%'></yearpower>
+    <yearpower height='calc(100% - 100px)' width='100%'></yearpower>
   </div>
 </template>
 

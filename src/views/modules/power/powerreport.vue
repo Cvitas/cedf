@@ -39,7 +39,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="图表展示" name="first">
 <!--         <daypowerChart height='100%' width='100%'></daypowerChart> -->
-        <monthlyairChart height='100%' width='100%'></monthlyairChart>
+        <monthlyairChart height='calc(100% - 100px)' width='100%'></monthlyairChart>
 
       </el-tab-pane>
       <el-tab-pane label="列表展示" name="second">

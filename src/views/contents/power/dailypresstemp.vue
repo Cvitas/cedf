@@ -12,7 +12,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <dairlypresstemp height='100%' width='100%'></dairlypresstemp>
+    <dairlypresstemp height='calc(100% - 100px)' width='100%'></dairlypresstemp>
   </div>
 </template>
 

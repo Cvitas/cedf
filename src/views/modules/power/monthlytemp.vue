@@ -12,7 +12,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>
     </div>
-    <monthlytemp height='100%' width='100%'></monthlytemp>
+    <monthlytemp height='calc(100% - 100px)' width='100%'></monthlytemp>
   </div>
 </template>
 
