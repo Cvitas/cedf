@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-editor-container">
-    <panel-group />
+    <panel-group/>
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <el-col :span="24">
         <!--<gauge-chart/>-->
@@ -18,6 +18,7 @@
           </el-table-column>
           <el-table-column
             v-for="(item,index) in devices"
+            :key="index"
             :prop="item.value"
             :label="item.name">
             <template slot-scope="scope">
@@ -88,13 +89,13 @@ export default {
   },
   data () {
     return {
-      tableData: [ ],
-      devices: [ ],
+      tableData: [],
+      devices: [],
       lineChartData: {},
       deviceName: ''
     }
   },
-  mounted(){
+  mounted () {
     this.handlePipeData(),
       this.intervalRun()
   },
@@ -105,27 +106,27 @@ export default {
         setTimeout(this.handlePipeData, 0)
       }, 1000 * 60)
     },
-    handlePipeData ()  {
+    handlePipeData () {
       this.$http({
         url: this.$http.adornUrl(`/collect/home/pipelist`),
         method: 'get'
-      }).then(({data}) => {
+      }).then(({ data }) => {
         if (data && data.code === 0) {
 
-          this.tableData = [];
-          this.tableData = [];
+          this.tableData = []
+          this.tableData = []
 
-          var mapss = {};
-          mapss['name'] = '瞬时流量';
-          mapss['data'] = data.data.ssll;
+          var mapss = {}
+          mapss['name'] = '瞬时流量'
+          mapss['data'] = data.data.ssll
 
-          var maplj = {};
-          maplj['name'] = '累积流量';
-          maplj['data'] = data.data.ljll;
+          var maplj = {}
+          maplj['name'] = '累积流量'
+          maplj['data'] = data.data.ljll
 
-          this.tableData.push(mapss);
-          this.tableData.push(maplj);
-          this.devices = data.data.devices;
+          this.tableData.push(mapss)
+          this.tableData.push(maplj)
+          this.devices = data.data.devices
         }
       })
     }
