@@ -14,7 +14,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <daypipeChart height='calc(100% - 100px)' width='100%'></daypipeChart>
+    <daypipeChart ref="daypipeChart" height='calc(100% - 100px)' width='100%'></daypipeChart>
   </div>
 </template>
 
@@ -29,6 +29,9 @@
       }
     },
     name: 'daypipeChart1',
+    activated() {
+      this.$refs['daypipeChart'].initChart()
+    },
     components: { daypipeChart }
   }
 

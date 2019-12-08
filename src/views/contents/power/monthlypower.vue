@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <monthlypower height='calc(100% - 100px)' width='100%'></monthlypower>
+    <monthlypower ref="monthlypower" height='calc(100% - 100px)' width='100%'></monthlypower>
   </div>
 </template>
 
@@ -27,7 +27,9 @@
         startTime: new Date()
       }
     },
-
+    activated() {
+      this.$refs['monthlypower'].initChart()
+    },
     name: 'monthlypower1',
     components: { monthlypower }
   }

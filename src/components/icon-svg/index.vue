@@ -1,6 +1,7 @@
 <template>
   <svg
     :class="getClassName"
+    :fill="color"
     :width="width"
     :height="height"
     aria-hidden="true">
@@ -17,6 +18,9 @@
         required: true
       },
       className: {
+        type: String
+      },
+      color: {
         type: String
       },
       width: {

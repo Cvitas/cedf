@@ -10,7 +10,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>
     </div>
-    <yeartemp height='calc(100% - 100px)' width='100%'></yeartemp>
+    <yeartemp ref="yeartemp" height='calc(100% - 100px)' width='100%'></yeartemp>
   </div>
 </template>
 
@@ -20,9 +20,12 @@
     data() {
       return {
         startTime: new Date(),
-        input1:'当年平均进 40℃  出 30℃ '
+        input1: '当年平均进 40℃  出 30℃ '
 
       }
+    },
+    activated() {
+      this.$refs['yeartemp'].initChart()
     },
     name: 'yeartemp1',
     components: { yeartemp }

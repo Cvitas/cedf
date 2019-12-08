@@ -10,7 +10,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>
     </div>
-    <yearpower height='calc(100% - 100px)' width='100%'></yearpower>
+    <yearpower ref="yearpower" height='calc(100% - 100px)' width='100%'></yearpower>
   </div>
 </template>
 
@@ -20,8 +20,11 @@
     data() {
       return {
         startTime: new Date(),
-        input1:'当年累计 300kwh'
+        input1: '当年累计 300kwh'
       }
+    },
+    activated() {
+      this.$refs['yearpower'].initChart()
     },
     name: 'yearpower1',
     components: { yearpower }

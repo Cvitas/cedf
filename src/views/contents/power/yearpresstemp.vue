@@ -11,7 +11,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <yearpresstemp height='calc(100% - 100px)' width='100%'></yearpresstemp>
+    <yearpresstemp ref="yearpresstemp" height='calc(100% - 100px)' width='100%'></yearpresstemp>
   </div>
 </template>
 
@@ -24,6 +24,9 @@
         input1: '年压力漏点平均值-40 ℃',
         startTime: new Date()
       }
+    },
+    activated() {
+      this.$refs['yearpresstemp'].initChart()
     },
     name: 'yearpresstemp1',
     components: { yearpresstemp }

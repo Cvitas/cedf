@@ -1,4 +1,4 @@
-<template>
+`<template>
   <div class='chart-container'>
     <div style="padding-left: 200px">
       <el-date-picker
@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <monthlypresstemp height='calc(100% - 100px)' width='100%'></monthlypresstemp>
+    <monthlypresstemp ref="monthlypresstemp" height='calc(100% - 100px)' width='100%'></monthlypresstemp>
   </div>
 </template>
 
@@ -26,6 +26,9 @@
         input1: ' 当月平均-30 ℃',
         startTime: new Date()
       }
+    },
+    activated() {
+      this.$refs['monthlypresstemp'].initChart()
     },
     name: 'monthlypresstemp1',
     components: { monthlypresstemp }

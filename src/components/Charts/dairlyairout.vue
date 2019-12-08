@@ -73,7 +73,7 @@
             this.xdata = data.data.xDataList
             this.avgData = data.data.avgData
             this.totalData = data.data.totalData
-            for (let i = 0; i <= this.xdata.length; i++) {
+            for (let i = 0; i < this.xdata.length; i++) {
               days.push(this.xdata[i])
             }
             this.trasferAgvData(this.avgData);
@@ -100,19 +100,6 @@
                 }
               }
             },
-            // legend: {
-            //   // top: 20,
-            //   // icon: 'rect',
-            //   // itemWidth: 14,
-            //   // itemHeight: 5,
-            //   // itemGap: 13,
-            //   // data: ['排气压力值', '压力平均值'],
-            //   // right: '4%',
-            //   // textStyle: {
-            //   //   fontSize: 12,
-            //   //   color: 'black'
-            //   // }
-            // },
             grid: {
               top: 100,
               left: '3%',
@@ -201,19 +188,6 @@
                     width: 1
                   }
                 },
-                // areaStyle: {
-                //   normal: {
-                //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                //       offset: 0,
-                //       color: 'rgba(219, 50, 51, 0.3)'
-                //     }, {
-                //       offset: 0.8,
-                //       color: 'rgba(219, 50, 51, 0)'
-                //     }], false),
-                //     shadowColor: 'rgba(0, 0, 0, 0.1)',
-                //     shadowBlur: 10
-                //   }
-                // },
                 itemStyle: {
                   normal: {
                     color: 'rgb(219,50,51)',

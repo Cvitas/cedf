@@ -27,6 +27,10 @@
     },
     name: 'yearairChart1',
     components: { yearairChart },
+    activated() {
+      // this.getData()
+      this.$refs['yearairChart'].initChart()
+    },
     methods: {
       getChartPdf() {
         this.getPdf(this.$refs['yearairChart'].$el, '年度气压力曲线')

@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <monthlytemp height='calc(100% - 100px)' width='100%'></monthlytemp>
+    <monthlytemp ref="monthlytemp" height='calc(100% - 100px)' width='100%'></monthlytemp>
   </div>
 </template>
 
@@ -26,6 +26,9 @@
         input1: '  当月平均进 40℃  出 30℃',
         startTime: new Date()
       }
+    },
+    activated() {
+      this.$refs['monthlytemp'].initChart()
     },
     name: 'monthlytemp1',
     components: { monthlytemp }

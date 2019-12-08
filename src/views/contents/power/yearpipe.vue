@@ -9,7 +9,7 @@
       :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
     </el-input>
     </div>
-    <yearpipe height='calc(100% - 100px)' width='100%'></yearpipe>
+    <yearpipe ref="yearpipe" height='calc(100% - 100px)' width='100%'></yearpipe>
   </div>
 </template>
 
@@ -24,6 +24,9 @@
       }
     },
     name: 'yearpipe1',
+    activated() {
+      this.$refs['yearpipe'].initChart()
+    },
     components: {yearpipe }
   }
 </script>

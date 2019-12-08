@@ -14,7 +14,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <dayairChart ref="dayairChart" height='100% - 100px)' width='100%' @transferAgvData="getAvgData"></dayairChart>
+    <dayairChart ref="dayairChart" height='calc(100% - 100px)' width='100%' @transferAgvData="getAvgData"></dayairChart>
   </div>
 </template>
 
@@ -31,7 +31,9 @@
     },
     name: 'dayairChart1',
     components: {dayairChart},
-
+    activated() {
+      this.getData()
+    },
     methods: {
       getAvgData (agvData) {
         var avgstr = '平均排气压力 ' + agvData + ' Mpa'

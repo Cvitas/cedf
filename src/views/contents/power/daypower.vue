@@ -14,7 +14,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <daypowerChart height='calc(100% - 100px)' width='100%'></daypowerChart>
+    <daypowerChart ref="daypowerChart" height='calc(100% - 100px)' width='100%'></daypowerChart>
   </div>
 </template>
 
@@ -29,6 +29,9 @@
       }
     },
     name: 'daypowerChart1',
+    activated() {
+      this.$refs['daypowerChart'].initChart()
+    },
     components: { daypowerChart }
   }
 

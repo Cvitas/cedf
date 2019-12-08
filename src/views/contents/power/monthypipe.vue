@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red" >
       </el-input>
     </div>
-    <monthlpipe height='calc(100% - 100px)' width='100%'></monthlpipe>
+    <monthlpipe ref="monthlpipe" height='calc(100% - 100px)' width='100%'></monthlpipe>
   </div>
 </template>
 
@@ -29,6 +29,9 @@
       }
     },
     name: 'monthlpipe1',
+    activated() {
+      this.$refs['monthlpipe'].initChart()
+    },
     components: { monthlpipe }
   }
 </script>

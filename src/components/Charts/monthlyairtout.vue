@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :id="dayair" :style="{height:height,width:width}"></div>
+  <div :class="className" :id="monthlyairChart" :style="{height:height,width:width}"></div>
 </template>
 
 <script>
@@ -13,7 +13,7 @@
         type: String,
         default: 'chart'
       },
-      dayair: {
+      monthlyairChart: {
         type: String,
         default: 'chart'
       },
@@ -28,7 +28,11 @@
     },
     data () {
       return {
-        chart: null
+        chart: null,
+        dataList: [],
+        xdata: [],
+        avgData: '',
+        totalData: ''
       }
     },
     mounted () {
@@ -43,17 +47,39 @@
     },
 
     methods: {
-      initChart () {
-        this.chart = echarts.init(document.getElementById(this.dayair))
-        const days = []
-        for (let i = 1; i <= 30; i++) {
-          days.push(i+'日')
-        }
+      trasferAgvData(agvData){
+        this.$emit('transferAgvData',agvData);
+      },
+      initChart (date) {
+        this.chart = echarts.init(document.getElementById(this.monthlyairChart))
+
+        const days = [];
+        this.dataList = [];
+        this.xdata = [];
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl(`/collect/line/press/2/` + date),
+          method: 'get',
+          params: this.$http.adornParams({
+            'type': '2'
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0 && data.data != null) {
+            this.dataList = data.data.dataList
+            this.xdata = data.data.xDataList
+            this.avgData = data.data.avgData
+            this.totalData = data.data.totalData
+            for (let i = 0; i < this.xdata.length; i++) {
+              days.push(this.xdata[i])
+            }
+            this.trasferAgvData(this.avgData);
+          }
+          this.dataListLoading = false;
         this.chart.setOption({
           backgroundColor: 'white',
           title: {
             top: 20,
-            text: '日排气压力曲线',
+            text: '月排气压力曲线',
             textStyle: {
               fontWeight: 'normal',
               fontSize: 16,
@@ -67,19 +93,6 @@
               lineStyle: {
                 color: '#57617B'
               }
-            }
-          },
-          legend: {
-            top: 20,
-            icon: 'rect',
-            itemWidth: 14,
-            itemHeight: 5,
-            itemGap: 13,
-            data: ['排气压力值', '压力平均值'],
-            right: '4%',
-            textStyle: {
-              fontSize: 12,
-              color: 'black'
             }
           },
           grid: {
@@ -102,7 +115,7 @@
           }],
           yAxis: [{
             type: 'value',
-            name: 'P/压力值Mpa',
+            name: 'Bar',
             axisTick: {
               show: false
             },
@@ -157,7 +170,7 @@
 
                 }
               },
-              data: [0.82, 0.8, 0.9, 0.5, 0.74, 0.6, 0.4, 0.8, 0.9, 0.6, 0.4, 0.7,0.82, 0.8, 0.9, 0.5, 0.74, 0.6, 0.4, 0.8, 0.9, 0.6, 0.4, 0.76, 0.4, 0.8, 0.9, 0.6, 0.4, 0.7]
+              data: this.dataList
             }, {
               name: '压力平均值',
               type: 'line',
@@ -190,8 +203,10 @@
                   borderWidth: 12
                 }
               },
-              data: [0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74,0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74, 0.74]
+              data:  this.avgData
             }]
+        })
+
         })
       }
     }

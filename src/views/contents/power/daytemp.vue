@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <daytemp height='calc(100% - 100px)' width='100%'></daytemp>
+    <daytemp ref="daytemp" height='calc(100% - 100px)' width='100%'></daytemp>
   </div>
 </template>
 
@@ -27,6 +27,9 @@
         input1: '当日平均进气温度 40℃，排气温度 35 ℃',
         startTime: new Date(),
       }
+    },
+    activated() {
+      this.$refs['daytemp'].initChart()
     },
     name: 'daytemp1',
     components: { daytemp }

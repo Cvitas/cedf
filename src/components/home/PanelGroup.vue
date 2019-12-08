@@ -3,7 +3,7 @@
     <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData(1)">
         <div class="card-panel-icon-wrapper icon-people">
-          <icon-svg :name="icon" class-name="card-panel-icon"/>
+          <icon-svg :name="icon+'-ok'" class-name="card-panel-icon" color="green"/>
         </div>
         <p class="card-panel-title">{{devInfo.devName1}}</p>
         <p class="card-panel-temp">电流：<span>{{devInfo.devPower1}} A</span><br/>干燥机露点：<span>{{devInfo.devLd1}} ℃</span></p>
@@ -25,7 +25,6 @@
           <span>出口压力：{{devInfo.devPress2}} Bar</span>
           <!--<count-to :start-val="0" :end-val="55" :suffix="' Bar'" :duration="2600" class="card-panel-num"/>-->
         </div>
-
       </div>
     </el-col>
     <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">

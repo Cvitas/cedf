@@ -12,16 +12,16 @@
             end-placeholder="结束日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="类型">
-          <el-select v-model="form.type" placeholder="请选择" style="width: 250px">
-            <el-option
-              v-for="item in types"
-              :key="item.value.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item label="类型">-->
+          <!--<el-select v-model="form.type" placeholder="请选择" style="width: 250px">-->
+            <!--<el-option-->
+              <!--v-for="item in types"-->
+              <!--:key="item.value.value"-->
+              <!--:label="item.label"-->
+              <!--:value="item.value">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="drawChart">生成</el-button>
         </el-form-item>

@@ -12,7 +12,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <dairlypresstemp height='calc(100% - 100px)' width='100%'></dairlypresstemp>
+    <dairlypresstemp ref="dairlypresstemp" height='calc(100% - 100px)' width='100%'></dairlypresstemp>
   </div>
 </template>
 
@@ -25,6 +25,9 @@
         input1: '日平均压力漏点 -40℃',
         startTime: new Date()
       }
+    },
+    activated() {
+      this.$refs['dairlypresstemp'].initChart()
     },
     name: 'dairlypresstemp1',
     components: { dairlypresstemp }
