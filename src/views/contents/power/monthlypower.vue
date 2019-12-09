@@ -1,6 +1,6 @@
 <template>
   <div class='chart-container'>
-    <div style="padding-left: 200px">
+    <div style="padding-left: 200px;margin-bottom: 20px;">
       <el-date-picker
         placeholder="选择日期"
         type="month"

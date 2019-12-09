@@ -1,7 +1,7 @@
 <template>
   <div class='chart-container'>
 
-    <div style="padding-left: 100px">
+    <div style="padding-left: 100px;margin-bottom: 20px;">
       <el-date-picker
         placeholder="选择日期"
         v-model="startTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd">

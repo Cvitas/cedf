@@ -7,6 +7,7 @@
 
 <script>
   import echarts from 'echarts'
+  import moment from 'moment'
   import resize from './mixins/daypipe'
 
   export default {
@@ -51,164 +52,183 @@
         this.chart = echarts.init(document.getElementById(this.yearPower))
 
         this.chart.setOption({
-          backgroundColor: 'white',
           title: {
-            top: 20,
-            text: '年耗电量曲线',
+            text: '年度流量柱状图' + moment().format('YYYY'),
             textStyle: {
-              fontWeight: 'normal',
-              fontSize: 16,
-              color: 'black'
+              align: 'center',
+              color: '#fff',
+              fontSize: 20,
             },
-            left: '1%'
+            top: '3%',
+            left: '10%',
+          },
+          backgroundColor: '#0f375f',
+          grid: {
+            top: '25%',
+            bottom: '10%'
           },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
-              lineStyle: {
-                color: '#57617B'
+              type: 'shadow',
+              label: {
+                show: true
               }
             }
           },
           legend: {
-            top: 20,
-            icon: 'rect',
-            itemWidth: 14,
-            itemHeight: 5,
-            itemGap: 13,
             data: ['周耗电量kwh', '周平均耗电量kwh'],
-            right: '4%',
+            top: '15%',
             textStyle: {
-              fontSize: 12,
-              color: 'black'
+              color: '#ffffff'
             }
           },
-          grid: {
-            top: 100,
-            left: '3%',
-            right: '4%',
-            bottom: '2%',
-            containLabel: true
-          },
-          xAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            name: '周',
-            axisLine: {
-              lineStyle: {
-                color: '#57617B'
-              }
-            },
+          xAxis: {
             data: ['1', '3', '5', '7', '9',
               '11', '13', '15', '17', '19',
               '21', '23', '25', '27', '29',
-              '31','33','35','37','39',
-              '41','43','45','47','49',
-              '51']
-          }],
+              '31', '33', '35', '37', '39',
+              '41', '43', '45', '47', '49', '51'],
+            name: '周',
+            axisLine: {
+              show: true //隐藏X轴轴线
+            },
+            axisTick: {
+              show: true //隐藏X轴刻度
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#ebf8ac' //X轴文字颜色
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#01FCE3'
+              }
+            },
+          },
           yAxis: [{
             type: 'value',
-            name: '电量\Kwh * 10000',
+            name: '能耗/Kwh',
+            nameTextStyle: {
+              color: '#ebf8ac'
+            },
+            splitLine: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              show: true
+            },
+            axisLine: {
+              show: true
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#ebf8ac'
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#FFFFFF'
+              }
+            },
+          }, {
+            type: 'value',
+            nameTextStyle: {
+              color: '#ebf8ac'
+            },
+            splitLine: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            },
             axisTick: {
               show: false
             },
             axisLine: {
-              lineStyle: {
-                color: '#57617B'
-              }
+              show: false
+            },
+          }, {
+            type: 'value',
+            gridIndex: 0,
+            min: 50,
+            max: 100,
+            splitNumber: 8,
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
             },
             axisLabel: {
-              margin: 10,
-              textStyle: {
-                fontSize: 14
-              }
+              show: false
             },
-            splitLine: {
-              lineStyle: {
-                color: '#57617B'
+            splitArea: {
+              show: true,
+              areaStyle: {
+                color: ['rgba(250,250,250,0.0)', 'rgba(250,250,250,0.05)']
               }
             }
-          }],
-          series: [
+          }
+          ],
+          series: [{
+            name: '周平均耗电量kwh',
+            type: 'line',
+            yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+            smooth: true, //平滑曲线显示
+            showAllSymbol: true, //显示所有图形。
+            symbol: 'circle', //标记的图形为实心圆
+            symbolSize: 10, //标记的大小
+            itemStyle: {
+              //折线拐点标志的样式
+              color: '#058cff'
+            },
+            lineStyle: {
+              color: '#058cff'
+            },
+            areaStyle: {
+              color: 'rgba(5,140,255, 0.2)'
+            },
+            data: [10700, 10700, 10700, 10700, 10700,
+              10700, 10700, 10700, 10700, 10700,
+              10700, 10700, 10700, 10700, 10700,
+              10700, 10700, 10700, 10700, 10700,
+              10700, 10700, 10700, 10700, 10700, 10700]
+          },
             {
               name: '周耗电量kwh',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 5,
-              showSymbol: false,
-              lineStyle: {
-                normal: {
-                  width: 1
-                }
-              },
-              areaStyle: {
+              type: 'bar',
+              barWidth: 15,
+              itemStyle: {
                 normal: {
                   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                     offset: 0,
-                    color: 'rgba(0, 136, 212, 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: 'rgba(0, 136, 212, 0)'
-                  }], false),
-                  shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
+                    color: '#00FFE3'
+                  },
+                    {
+                      offset: 1,
+                      color: '#4693EC'
+                    }
+                  ])
                 }
               },
-              itemStyle: {
-                normal: {
-                  color: 'rgb(0,136,212)',
-                  borderColor: 'rgba(0,136,212,0.2)',
-                  borderWidth: 12
-
-                }
-              },
-              data: [6.5, 6.3, 6.5, 6.4, 6.7,
-                6.5, 6.8, 7.2, 8.6, 8.7,
-                8.9, 6.8, 6.3, 5.8, 5.2
-                ,5.0,5.2,5.0,4.5,4.2,
-                5.0,5.2,5.5,5.7,5.8,
-                ,5.0
-              ]
-            }, {
-              name: '周平均耗电量kwh',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 5,
-              showSymbol: false,
-              lineStyle: {
-                normal: {
-                  width: 1
-                }
-              },
-              areaStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(219, 50, 51, 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: 'rgba(219, 50, 51, 0)'
-                  }], false),
-                  shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: 'rgb(219,50,51)',
-                  borderColor: 'rgba(219,50,51,0.2)',
-                  borderWidth: 12
-                }
-              },
-              data: [6.0, 6.0, 6.0, 6.0, 6.0,
-                6.0, 6.0, 6.0, 6.0, 6.0,
-                6.0, 6.0, 6.0, 6.0, 6.0,
-                6.0, 6.0, 6.0, 6.0, 6.0,
-                6.0, 6.0, 6.0, 6.0, 6.0,
-                6.0]
-            }]
+              data: [
+                11500, 11200, 11900, 11700, 11750,
+                11500, 11200, 11900, 11700, 11750,
+                11500, 11200, 11900, 11700, 11750,
+                11500, 11200, 11900, 11700, 11750,
+                11790,10950, 10850, 10600, 10750, 10900]
+            }
+          ]
         })
       }
     }

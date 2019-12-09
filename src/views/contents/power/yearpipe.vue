@@ -1,6 +1,6 @@
 <template>
   <div class='chart-container'>
-    <div style="padding-left: 200px" >
+    <div style="padding-left: 200px;margin-bottom: 20px;" >
     <el-date-picker type="year" placeholder="年份" v-model="startTime" style="width: 20%;" value-format="yyyy" format="yyyy"></el-date-picker>
     <el-button  type="primary">查询</el-button>
     <el-input

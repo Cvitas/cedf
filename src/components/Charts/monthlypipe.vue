@@ -6,201 +6,220 @@
 
 
 <script>
-  import echarts from 'echarts'
-  import resize from './mixins/daypipe'
+import echarts from 'echarts'
+import moment from 'moment'
+import resize from './mixins/daypipe'
 
-  export default {
-    mixins: [resize],
-    props: {
-      className: {
-        type: String,
-        default: 'chart'
-      },
-      monthlyPipe: {
-        type: String,
-        default: 'chart'
-      },
-      width: {
-        type: String,
-        default: '200px'
-      },
-      height: {
-        type: String,
-        default: '200px'
-      }
+export default {
+  mixins: [resize],
+  props: {
+    className: {
+      type: String,
+      default: 'chart'
     },
-    data() {
-      return {
-        chart: null,
-        value2: new Date(2016, 9, 10, 18, 40),
-        value3: new Date(2016, 9, 10, 18, 40)
-      }
+    monthlyPipe: {
+      type: String,
+      default: 'chart'
     },
-    mounted() {
-      this.initChart()
+    width: {
+      type: String,
+      default: '200px'
     },
-    beforeDestroy() {
-      if (!this.chart) {
-        return
-      }
-      this.chart.dispose()
-      this.chart = null
-    },
-    methods: {
-      initChart() {
-        this.chart = echarts.init(document.getElementById(this.monthlyPipe))
+    height: {
+      type: String,
+      default: '200px'
+    }
+  },
+  data () {
+    return {
+      chart: null,
+      value2: new Date(2016, 9, 10, 18, 40),
+      value3: new Date(2016, 9, 10, 18, 40)
+    }
+  },
+  mounted () {
+    this.initChart()
+  },
+  beforeDestroy () {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
+  },
+  methods: {
+    initChart () {
+      this.chart = echarts.init(document.getElementById(this.monthlyPipe))
 
-        this.chart.setOption({
-          backgroundColor: 'white',
-          title: {
-            top: 20,
-            text: '月流量曲线',
+      this.chart.setOption({
+        title: {
+          text: '月度流量柱状图' + moment().format('YYYY-MM'),
+          textStyle: {
+            align: 'center',
+            color: '#fff',
+            fontSize: 20,
+          },
+          top: '3%',
+          left: '10%',
+        },
+        backgroundColor: '#0f375f',
+        grid: {
+          top: '25%',
+          bottom: '10%'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+            label: {
+              show: true
+            }
+          }
+        },
+        legend: {
+          data: ['时流量值', '流量平均值'],
+          top: '15%',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        xAxis: {
+          data: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23', '25', '27', '29', '31'],
+          name: '日',
+          axisLine: {
+            show: true //隐藏X轴轴线
+          },
+          axisTick: {
+            show: true //隐藏X轴刻度
+          },
+          axisLabel: {
+            show: true,
             textStyle: {
-              fontWeight: 'normal',
-              fontSize: 16,
-              color: 'black'
-            },
-            left: '1%'
-          },
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              lineStyle: {
-                color: '#57617B'
-              }
+              color: '#ebf8ac' //X轴文字颜色
             }
           },
-          legend: {
-            top: 20,
-            icon: 'rect',
-            itemWidth: 14,
-            itemHeight: 5,
-            itemGap: 13,
-            data: ['日累计流量值m3', '日平均流量'],
-            right: '4%',
+          axisLine: {
+            lineStyle: {
+              color: '#01FCE3'
+            }
+          },
+        },
+        yAxis: [{
+          type: 'value',
+          name: '流量/m2',
+          nameTextStyle: {
+            color: '#ebf8ac'
+          },
+          splitLine: {
+            show: false
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: true
+          },
+          axisLine: {
+            show: true
+          },
+          axisLabel: {
+            show: true,
             textStyle: {
-              fontSize: 12,
-              color: 'black'
+              color: '#ebf8ac'
             }
           },
-          grid: {
-            top: 100,
-            left: '3%',
-            right: '4%',
-            bottom: '2%',
-            containLabel: true
-          },
-          xAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            name: '日',
-            axisLine: {
-              lineStyle: {
-                color: '#57617B'
-              }
-            },
-            data: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23','25','27','29','31']
-          }],
-          yAxis: [{
-            type: 'value',
-            name: '日流量/m2  * 1000',
-            axisTick: {
-              show: false
-            },
-            axisLine: {
-              lineStyle: {
-                color: '#57617B'
-              }
-            },
-            axisLabel: {
-              margin: 10,
-              textStyle: {
-                fontSize: 14
-              }
-            },
-            splitLine: {
-              lineStyle: {
-                color: '#57617B'
-              }
+          axisLine: {
+            lineStyle: {
+              color: '#FFFFFF'
             }
-          }],
-          series: [
-            {
-              name: '日累计流量值m3',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 5,
-              showSymbol: false,
-              lineStyle: {
-                normal: {
-                  width: 1
-                }
-              },
-              areaStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(0, 136, 212, 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: 'rgba(0, 136, 212, 0)'
-                  }], false),
-                  shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: 'rgb(0,136,212)',
-                  borderColor: 'rgba(0,136,212,0.2)',
-                  borderWidth: 12
-
-                }
-              },
-              data: [5, 7, 8, 5, 10, 15,
-                20, 32, 24, 15, 20,13,
-                15, 22, 13, 18, 8,9,
-                12
-              ]
-            }, {
-              name: '日平均流量',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 5,
-              showSymbol: false,
-              lineStyle: {
-                normal: {
-                  width: 1
-                }
-              },
-              areaStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(219, 50, 51, 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: 'rgba(219, 50, 51, 0)'
-                  }], false),
-                  shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: 'rgb(219,50,51)',
-                  borderColor: 'rgba(219,50,51,0.2)',
-                  borderWidth: 12
-                }
-              },
-              data: [15, 15, 15, 15, 15,
-                15, 15, 15, 15, 15,
-                15, 15, 15, 15, 15,15]
-            }]
-        })
-      }
+          },
+        }, {
+          type: 'value',
+          nameTextStyle: {
+            color: '#ebf8ac'
+          },
+          splitLine: {
+            show: false
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+        }, {
+          type: 'value',
+          gridIndex: 0,
+          min: 50,
+          max: 100,
+          splitNumber: 8,
+          splitLine: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            show: false
+          },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['rgba(250,250,250,0.0)', 'rgba(250,250,250,0.05)']
+            }
+          }
+        }
+        ],
+        series: [{
+          name: '流量平均值',
+          type: 'line',
+          yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+          smooth: true, //平滑曲线显示
+          showAllSymbol: true, //显示所有图形。
+          symbol: 'circle', //标记的图形为实心圆
+          symbolSize: 10, //标记的大小
+          itemStyle: {
+            //折线拐点标志的样式
+            color: '#058cff'
+          },
+          lineStyle: {
+            color: '#058cff'
+          },
+          areaStyle: {
+            color: 'rgba(5,140,255, 0.2)'
+          },
+          data: [10700, 10700, 10700, 10700, 10700, 10700,
+            10700, 10700, 10700, 10700, 10700, 10700, 10700, 10700, 10700, 10700]
+        },
+          {
+            name: '时流量值',
+            type: 'bar',
+            barWidth: 15,
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: '#00FFE3'
+                },
+                  {
+                    offset: 1,
+                    color: '#4693EC'
+                  }
+                ])
+              }
+            },
+            data: [11500, 11200, 11900, 11700, 11750, 11790,
+              10950, 10850, 10600, 10750, 10900, 10500, 11900, 11700, 11750, 11790]
+          }
+        ]
+      })
     }
   }
+}
 </script>
