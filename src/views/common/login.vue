@@ -10,7 +10,7 @@
         -->
         <div class="login-main">
 
-			<div class="login-title" style="font-size:30px;padding:10px 0 40px 0;">中电神头发电有限公司空压机站节能技术改进与应用</div>
+			<div class="login-title" style="font-size:30px;padding:10px 0 40px 0;">中电神头发电有限公司空压机站节能技术研究与应用</div>
 
           <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon style="width:30%;margin: auto;position: absolute;left: 0;right: 0;">
             <el-form-item prop="userName">

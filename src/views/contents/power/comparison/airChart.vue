@@ -6,21 +6,22 @@
           <el-date-picker
             v-model="form.value"
             type="daterange"
+            value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="类型">
-          <el-select v-model="form.type" placeholder="请选择" style="width: 250px">
-            <el-option
-              v-for="item in types"
-              :key="item.value.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item label="类型">-->
+          <!--<el-select v-model="form.type" placeholder="请选择" style="width: 250px">-->
+            <!--<el-option-->
+              <!--v-for="item in types"-->
+              <!--:key="item.value.value"-->
+              <!--:label="item.label"-->
+              <!--:value="item.value">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="drawChart">生成</el-button>
         </el-form-item>
@@ -65,8 +66,8 @@ export default {
         value: { name: '离心机用气量', value: 1 },
         label: '离心机用气量'
       } ],
-      typesItems: [ { legend: [ "系统总（6个设备）用气量", "总用气量饼图" ] },
-        { legend: [ "离心机用气量", "总用气量" ] } ]
+      // typesItems: [ { legend: [ "系统总（6个设备）用气量", "总用气量饼图" ] },
+      //   { legend: [ "离心机用气量", "总用气量" ] } ]
     }
   },
   methods: {
@@ -76,7 +77,7 @@ export default {
       }
     },
     initChart() {
-      if ( !this.form.value || !this.form.type ) {
+      if ( !this.form.value ) {
         this.$message("请先选择时间范围类型")
         return false
       }
@@ -90,7 +91,7 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: this.typesItems[ this.form.type.value ].legend
+          data: ''//this.typesItems[ this.form.type.value ].legend
         },
         calculable: true,
         series: [
@@ -98,15 +99,24 @@ export default {
             name: '分布图',
             type: 'pie',
             center: [ '50%', '45%' ],
-            data: [
-              { value: 300 + Math.random() * 320, name: this.typesItems[ this.form.type.value ].legend[ 0 ] },
-              { value: Math.random() * 240, name: this.typesItems[ this.form.type.value ].legend[ 1 ] },
-            ],
+            data: [],
             animationEasing: 'cubicInOut',
             animationDuration: 1000
           }
         ]
       }
+      // get 请求获取数据 /comparisonmutichart/yql/{startDate}/{endDate}
+      this.$http({
+        url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/yql/${this.form.value[0]}/${this.form.value[1]}`),
+        method: 'get'
+      }).then((data) => {
+        if (data != null && data.data.code === 0 && data.data.data.length > 0) {
+          // pie.series[0].data = [  { value: 300 + Math.random() * 320, name: '空压机3' },
+          //   { value: Math.random() * 240, name: '空压机4' },]
+          pie.series[0].data = data.data.data
+        }
+      })
+
       this.chart.setOption(pie)
     },
     drawChart() {

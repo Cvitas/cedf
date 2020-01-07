@@ -95,30 +95,32 @@
         }
         this.clernChart()
         this.$http({
-          url: this.$http.adornUrl(`/collect/collecstatis//comparisonmutichart/xthb/${this.form.value.value}/${this.form.type}`),
+          url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/xthb/${this.form.value.value}/${this.form.type}`),
           method: 'get'
         }).then((data) => {
           if (data != null && data.data.code === 0) {
             const res = data.data
             const currentData = res.currentData || {}
             const lastData = res.lastData || {}
-            if (this.form.value.value === 2) {
-              const chartData = [{ value: currentData.data, name: currentData.name },
-                { value: lastData.data, name: lastData.name }]
+            // 当比较为['上个月', '当月'] 这时候是饼图，其他是柱状图
+            // if (this.form.value.value === 2) {
+              const chartData = [{ value: currentData.data || 0, name: currentData.name || '未知' },
+                { value: lastData.data || 0, name: lastData.name || '未知' }]
               this.drawPie({ data: chartData, unitName: res.unitName })
-            } else {
-              const chartData = [{
-                data: [currentData.data, lastData.data],
-                type: 'bar',
-                name: '数据',
-                barWidth: '60%'
-              }]
-              this.drawBar({
-                data: chartData,
-                unitName: res.unitName,
-                xAxis: [currentData.name, lastData.name]
-              })
-            }
+            // }
+            // else {
+            //   const chartData = [{
+            //     data: [currentData.data  || 0, lastData.data  || 0],
+            //     type: 'bar',
+            //     name: '数据',
+            //     barWidth: '60%'
+            //   }]
+            //   this.drawBar({
+            //     data: chartData,
+            //     unitName: res.unitName,
+            //     xAxis: [currentData.name || '未知', lastData.name || '未知']
+            //   })
+            // }
           }
         })
       },

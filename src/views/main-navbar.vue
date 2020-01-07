@@ -35,7 +35,7 @@
           <icon-svg name="tuichu"></icon-svg>
         </el-menu-item>
       </el-menu>
-      <p style="font-size: 16px;color: #ffffff;text-align: center;">中电神头发电有限公司空压机站节能技术改进与应用</p>
+      <p style="font-size: 16px;color: #ffffff;text-align: center;">中电神头发电有限公司空压机站节能技术研究与应用</p>
     </div>
     <!-- 弹窗, 修改密码 -->
     <update-password v-if="updatePassowrdVisible" ref="updatePassowrd"></update-password>

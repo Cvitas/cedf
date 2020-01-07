@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <monthlyairChart ref="monthlyairChart" height='calc(100% - 100px)' width='100%'></monthlyairChart>
+    <monthlyairChart ref="monthlyairChart" height='calc(100% - 100px)' width='100%' @transferAgvData="getAvgData"></monthlyairChart>
   </div>
 </template>
 

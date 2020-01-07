@@ -2,16 +2,16 @@
   <div class='chart-container'>
     <div class="button-bar">
       <el-form ref="form" :model="form" label-width="120px" :inline="true">
-        <el-form-item label="设备类型">
-        <el-select v-model="form.deviceType" placeholder="请选择" style="width: 250px" @change="changeTypes">
-          <el-option
-            v-for="item in devices"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
+        <el-form-item label="参数类型">
+          <el-select v-model="form.deviceType" placeholder="请选择" style="width: 250px" @change="changeTypes">
+            <el-option
+              v-for="item in devices"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="选择对比项">
           <el-select v-model="form.value" :multiple-limit="limit" multiple placeholder="请选择" style="width: 250px">
             <el-option
@@ -101,7 +101,7 @@
         this.$http({
           url: this.$http.adornUrl(`/collect/equipment/equiplist`),
           method: 'get',
-          params: { collecType: collectType }
+          params: {collecType: collectType}
         }).then((data) => {
           if (data != null && data.data.code === 0) {
             this.options = data.data.data
@@ -152,24 +152,36 @@
               const xAxis = res.xais
               const chartData = res.data
               const unitName = res.unitName
-              chartData.forEach(item => {
-                label.push(item.name)
+              for (let devId in chartData) {
+                const dev = this.options.find((item) => item.id == devId)
+                label.push(dev.name)
                 dataXY.push({
-                  name: item.name,
+                  name: dev.name,
                   type: 'line',
-                  color: item.color,
+                  color: dev.color,
                   smooth: true,
-                  data: item.data
+                  data: chartData[devId].map(item => item.data)
                 })
-              })
-
+                // chartData[devId].forEach(item => {
+                //   dataXY.push({
+                //     name: item.name,
+                //     type: 'line',
+                //     color: item.color,
+                //     smooth: true,
+                //     data: item.data
+                //   })
+                // })
+              }
               this.chart = echarts.init(this.$refs['chart'], 'default')
               this.chart.setOption({
+                // tooltip: {
+                //   trigger: 'none',
+                //   axisPointer: {
+                //     type: 'cross'
+                //   }
+                // },
                 tooltip: {
-                  trigger: 'none',
-                  axisPointer: {
-                    type: 'cross'
-                  }
+                  trigger: 'axis'
                 },
                 legend: {
                   data: label

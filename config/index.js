@@ -23,10 +23,16 @@ module.exports = {
     //     }
     //   }
     // },
+    // proxyTable:{
+    //   '/sys/':'http://106.15.233.181:8080/cedf/',
+    //   '/project/':'http://106.15.233.181:8080/cedf/',
+    //   '/collect/':'http://106.15.233.181:8080/cedf/',
+    // },
+
     proxyTable:{
-      '/sys/':'http://106.15.233.181:8080/cedf/',
-      '/project/':'http://106.15.233.181:8080/cedf/',
-      '/collect/':'http://106.15.233.181:8080/cedf/',
+      '/sys/':'http://localhost:8080/cedf/',
+      '/project/':'http://localhost:8080/cedf/',
+      '/collect/':'http://localhost:8080/cedf/',
     },
 
     // Various Dev Server settings
