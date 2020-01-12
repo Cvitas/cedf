@@ -109,15 +109,19 @@ export default {
       this.$http({
         url: this.$http.adornUrl(`/collect/collecstatis/comparisonmutichart/yql/${this.form.value[0]}/${this.form.value[1]}`),
         method: 'get'
-      }).then((data) => {
-        if (data != null && data.data.code === 0 && data.data.data.length > 0) {
+      }).then(({data}) => {
+        if (data != null && data.code === 0 && data.data.length > 0) {
           // pie.series[0].data = [  { value: 300 + Math.random() * 320, name: '空压机3' },
           //   { value: Math.random() * 240, name: '空压机4' },]
-          pie.series[0].data = data.data.data
+          pie.series[0].data = data.data
+          this.chart.setOption(pie)
+        }else{
+          pie.series[0].data = []
+          this.chart.setOption(pie)
         }
       })
 
-      this.chart.setOption(pie)
+
     },
     drawChart() {
       this.initChart()

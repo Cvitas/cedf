@@ -13,7 +13,7 @@
         :disabled="true" style="width: 30%;padding-left: 100px;color: red">
       </el-input>
     </div>
-    <monthlypower ref="monthlypower" height='calc(100% - 100px)' width='100%'></monthlypower>
+    <monthlypower ref="monthlypower" height='calc(100% - 100px)' width='100%'  @transferAgvData="getAvgData"></monthlypower>
   </div>
 </template>
 
@@ -23,15 +23,44 @@
   export default {
     data () {
       return {
-        input1: ' 当月累计 300kwh',
-        startTime: new Date()
+        avgData: '',
+        input1:'',
+        startTime:new Date(),
+        endTime: ''
       }
     },
     activated() {
       this.$refs['monthlypower'].initChart()
     },
     name: 'monthlypower1',
-    components: { monthlypower }
+    components: { monthlypower },
+    methods: {
+      getAvgData (agvData) {
+        var avgstr = '平均能耗 ' + agvData + ' Kwh'
+        this.avgData = avgstr
+      },
+      getData () {
+        if (!this.startTime) {
+          this.$message('请选择需要查询的日期')
+          return false
+        }
+        var dateStr
+        if (typeof this.startTime === 'string') {
+          dateStr = this.startTime
+        } else {
+          var month = this.prefixZero(this.startTime.getMonth() + 1, 2)
+          var day = this.prefixZero(this.startTime.getDate(), 2)
+          dateStr = this.startTime.getFullYear() + '-' + month + '-' + day
+        }
+        this.$refs.monthlypower.initChart(dateStr)
+      },
+      getChartPdf () {
+        this.getPdf(this.$refs['monthlypower'].$el, '月能耗曲线')
+      },
+      prefixZero (num, n) {
+        return (Array(n).join(0) + num).slice(-n)
+      }
+    },
   }
 
 </script>

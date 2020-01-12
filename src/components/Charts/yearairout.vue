@@ -36,7 +36,12 @@
       }
     },
     mounted () {
-      this.initChart()
+      var  year = new Date().getFullYear();
+      var month =  new Date().getMonth() + 1;
+      var day = new Date().getDate();
+
+      var wholeDate = year  ;
+      this.initChart(wholeDate)
     },
     beforeDestroy () {
       if (!this.chart) {
